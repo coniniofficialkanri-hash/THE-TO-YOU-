@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サービス・料金 | THE TO YOU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #DDE3EE;
+  --bg-sub: #ffffff;
+  --bg-dark: #07172E;
+  --gold: #C09D59;
+  --gold-light: rgba(192,157,89,0.12);
+  --text: #07172E;
+  --text-muted: rgba(7,23,46,0.55);
+  --text-light: rgba(7,23,46,0.35);
+  --border: rgba(7,23,46,0.1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+  --transition: 0.2s ease;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Noto Sans JP',sans-serif; background:var(--bg-main); color:var(--text); line-height:1.7; -webkit-font-smoothing:antialiased; }
+a { text-decoration:none; color:inherit; }
+
+/* HEADER */
+.header { background:var(--bg-dark); position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(192,157,89,0.15); }
+.header-inner { max-width:var(--max-width); margin:0 auto; padding:0 20px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+.logo { display:flex; align-items:center; gap:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:#fff; letter-spacing:0.08em; }
+.logo-mark { display:flex; flex-direction:column; gap:3px; width:28px; }
+.logo-mark span { display:block; height:2px; background:var(--gold); border-radius:1px; }
+.logo-mark span:nth-child(4) { width:55%; }
+.nav-links { display:none; align-items:center; gap:32px; list-style:none; }
+.nav-links a { font-size:13px; color:rgba(255,255,255,0.65); letter-spacing:0.04em; transition:color var(--transition); position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width var(--transition); }
+.nav-links a:hover { color:#fff; }
+.nav-links a:hover::after { width:100%; }
+.nav-links a.active { color:#fff; }
+.nav-links a.active::after { width:100%; }
+.nav-cta { display:none; background:var(--gold); color:var(--bg-dark) !important; font-weight:700 !important; font-size:12px !important; padding:8px 18px; border-radius:var(--radius-sm); }
+.hamburger { display:flex; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+.hamburger span { display:block; width:22px; height:1.5px; background:var(--gold); border-radius:2px; transition:all 0.25s ease; }
+.hamburger span:last-child { width:14px; }
+.hamburger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); width:22px; }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); width:22px; }
+.mobile-menu { display:none; background:var(--bg-dark); border-top:1px solid rgba(192,157,89,0.15); padding:20px; }
+.mobile-menu.open { display:block; }
+.mobile-menu ul { list-style:none; display:flex; flex-direction:column; }
+.mobile-menu a { display:block; padding:14px 0; font-size:14px; color:rgba(255,255,255,0.7); border-bottom:1px solid rgba(255,255,255,0.06); }
+.mobile-menu .m-cta { display:block; margin-top:16px; background:var(--gold); color:var(--bg-dark); font-weight:700; font-size:14px; padding:14px; border-radius:var(--radius-sm); text-align:center; }
+
+/* PAGE HEADER */
+.page-header { background:var(--bg-dark); padding:48px 20px 44px; }
+.page-header-inner { max-width:var(--max-width); margin:0 auto; }
+.page-label { font-family:'Inter',sans-serif; font-size:9.5px; letter-spacing:0.2em; color:var(--gold); margin-bottom:8px; text-transform:uppercase; font-weight:600; }
+.page-title { font-size:clamp(26px,4vw,40px); font-weight:700; color:#fff; line-height:1.4; margin-bottom:10px; }
+.page-desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.8; max-width:520px; }
+
+/* SECTION */
+.section { padding:60px 20px; }
+.section-sub { background:var(--bg-sub); }
+.section-inner { max-width:var(--max-width); margin:0 auto; }
+.sec-label { font-family:'Inter',sans-serif; font-size:9.5px; letter-spacing:0.2em; color:var(--gold); margin-bottom:6px; text-transform:uppercase; font-weight:600; }
+.sec-title { font-size:clamp(20px,3vw,28px); font-weight:700; color:var(--text); line-height:1.45; margin-bottom:8px; }
+.sec-desc { font-size:13px; color:var(--text-muted); line-height:1.8; margin-bottom:40px; max-width:560px; }
+
+/* ============================================================
+   PLANS
+============================================================ */
+.plans-wrap { display:flex; flex-direction:column; gap:24px; }
+
+.plan-card {
+  background:var(--bg-sub);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+}
+.plan-card.featured { border-color:var(--gold); }
+
+.plan-head {
+  padding:28px 28px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.plan-card.featured .plan-head { background:var(--bg-dark); }
+
+.plan-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--gold-light);
+  border:1px solid rgba(192,157,89,0.3);
+  color:var(--gold);
+  font-size:10px;
+  font-family:'Inter',sans-serif;
+  letter-spacing:0.1em;
+  padding:4px 12px;
+  border-radius:100px;
+  width:fit-content;
+  font-weight:600;
+}
+.plan-badge.dark { background:rgba(192,157,89,0.15); }
+
+.plan-name { font-size:clamp(18px,2.5vw,22px); font-weight:700; color:var(--text); line-height:1.3; }
+.plan-card.featured .plan-name { color:#fff; }
+
+.plan-price-wrap { display:flex; align-items:baseline; gap:6px; }
+.plan-price { font-family:'Inter',sans-serif; font-size:clamp(28px,4vw,38px); font-weight:700; color:var(--gold); letter-spacing:-0.02em; }
+.plan-price-unit { font-size:13px; color:var(--text-muted); }
+.plan-card.featured .plan-price-unit { color:rgba(255,255,255,0.4); }
+
+.plan-tagline { font-size:13px; color:var(--text-muted); line-height:1.7; }
+.plan-card.featured .plan-tagline { color:rgba(255,255,255,0.5); }
+
+.plan-body { padding:28px; }
+.plan-card.featured .plan-body { background:var(--bg-main); }
+
+/* PLAN FEATURES */
+.plan-features { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.plan-feature { display:flex; align-items:flex-start; gap:10px; }
+.feature-check {
+  width:20px; height:20px; border-radius:50%;
+  background:var(--gold-light);
+  border:1px solid rgba(192,157,89,0.3);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:2px;
+}
+.feature-text { font-size:13px; color:var(--text); line-height:1.6; }
+.feature-text strong { color:var(--text); font-weight:700; display:block; }
+.feature-text span { color:var(--text-muted); font-size:12px; }
+
+/* ANALYSIS VISUAL */
+.analysis-visual {
+  background:var(--bg-sub);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:20px;
+  margin-bottom:24px;
+}
+.analysis-visual-title { font-size:11px; color:var(--text-light); letter-spacing:0.08em; margin-bottom:16px; font-family:'Inter',sans-serif; text-transform:uppercase; }
+.analysis-bars { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+.abar-row { display:flex; align-items:center; gap:10px; }
+.abar-label { font-size:11px; color:var(--text-muted); width:80px; flex-shrink:0; }
+.abar-track { flex:1; height:8px; background:rgba(7,23,46,0.07); border-radius:4px; overflow:hidden; }
+.abar-fill { height:100%; border-radius:4px; background:var(--gold); }
+.abar-val { font-size:11px; font-family:'Inter',sans-serif; font-weight:600; color:var(--gold); width:36px; text-align:right; }
+.analysis-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.ametric { background:rgba(7,23,46,0.04); border-radius:8px; padding:10px; text-align:center; }
+.ametric-num { font-family:'Inter',sans-serif; font-size:16px; font-weight:700; color:var(--text); }
+.ametric-label { font-size:9.5px; color:var(--text-light); margin-top:2px; }
+
+/* FLOW VISUAL */
+.flow-visual { display:flex; align-items:center; gap:0; margin-bottom:24px; overflow-x:auto; padding-bottom:4px; }
+.flow-step {
+  flex:1; min-width:80px;
+  background:var(--bg-main);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:12px 8px;
+  text-align:center;
+  position:relative;
+}
+.flow-step-num { font-family:'Inter',sans-serif; font-size:10px; font-weight:700; color:var(--gold); margin-bottom:4px; }
+.flow-step-text { font-size:10.5px; color:var(--text); font-weight:700; line-height:1.4; }
+.flow-arrow { color:var(--gold); font-size:16px; padding:0 6px; flex-shrink:0; }
+
+/* GPT VISUAL */
+.gpt-visual {
+  background:var(--bg-dark);
+  border-radius:var(--radius-md);
+  padding:20px;
+  margin-bottom:24px;
+}
+.gpt-chat { display:flex; flex-direction:column; gap:10px; }
+.gpt-msg { display:flex; gap:8px; align-items:flex-start; }
+.gpt-msg.user { flex-direction:row-reverse; }
+.gpt-avatar {
+  width:28px; height:28px; border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.gpt-msg.user .gpt-avatar { background:var(--gold-light); border:1px solid rgba(192,157,89,0.3); }
+.gpt-bubble {
+  background:rgba(255,255,255,0.07);
+  border-radius:10px;
+  padding:8px 12px;
+  font-size:11.5px;
+  color:rgba(255,255,255,0.8);
+  max-width:200px;
+  line-height:1.6;
+}
+.gpt-msg.user .gpt-bubble { background:rgba(192,157,89,0.2); color:#fff; }
+.gpt-label { font-size:9.5px; color:rgba(255,255,255,0.25); text-align:center; margin-top:4px; }
+
+/* PLAN NOTE */
+.plan-note {
+  background:rgba(7,23,46,0.04);
+  border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  padding:12px 16px;
+  font-size:12px;
+  color:var(--text-muted);
+  line-height:1.7;
+  margin-bottom:20px;
+}
+.plan-cta {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:var(--bg-dark);
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
+  padding:15px 28px;
+  border-radius:var(--radius-sm);
+  width:100%;
+  transition:opacity var(--transition);
+}
+.plan-cta:hover { opacity:0.85; }
+.plan-card.featured .plan-cta { background:var(--gold); color:var(--bg-dark); }
+
+/* ============================================================
+   INDUSTRY SERVICES
+============================================================ */
+.industry-grid { display:flex; flex-direction:column; gap:12px; }
+
+.industry-item {
+  background:var(--bg-sub);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+}
+
+.industry-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 22px;
+  cursor:pointer;
+  transition:background var(--transition);
+  user-select:none;
+}
+.industry-header:hover { background:rgba(7,23,46,0.02); }
+.industry-header-left { display:flex; align-items:center; gap:14px; }
+.industry-icon {
+  width:42px; height:42px;
+  border-radius:10px;
+  background:var(--bg-main);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.industry-name { font-size:15px; font-weight:700; color:var(--text); }
+.industry-count { font-size:11px; color:var(--text-light); margin-top:2px; }
+.industry-toggle {
+  width:28px; height:28px;
+  border-radius:50%;
+  background:var(--bg-main);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  transition:transform 0.3s ease, background 0.2s;
+}
+.industry-item.open .industry-toggle { transform:rotate(45deg); background:var(--bg-dark); border-color:var(--bg-dark); }
+.industry-toggle svg { transition:stroke 0.2s; }
+.industry-item.open .industry-toggle svg { stroke:#fff; }
+
+.industry-body {
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.4s ease;
+}
+.industry-item.open .industry-body { max-height:2000px; }
+
+.industry-services { padding:0 22px 22px; display:flex; flex-direction:column; gap:12px; }
+.industry-divider { height:1px; background:var(--border); margin-bottom:4px; }
+
+.service-item { display:flex; flex-direction:column; gap:3px; padding:12px 14px; background:var(--bg-main); border-radius:var(--radius-sm); }
+.service-item-title { font-size:13px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+.service-item-title::before { content:''; width:4px; height:4px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+.service-item-desc { font-size:12px; color:var(--text-muted); line-height:1.7; padding-left:12px; }
+
+/* CTA BANNER */
+.cta-banner { background:var(--bg-dark); padding:60px 20px; }
+.cta-inner { max-width:var(--max-width); margin:0 auto; text-align:center; }
+.cta-title { font-size:clamp(20px,3vw,28px); font-weight:700; color:#fff; line-height:1.6; margin-bottom:10px; }
+.cta-sub { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.8; margin-bottom:28px; }
+.btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--gold); color:var(--bg-dark); font-weight:700; font-size:15px; padding:17px 40px; border-radius:var(--radius-sm); transition:opacity var(--transition); }
+.btn-gold:hover { opacity:0.88; }
+
+/* FOOTER */
+.footer { background:var(--bg-dark); border-top:1px solid rgba(192,157,89,0.15); padding:40px 20px 30px; }
+.footer-inner { max-width:var(--max-width); margin:0 auto; }
+.footer-top { display:flex; flex-direction:column; gap:24px; margin-bottom:32px; }
+.footer-logo { display:flex; align-items:center; gap:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:#fff; letter-spacing:0.08em; }
+.footer-tagline { font-size:11px; color:rgba(255,255,255,0.35); margin-top:6px; }
+.footer-nav { display:flex; flex-direction:column; gap:12px; }
+.footer-nav a { font-size:12px; color:rgba(255,255,255,0.5); transition:color var(--transition); }
+.footer-nav a:hover { color:var(--gold); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:20px; display:flex; flex-direction:column; gap:8px; }
+.footer-info { font-size:11px; color:rgba(255,255,255,0.25); line-height:1.7; }
+.footer-copy { font-size:10px; color:rgba(255,255,255,0.2); font-family:'Inter',sans-serif; }
+
+/* RESPONSIVE */
+@media (min-width:768px) {
+  .header-inner { height:68px; }
+  .section { padding:72px 40px; }
+  .plans-wrap { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .plans-wrap .plan-card:first-child { grid-column:span 2; }
+  .footer-top { flex-direction:row; justify-content:space-between; }
+  .footer-nav { flex-direction:row; gap:24px; }
+  .footer-bottom { flex-direction:row; justify-content:space-between; align-items:center; }
+}
+@media (min-width:1200px) {
+  .hamburger { display:none; }
+  .nav-links { display:flex; }
+  .nav-cta { display:inline-block; }
+  .section { padding:88px 40px; }
+  .plans-wrap { grid-template-columns:repeat(4,1fr); }
+  .plans-wrap .plan-card:first-child { grid-column:span 2; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      THE TO YOU
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="service.html" class="active">サービス</a></li>
+        <li><a href="works.html">実績</a></li>
+        <li><a href="about.html">会社概要</a></li>
+        <li><a href="contact.html" class="nav-cta">お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="service.html">サービス</a></li>
+      <li><a href="works.html">実績</a></li>
+      <li><a href="about.html">会社概要</a></li>
+    </ul>
+    <a href="contact.html" class="m-cta">お問い合わせはこちら</a>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-label">Services & Plans</div>
+    <h1 class="page-title">サービス・料金</h1>
+    <p class="page-desc">すべての作業内容・料金は要相談。業種・規模・予算に合わせて柔軟に対応します。</p>
+  </div>
+</div>
+
+<!-- PLANS -->
+<section class="section section-sub">
+  <div class="section-inner">
+    <div class="sec-label">Pricing Plans</div>
+    <h2 class="sec-title">料金プラン</h2>
+    <p class="sec-desc">月額・単発どちらにも対応。まずはお気軽にご相談ください。</p>
+
+    <div class="plans-wrap">
+
+      <!-- PLAN 1: 業務代行 -->
+      <div class="plan-card featured">
+        <div class="plan-head">
+          <div class="plan-badge dark">Most Popular</div>
+          <div class="plan-name">業務代行プラン</div>
+          <div class="plan-price-wrap">
+            <div class="plan-price">¥35,000</div>
+            <div class="plan-price-unit">〜 / 月</div>
+          </div>
+          <div class="plan-tagline">完全依頼型。指示するだけで、AIが業務を代行し納品まで行います。</div>
+        </div>
+        <div class="plan-body">
+          <div class="flow-visual">
+            <div class="flow-step"><div class="flow-step-num">01</div><div class="flow-step-text">依頼・<br>ヒアリング</div></div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-step"><div class="flow-step-num">02</div><div class="flow-step-text">AI処理・<br>作業</div></div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-step"><div class="flow-step-num">03</div><div class="flow-step-text">確認・<br>修正</div></div>
+            <div class="flow-arrow">›</div>
+            <div class="flow-step"><div class="flow-step-num">04</div><div class="flow-step-text">納品</div></div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>資料・マニュアル作成</strong><span>業務マニュアル、ツール操作手順書、提案資料など</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>SNS・メール文章作成</strong><span>投稿文、メルマガ、返信テンプレートなど</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>データ整理・リスト作成</strong><span>顧客リスト整備、情報収集・まとめなど</span></div>
+            </div>
+          </div>
+          <div class="plan-note">※作業内容・ボリュームによって料金が変動します。まずはご相談ください。</div>
+          <a href="contact.html" class="plan-cta">このプランで相談する →</a>
+        </div>
+      </div>
+
+      <!-- PLAN 2: 分析含む提案代行 -->
+      <div class="plan-card">
+        <div class="plan-head">
+          <div class="plan-badge">Analysis + Consulting</div>
+          <div class="plan-name">分析含む<br>提案代行プラン</div>
+          <div class="plan-price-wrap">
+            <div class="plan-price">¥50,000</div>
+            <div class="plan-price-unit">〜 / 月</div>
+          </div>
+          <div class="plan-tagline">データ分析・競合調査をもとに改善提案まで一貫対応。</div>
+        </div>
+        <div class="plan-body">
+          <div class="analysis-visual">
+            <div class="analysis-visual-title">Analysis Sample</div>
+            <div class="analysis-bars">
+              <div class="abar-row">
+                <div class="abar-label">SNSエンゲージ</div>
+                <div class="abar-track"><div class="abar-fill" style="width:78%"></div></div>
+                <div class="abar-val">+78%</div>
+              </div>
+              <div class="abar-row">
+                <div class="abar-label">サイト流入</div>
+                <div class="abar-track"><div class="abar-fill" style="width:62%"></div></div>
+                <div class="abar-val">+62%</div>
+              </div>
+              <div class="abar-row">
+                <div class="abar-label">CV改善率</div>
+                <div class="abar-track"><div class="abar-fill" style="width:45%"></div></div>
+                <div class="abar-val">+45%</div>
+              </div>
+            </div>
+            <div class="analysis-metrics">
+              <div class="ametric"><div class="ametric-num">競合</div><div class="ametric-label">調査・比較</div></div>
+              <div class="ametric"><div class="ametric-num">課題</div><div class="ametric-label">抽出・整理</div></div>
+              <div class="ametric"><div class="ametric-num">改善</div><div class="ametric-label">提案・実行</div></div>
+            </div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>SNS・サイト分析レポート</strong><span>現状数値の可視化と改善ポイントの抽出</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>競合調査・市場分析</strong><span>競合他社の動向と差別化戦略の提案</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>改善提案＋実行代行</strong><span>提案だけでなく実際の作業まで一貫対応</span></div>
+            </div>
+          </div>
+          <div class="plan-note">※コンサルティング込みのプランです。作業内容によって料金が変動します。</div>
+          <a href="contact.html" class="plan-cta">このプランで相談する →</a>
+        </div>
+      </div>
+
+      <!-- PLAN 3: 単発 -->
+      <div class="plan-card">
+        <div class="plan-head">
+          <div class="plan-badge">One-time</div>
+          <div class="plan-name">単発代行</div>
+          <div class="plan-price-wrap">
+            <div class="plan-price">¥15,000</div>
+            <div class="plan-price-unit">〜 / 件</div>
+          </div>
+          <div class="plan-tagline">月契約不要。1回だけ頼みたい作業に対応。</div>
+        </div>
+        <div class="plan-body">
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>スポット対応OK</strong><span>単発の資料作成・調査・文章作成など</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>最低価格¥15,000〜</strong><span>作業内容・ボリュームによって都度お見積り</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>まず試したい方に最適</strong><span>継続契約前のお試しとしても活用できます</span></div>
+            </div>
+          </div>
+          <div class="plan-note">※作業内容によって料金が変動します。まずはご相談ください。</div>
+          <a href="contact.html" class="plan-cta">このプランで相談する →</a>
+        </div>
+      </div>
+
+      <!-- PLAN 4: GPT納品 -->
+      <div class="plan-card">
+        <div class="plan-head">
+          <div class="plan-badge">AI Tool Delivery</div>
+          <div class="plan-name">GPT納品プラン</div>
+          <div class="plan-price-wrap">
+            <div class="plan-price">¥9,800</div>
+            <div class="plan-price-unit">/ 月</div>
+          </div>
+          <div class="plan-tagline">代行なし。業務特化のカスタムChatGPTを納品します。</div>
+        </div>
+        <div class="plan-body">
+          <div class="gpt-visual">
+            <div class="gpt-chat">
+              <div class="gpt-msg user">
+                <div class="gpt-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C09D59" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="gpt-bubble">新規のお客様への返信文を作って</div>
+              </div>
+              <div class="gpt-msg">
+                <div class="gpt-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg></div>
+                <div class="gpt-bubble">はい！御社のトーンに合わせた返信文を作成しました。</div>
+              </div>
+            </div>
+            <div class="gpt-label">業務に特化したカスタムGPT</div>
+          </div>
+          <div class="plan-features">
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>業務専用GPTをカスタマイズ</strong><span>御社の業種・業務に特化した設定で納品</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>情報漏洩防止対策済み</strong><span>社内情報が学習に使われない設定で提供</span></div>
+            </div>
+            <div class="plan-feature">
+              <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div class="feature-text"><strong>代行なし・ツール提供のみ</strong><span>自社でAIを使いこなしたい方向け</span></div>
+            </div>
+          </div>
+          <div class="plan-note">※ChatGPT利用料（別途）が必要です。</div>
+          <a href="contact.html" class="plan-cta">このプランで相談する →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY SERVICES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="sec-label">Industry Services</div>
+    <h2 class="sec-title">業界別サービス</h2>
+    <p class="sec-desc">業界ごとに特化したAI活用サービスをご提供します。各業界をクリックして詳細をご確認ください。</p>
+
+    <div class="industry-grid" id="industryGrid">
+
+      <!-- 人材業界 -->
+      <div class="industry-item" data-index="0">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div><div class="industry-name">人材業界</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">求人票の作成</div><div class="service-item-desc">企業情報・勤務体系とエリア×業態の相場・競合情報を調査し、AIで訴求力の高い求人票を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">スカウト文章の自動生成</div><div class="service-item-desc">候補者のプロフィールに合わせた個別最適なスカウトメールをAIで大量生成。返信率の向上を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">面接質問リストの作成</div><div class="service-item-desc">職種・ポジションに応じた面接質問リストと評価基準をAIで作成。採用品質の標準化に貢献。</div></div>
+            <div class="service-item"><div class="service-item-title">採用ページのコピーライティング</div><div class="service-item-desc">求職者に響く企業の魅力・社風・成長環境を整理し、採用サイト向けの原稿を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">内定者向け入社前フォローコンテンツ</div><div class="service-item-desc">内定者が安心して入社準備できるよう、FAQ・歓迎メッセージ・業務説明資料をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS採用投稿の代行</div><div class="service-item-desc">Instagram・X・LinkedInなどで採用ブランディングに効果的な投稿を定期作成・代行。</div></div>
+            <div class="service-item"><div class="service-item-title">競合他社の求人分析</div><div class="service-item-desc">競合の求人内容・給与・条件をAIでリサーチし、自社求人の差別化ポイントを抽出・提案。</div></div>
+            <div class="service-item"><div class="service-item-title">オンボーディング資料の作成</div><div class="service-item-desc">新入社員向けの業務手順書・社内ルール・よくある質問集をわかりやすく整備。</div></div>
+            <div class="service-item"><div class="service-item-title">求人媒体別の原稿最適化</div><div class="service-item-desc">Indeed・マイナビ・リクナビなど各媒体の特性に合わせた原稿に書き分けて納品。</div></div>
+            <div class="service-item"><div class="service-item-title">応募者管理シートの作成</div><div class="service-item-desc">選考フェーズ・評価・メモを一元管理できるスプレッドシートテンプレートを作成・整備。</div></div>
+            <div class="service-item"><div class="service-item-title">採用要件定義の整理</div><div class="service-item-desc">現場ヒアリングをもとに、必須スキル・歓迎スキル・カルチャーフィットをAIで言語化・整理。</div></div>
+            <div class="service-item"><div class="service-item-title">人材紹介向け提案書の作成</div><div class="service-item-desc">企業への人材提案に使う候補者紹介資料・マッチング根拠資料をAIで効率作成。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新築・リフォーム業界 -->
+      <div class="industry-item" data-index="1">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div><div class="industry-name">新築・リフォーム業界</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">施工事例ページの文章作成</div><div class="service-item-desc">写真と情報をもとに、施工前後の変化や工夫ポイントを伝える読まれる施工事例文を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">お客様の声テンプレート整備</div><div class="service-item-desc">ヒアリング内容をもとにお客様の声・体験談をわかりやすく編集・整形して納品。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS投稿の定期作成代行</div><div class="service-item-desc">施工写真をもとにInstagram・Facebookへの投稿文・ハッシュタグを定期的に作成・代行。</div></div>
+            <div class="service-item"><div class="service-item-title">見積書・提案書のフォーマット作成</div><div class="service-item-desc">顧客に見やすく伝わる見積書・プラン提案書のテンプレートをAIで整備。</div></div>
+            <div class="service-item"><div class="service-item-title">競合他社のサイト・SNS分析</div><div class="service-item-desc">地域競合の強み・弱みをリサーチし、自社差別化ポイントの整理・提案を実施。</div></div>
+            <div class="service-item"><div class="service-item-title">チラシ・DMのコピー作成</div><div class="service-item-desc">新規集客・キャンペーン告知向けのチラシ・DM原稿をAIで複数パターン作成。</div></div>
+            <div class="service-item"><div class="service-item-title">FAQ・よくある質問集の整備</div><div class="service-item-desc">問い合わせ対応の効率化のため、よく来る質問と回答をまとめたFAQページを作成。</div></div>
+            <div class="service-item"><div class="service-item-title">スタッフ紹介ページの文章作成</div><div class="service-item-desc">職人・営業スタッフの人柄が伝わるプロフィール文を作成し、信頼感の醸成を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">リフォームプラン説明資料の作成</div><div class="service-item-desc">お客様に提案するプランをわかりやすく説明する資料・スライドをAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">MEO対策用テキスト作成</div><div class="service-item-desc">Googleビジネスプロフィールの説明文・投稿文をSEOを意識して作成・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">アフターフォローメールの文章作成</div><div class="service-item-desc">工事後のお礼・メンテナンス案内・季節ごとのフォローメールテンプレートを整備。</div></div>
+            <div class="service-item"><div class="service-item-title">社内作業マニュアルの整備</div><div class="service-item-desc">現場手順・安全管理・クレーム対応などの社内マニュアルをわかりやすく文書化。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 不動産業界 -->
+      <div class="industry-item" data-index="2">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+            </div>
+            <div><div class="industry-name">不動産業界</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">物件紹介文の作成</div><div class="service-item-desc">間取り・設備・立地情報をもとに、購入・賃貸検討者に響く物件紹介文をAIで量産。</div></div>
+            <div class="service-item"><div class="service-item-title">エリア紹介コンテンツの作成</div><div class="service-item-desc">学校・スーパー・交通アクセスなどエリアの魅力を伝えるページ・チラシ原稿を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS集客投稿の定期代行</div><div class="service-item-desc">新着物件・お役立ち情報・地域情報などをInstagram・Xで定期発信。フォロワー獲得を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">問い合わせ返信テンプレートの整備</div><div class="service-item-desc">よくある問い合わせパターンに対応した返信テンプレートを作成し、対応スピードを向上。</div></div>
+            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">会社概要・スタッフ紹介・選ばれる理由などのページ原稿をSEOを意識して作成・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">競合他社のサービス分析</div><div class="service-item-desc">地域競合の特徴・強み・価格帯をリサーチし、自社の差別化戦略策定を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">オーナー向け提案資料の作成</div><div class="service-item-desc">管理委託・売却・賃貸化などオーナーへの提案資料をわかりやすく作成。</div></div>
+            <div class="service-item"><div class="service-item-title">入居者向け案内資料の整備</div><div class="service-item-desc">入居時のルール説明・緊急連絡先・ゴミ出しルールなどの案内書類をわかりやすく整備。</div></div>
+            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleマップ経由の集客を強化するためのビジネスプロフィール文・口コミ返信文を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">成約後のサンクスメール作成</div><div class="service-item-desc">契約成立後のお礼・今後の流れ説明・アフターフォロー案内メールのテンプレートを整備。</div></div>
+            <div class="service-item"><div class="service-item-title">物件動画用スクリプト作成</div><div class="service-item-desc">YouTube・SNS向け物件紹介動画のナレーション原稿・テロップ文をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">社内業務マニュアルの作成</div><div class="service-item-desc">物件案内・契約手続き・クレーム対応などの業務マニュアルをわかりやすく文書化。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EC・店舗販売 -->
+      <div class="industry-item" data-index="3">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div><div class="industry-name">EC・店舗販売</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">商品説明文の作成</div><div class="service-item-desc">商品の特徴・素材・使い方を整理し、購買意欲を高める商品ページ原稿をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS販促投稿の定期代行</div><div class="service-item-desc">新商品・セール・おすすめ商品をInstagram・TikTok・Xで定期的に投稿代行。</div></div>
+            <div class="service-item"><div class="service-item-title">メルマガ・LINE配信文の作成</div><div class="service-item-desc">リピーター育成・セール告知・新商品案内などのメルマガ・LINE原稿を定期作成。</div></div>
+            <div class="service-item"><div class="service-item-title">レビュー・口コミ返信文の作成</div><div class="service-item-desc">Amazonや楽天などのレビューへの返信文をブランドトーンに合わせて作成・代行。</div></div>
+            <div class="service-item"><div class="service-item-title">競合商品・価格調査</div><div class="service-item-desc">競合商品の価格・特徴・レビュー傾向をリサーチし、自社商品の差別化ポイントを整理。</div></div>
+            <div class="service-item"><div class="service-item-title">商品LP（ランディングページ）原稿作成</div><div class="service-item-desc">1商品に特化した購入誘導LPのコピー・構成・原稿をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">カスタマーサポートテンプレート整備</div><div class="service-item-desc">返品・交換・問い合わせなどの対応テンプレートを整備し、サポート品質を均一化。</div></div>
+            <div class="service-item"><div class="service-item-title">ハッシュタグ・SEKワード調査</div><div class="service-item-desc">商品・サービスに合った効果的なハッシュタグ・検索キーワードをリサーチして提供。</div></div>
+            <div class="service-item"><div class="service-item-title">チラシ・POP原稿の作成</div><div class="service-item-desc">店舗での販促に使うチラシ・棚POPの文言をターゲットに合わせて作成。</div></div>
+            <div class="service-item"><div class="service-item-title">商品撮影用指示書の作成</div><div class="service-item-desc">EC掲載・SNS投稿向けの商品撮影アングル・構成・背景の指示書をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">季節・イベント別キャンペーン企画</div><div class="service-item-desc">バレンタイン・夏季セールなど季節イベントに合わせたキャンペーン企画・原稿を提案。</div></div>
+            <div class="service-item"><div class="service-item-title">スタッフ接客マニュアルの整備</div><div class="service-item-desc">接客フロー・よくある質問・クレーム対応などのマニュアルをわかりやすく作成。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 飲食業界 -->
+      <div class="industry-item" data-index="4">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <div><div class="industry-name">飲食業界</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">メニュー説明文の作成</div><div class="service-item-desc">食材・調理法・こだわりを伝えるメニュー説明文をAIで作成。食欲をそそる表現で集客に貢献。</div></div>
+            <div class="service-item"><div class="service-item-title">グルメサイト掲載文の最適化</div><div class="service-item-desc">食べログ・ホットペッパー等の掲載ページを読まれる・選ばれる原稿にリライト・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS投稿の定期代行</div><div class="service-item-desc">料理写真をもとにInstagram・Xの投稿文・ハッシュタグを定期作成。来店促進を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">口コミ返信文の作成</div><div class="service-item-desc">Googleマップ・食べログへの口コミに対する丁寧な返信文をAIで作成・代行。</div></div>
+            <div class="service-item"><div class="service-item-title">新メニュー考案のリサーチ</div><div class="service-item-desc">トレンド・競合メニュー・食材コストをリサーチし、新メニュー開発のアイデアを提案。</div></div>
+            <div class="service-item"><div class="service-item-title">テイクアウト・デリバリー販促文の作成</div><div class="service-item-desc">Uber Eats・出前館などのデリバリーページ・テイクアウトPRの原稿を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">求人・スタッフ募集文の作成</div><div class="service-item-desc">アルバイト・パート採用向けの求人票をターゲット層に響く表現で作成。</div></div>
+            <div class="service-item"><div class="service-item-title">スタッフ研修マニュアルの整備</div><div class="service-item-desc">接客・仕込み・開閉店作業などの業務手順をわかりやすくマニュアル化。新人教育を効率化。</div></div>
+            <div class="service-item"><div class="service-item-title">季節・イベントメニューの告知文作成</div><div class="service-item-desc">クリスマス・夏季限定・母の日などの特別メニュー告知チラシ・SNS原稿を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">食材仕入れ先リサーチ</div><div class="service-item-desc">コスト削減・品質向上のために、食材・業者情報をリサーチして比較表にまとめて提供。</div></div>
+            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleビジネスプロフィールを最適化し、地図検索での上位表示・来店増加を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">ポイントカード・会員向けDM原稿作成</div><div class="service-item-desc">リピーター向けのDM・ニュースレター・クーポン案内文をAIで定期作成。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 保険・FP業界 -->
+      <div class="industry-item" data-index="5">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div><div class="industry-name">保険・FP業界</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">保険提案書・設計書の補足文作成</div><div class="service-item-desc">数字が並ぶ設計書に添える「わかりやすい説明文」をAIで作成。顧客への説明を簡略化。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS集客投稿の作成代行</div><div class="service-item-desc">保険の必要性・お金の知識・FPならではのお役立ち情報をSNSで定期発信。信頼構築を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">ニュースレター・メルマガ原稿の作成</div><div class="service-item-desc">既存顧客向けの定期ニュースレター・メルマガ原稿をAIで作成。関係維持・紹介促進に貢献。</div></div>
+            <div class="service-item"><div class="service-item-title">保険商品比較資料の作成</div><div class="service-item-desc">複数の保険商品を比較した一覧表・説明資料をAIで作成。顧客へのヒアリング・提案を効率化。</div></div>
+            <div class="service-item"><div class="service-item-title">ライフプラン提案書の文章作成</div><div class="service-item-desc">ヒアリング内容をもとにしたライフプラン提案書の文章部分をAIでわかりやすく作成。</div></div>
+            <div class="service-item"><div class="service-item-title">見込み客向けステップメールの作成</div><div class="service-item-desc">初回相談後のフォロー・信頼構築に使うステップメールのシナリオ・文章をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">お客様の声・事例集の整備</div><div class="service-item-desc">実際の相談事例・解決事例をもとに、信頼感を高める事例集・お客様の声ページを作成。</div></div>
+            <div class="service-item"><div class="service-item-title">セミナー資料・スライドの作成</div><div class="service-item-desc">保険・資産運用・老後設計などのセミナーで使う資料・スライドをAIで作成・整備。</div></div>
+            <div class="service-item"><div class="service-item-title">相談後のサンクスメール作成</div><div class="service-item-desc">初回相談・面談後に送るお礼メール・次回アポイントへ繋げるメールテンプレートを整備。</div></div>
+            <div class="service-item"><div class="service-item-title">ホームページ原稿の改善</div><div class="service-item-desc">選ばれる理由・サービス内容・実績などのページ原稿をSEOを意識してリライト・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">FP相談に向けたヒアリングシートの作成</div><div class="service-item-desc">初回面談前に送付するヒアリングシートをわかりやすく設計・作成。面談準備を効率化。</div></div>
+            <div class="service-item"><div class="service-item-title">競合FP・IFA事務所の調査</div><div class="service-item-desc">地域・オンライン競合のサービス・強み・集客方法をリサーチし、差別化戦略を提案。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 学習塾 -->
+      <div class="industry-item" data-index="6">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div><div class="industry-name">学習塾</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">体験授業・入塾案内チラシの作成</div><div class="service-item-desc">保護者・生徒に響く体験授業案内・入塾募集チラシの原稿をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">保護者向け月次通信の作成</div><div class="service-item-desc">月ごとの学習状況・受験情報・塾からのお知らせをまとめた保護者通信をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS集客投稿の定期代行</div><div class="service-item-desc">合格実績・勉強法・受験情報などをInstagram・Xで定期発信。認知・信頼の獲得を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">塾の特徴・指導方針・合格実績などのページ原稿をSEOを意識して作成・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">競合塾のリサーチ・分析</div><div class="service-item-desc">地域競合塾の料金・特徴・口コミを調査し、自塾の差別化ポイント整理・提案を実施。</div></div>
+            <div class="service-item"><div class="service-item-title">問い合わせ返信テンプレートの整備</div><div class="service-item-desc">体験授業申込・料金問い合わせなどへの返信テンプレートをAIで整備。対応を効率化。</div></div>
+            <div class="service-item"><div class="service-item-title">講師向け授業マニュアルの作成</div><div class="service-item-desc">新人講師向けの授業進め方・生徒対応・保護者コミュニケーションマニュアルを整備。</div></div>
+            <div class="service-item"><div class="service-item-title">生徒向け学習計画テンプレートの作成</div><div class="service-item-desc">定期テスト・受験に向けた学習計画表のテンプレートをAIで作成・配布。</div></div>
+            <div class="service-item"><div class="service-item-title">合格実績ページのコンテンツ作成</div><div class="service-item-desc">合格者の声・体験談をもとに、信頼感・実績感が伝わるコンテンツページを作成。</div></div>
+            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleビジネスプロフィールを最適化し、地図検索からの問い合わせ増加を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">夏期・冬期講習の告知原稿作成</div><div class="service-item-desc">季節講習の案内チラシ・メール・SNS投稿文をAIで複数パターン作成。</div></div>
+            <div class="service-item"><div class="service-item-title">入塾面談用ヒアリングシートの作成</div><div class="service-item-desc">保護者・生徒との初回面談前に確認すべき項目をまとめたシートをAIで設計・作成。</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 病院・福祉系 -->
+      <div class="industry-item" data-index="7">
+        <div class="industry-header">
+          <div class="industry-header-left">
+            <div class="industry-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <div><div class="industry-name">病院・福祉系</div><div class="industry-count">12のサービス</div></div>
+          </div>
+          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="industry-body">
+          <div class="industry-services">
+            <div class="industry-divider"></div>
+            <div class="service-item"><div class="service-item-title">院内掲示・案内文の作成</div><div class="service-item-desc">待合室・診察室・受付に掲示する案内文・お知らせをわかりやすくAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">患者向け説明資料の作成</div><div class="service-item-desc">治療内容・注意事項・リハビリ方法などを患者がわかりやすく理解できる資料に整備。</div></div>
+            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">診療科目・アクセス・スタッフ紹介などのページ原稿をSEOを意識して作成・改善。</div></div>
+            <div class="service-item"><div class="service-item-title">求人票・スタッフ募集文の作成</div><div class="service-item-desc">看護師・介護士・事務スタッフなど職種別の求人票を応募されやすい表現で作成。</div></div>
+            <div class="service-item"><div class="service-item-title">SNS発信コンテンツの作成代行</div><div class="service-item-desc">健康情報・季節の病気・医院の取り組みなどをSNSで定期発信。地域への認知拡大を支援。</div></div>
+            <div class="service-item"><div class="service-item-title">スタッフ研修マニュアルの整備</div><div class="service-item-desc">受付対応・感染対策・緊急時対応などの業務マニュアルをわかりやすく文書化。</div></div>
+            <div class="service-item"><div class="service-item-title">介護サービス説明資料の作成</div><div class="service-item-desc">ご利用者・ご家族向けにサービス内容・料金・スケジュールをわかりやすく整理した資料を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">地域連携先向け紹介資料の作成</div><div class="service-item-desc">医療機関・ケアマネ・地域包括支援センター向けの自施設紹介資料をAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleマップからの新患獲得を強化するビジネスプロフィール文・口コミ返信文を作成。</div></div>
+            <div class="service-item"><div class="service-item-title">定期通信・院内ニュースの作成</div><div class="service-item-desc">患者・利用者向けの季節ごとの健康情報・行事案内などのニュースレターをAIで作成。</div></div>
+            <div class="service-item"><div class="service-item-title">クレーム・苦情対応マニュアルの整備</div><div class="service-item-desc">患者・家族からのクレームへの適切な対応手順・言葉遣いをマニュアル化。</div></div>
+            <div class="service-item"><div class="service-item-title">福祉施設向け行事企画書の作成</div><div class="service-item-desc">季節の行事・レクリエーション・家族参加イベントの企画書をAIで作成・提案。</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <div class="cta-inner">
+    <div class="cta-title">まずはお気軽に<br>ご相談ください</div>
+    <p class="cta-sub">内容・予算・作業量、すべて相談ベースで対応します。</p>
+    <a href="contact.html" class="btn-gold">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      お問い合わせはこちら
+    </a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+          THE TO YOU
+        </div>
+        <div class="footer-tagline">AI Agent & Business Support Specialist</div>
+      </div>
+      <nav class="footer-nav">
+        <a href="service.html">サービス</a>
+        <a href="works.html">実績</a>
+        <a href="about.html">会社概要</a>
+        <a href="contact.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-info">〒811-2416 福岡県糟屋郡篠栗町田中2丁目5番23-202号　代表：村中 光希</div>
+      <div class="footer-copy">© 2025 THE TO YOU All Rights Reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ハンバーガー
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// アコーディオン
+document.querySelectorAll('.industry-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.closest('.industry-item');
+    const isOpen = item.classList.contains('open');
+    // 全部閉じる
+    document.querySelectorAll('.industry-item').forEach(i => i.classList.remove('open'));
+    // クリックしたものが閉じていたら開く
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
