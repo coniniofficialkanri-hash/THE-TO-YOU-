@@ -563,6 +563,33 @@ img { max-width: 100%; display: block; }
 .gpt-msg.user .gpt-bubble { background: rgba(192,157,89,0.2); color: #fff; }
 .gpt-label { font-size: 9.5px; color: rgba(255,255,255,0.25); text-align: center; margin-top: 4px; }
 
+/* PLAN VISUALS — アコーディオン内の図解エリア（グレーとネイビーの中間色） */
+.plan-body-inner .flow-visual {
+  background: #1E3550;
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+}
+.plan-body-inner .flow-step {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.12);
+}
+.plan-body-inner .flow-step-text { color: rgba(255,255,255,0.88); }
+.plan-body-inner .flow-step-num { color: var(--gold); }
+.plan-body-inner .flow-arrow { color: var(--gold); }
+
+.plan-body-inner .analysis-visual {
+  background: #1E3550;
+  border-color: rgba(255,255,255,0.08);
+}
+.plan-body-inner .analysis-visual-title { color: rgba(255,255,255,0.35); }
+.plan-body-inner .abar-label { color: rgba(255,255,255,0.55); }
+.plan-body-inner .abar-track { background: rgba(255,255,255,0.1); }
+.plan-body-inner .ametric { background: rgba(255,255,255,0.07); }
+.plan-body-inner .ametric-num { color: #fff; }
+.plan-body-inner .ametric-label { color: rgba(255,255,255,0.38); }
+
+.plan-body-inner .gpt-visual { background: #1E3550; }
+
 /* PLAN NOTE & CTA */
 .plan-note {
   background: rgba(7,23,46,0.02);
