@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会社概要 | THE TO YOU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #DDE3EE;
+  --bg-sub: #ffffff;
+  --bg-dark: #07172E;
+  --gold: #C09D59;
+  --gold-light: rgba(192,157,89,0.12);
+  --text: #07172E;
+  --text-muted: rgba(7,23,46,0.55);
+  --text-light: rgba(7,23,46,0.35);
+  --border: rgba(7,23,46,0.1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+  --transition: 0.2s ease;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Noto Sans JP',sans-serif; background:var(--bg-main); color:var(--text); line-height:1.7; -webkit-font-smoothing:antialiased; }
+a { text-decoration:none; color:inherit; }
+
+/* HEADER */
+.header { background:var(--bg-dark); position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(192,157,89,0.15); }
+.header-inner { max-width:var(--max-width); margin:0 auto; padding:0 20px; height:60px; display:flex; align-items:center; justify-content:space-between; }
+.logo { display:flex; align-items:center; gap:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:#fff; letter-spacing:0.08em; }
+.logo-mark { display:flex; flex-direction:column; gap:3px; width:28px; }
+.logo-mark span { display:block; height:2px; background:var(--gold); border-radius:1px; }
+.logo-mark span:nth-child(4) { width:55%; }
+.nav-links { display:none; align-items:center; gap:32px; list-style:none; }
+.nav-links a { font-size:13px; color:rgba(255,255,255,0.65); letter-spacing:0.04em; transition:color var(--transition); position:relative; }
+.nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width var(--transition); }
+.nav-links a:hover { color:#fff; }
+.nav-links a:hover::after { width:100%; }
+.nav-links a.active { color:#fff; }
+.nav-links a.active::after { width:100%; }
+.nav-cta { display:none; background:var(--gold); color:var(--bg-dark) !important; font-weight:700 !important; font-size:12px !important; padding:8px 18px; border-radius:var(--radius-sm); }
+.hamburger { display:flex; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+.hamburger span { display:block; width:22px; height:1.5px; background:var(--gold); border-radius:2px; transition:all 0.25s ease; }
+.hamburger span:last-child { width:14px; }
+.hamburger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); width:22px; }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); width:22px; }
+.mobile-menu { display:none; background:var(--bg-dark); border-top:1px solid rgba(192,157,89,0.15); padding:20px; }
+.mobile-menu.open { display:block; }
+.mobile-menu ul { list-style:none; }
+.mobile-menu a { display:block; padding:14px 0; font-size:14px; color:rgba(255,255,255,0.7); border-bottom:1px solid rgba(255,255,255,0.06); }
+.mobile-menu .m-cta { display:block; margin-top:16px; background:var(--gold); color:var(--bg-dark); font-weight:700; font-size:14px; padding:14px; border-radius:var(--radius-sm); text-align:center; }
+
+/* PAGE HEADER */
+.page-header { background:var(--bg-dark); padding:48px 20px 44px; position:relative; overflow:hidden; }
+.page-header::after { content:''; position:absolute; bottom:-60px; right:-60px; width:240px; height:240px; background:radial-gradient(circle, rgba(192,157,89,0.1) 0%, transparent 65%); pointer-events:none; }
+.page-header-inner { max-width:var(--max-width); margin:0 auto; position:relative; }
+.page-label { font-family:'Inter',sans-serif; font-size:9.5px; letter-spacing:0.2em; color:var(--gold); margin-bottom:8px; text-transform:uppercase; font-weight:600; }
+.page-title { font-size:clamp(26px,4vw,40px); font-weight:700; color:#fff; line-height:1.4; margin-bottom:10px; }
+.page-desc { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.8; }
+
+/* SECTION */
+.section { padding:60px 20px; }
+.section-sub { background:var(--bg-sub); }
+.section-inner { max-width:var(--max-width); margin:0 auto; }
+.sec-label { font-family:'Inter',sans-serif; font-size:9.5px; letter-spacing:0.2em; color:var(--gold); margin-bottom:6px; text-transform:uppercase; font-weight:600; }
+.sec-title { font-size:clamp(20px,3vw,28px); font-weight:700; color:var(--text); line-height:1.45; margin-bottom:32px; }
+
+/* PROFILE CARD */
+.profile-card {
+  background:var(--bg-sub);
+  border-radius:var(--radius-lg);
+  border:1px solid var(--border);
+  overflow:hidden;
+  margin-bottom:32px;
+}
+.profile-top {
+  background:var(--bg-dark);
+  padding:32px 28px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.profile-avatar {
+  width:80px; height:80px;
+  border-radius:50%;
+  background:var(--bg-main);
+  border:2px solid var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.profile-name-block {}
+.profile-name-ja { font-size:clamp(22px,4vw,30px); font-weight:700; color:#fff; letter-spacing:0.08em; line-height:1.2; margin-bottom:4px; }
+.profile-name-en { font-family:'Inter',sans-serif; font-size:11px; color:rgba(255,255,255,0.3); letter-spacing:0.14em; }
+
+.profile-body { padding:28px; }
+.profile-message {
+  font-size:13.5px;
+  color:var(--text-muted);
+  line-height:1.9;
+  margin-bottom:24px;
+  border-left:3px solid var(--gold);
+  padding-left:16px;
+}
+.profile-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:28px; }
+.tag { background:var(--bg-main); border:1px solid var(--border); color:var(--text); font-size:11px; padding:5px 12px; border-radius:100px; font-weight:500; }
+
+/* CONTACT INFO */
+.contact-list { display:flex; flex-direction:column; gap:12px; }
+.contact-row { display:flex; align-items:center; gap:12px; }
+.contact-icon { width:36px; height:36px; background:var(--bg-main); border:1px solid var(--border); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.contact-text { font-size:12.5px; color:var(--text-muted); line-height:1.5; }
+.contact-text strong { display:block; font-size:10px; color:var(--text-light); font-weight:500; margin-bottom:1px; letter-spacing:0.06em; }
+
+/* MISSION */
+.mission-wrap { display:flex; flex-direction:column; gap:20px; }
+.mission-main {
+  background:var(--bg-dark);
+  border-radius:var(--radius-lg);
+  padding:36px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.mission-main::after { content:''; position:absolute; top:-40px; right:-40px; width:180px; height:180px; background:radial-gradient(circle, rgba(192,157,89,0.1) 0%, transparent 65%); pointer-events:none; }
+.mission-quote { font-size:clamp(18px,3vw,24px); font-weight:700; color:#fff; line-height:1.7; margin-bottom:16px; position:relative; }
+.mission-quote::before { content:'"'; font-family:'Inter',sans-serif; font-size:60px; color:rgba(192,157,89,0.2); position:absolute; top:-20px; left:-8px; line-height:1; }
+.mission-body { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.85; position:relative; }
+
+.values-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+.value-card { background:var(--bg-sub); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px 22px; display:flex; gap:16px; align-items:flex-start; }
+.value-icon { width:40px; height:40px; border-radius:10px; background:var(--bg-main); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.value-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.value-desc { font-size:12.5px; color:var(--text-muted); line-height:1.7; }
+
+/* COMPANY INFO TABLE */
+.info-table { width:100%; border-collapse:collapse; }
+.info-table tr { border-bottom:1px solid var(--border); }
+.info-table tr:last-child { border-bottom:none; }
+.info-table th { font-size:12px; font-weight:500; color:var(--text-light); padding:16px 0; width:120px; vertical-align:top; letter-spacing:0.04em; }
+.info-table td { font-size:13px; color:var(--text); padding:16px 0 16px 16px; line-height:1.7; }
+
+/* CTA BANNER */
+.cta-banner { background:var(--bg-dark); padding:60px 20px; }
+.cta-inner { max-width:var(--max-width); margin:0 auto; text-align:center; }
+.cta-title { font-size:clamp(20px,3vw,28px); font-weight:700; color:#fff; line-height:1.6; margin-bottom:10px; }
+.cta-sub { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.8; margin-bottom:28px; }
+.btn-gold { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--gold); color:var(--bg-dark); font-weight:700; font-size:15px; padding:17px 40px; border-radius:var(--radius-sm); transition:opacity var(--transition); }
+.btn-gold:hover { opacity:0.88; }
+
+/* FOOTER */
+.footer { background:var(--bg-dark); border-top:1px solid rgba(192,157,89,0.15); padding:40px 20px 30px; }
+.footer-inner { max-width:var(--max-width); margin:0 auto; }
+.footer-top { display:flex; flex-direction:column; gap:24px; margin-bottom:32px; }
+.footer-logo { display:flex; align-items:center; gap:10px; font-family:'Inter',sans-serif; font-weight:700; font-size:15px; color:#fff; letter-spacing:0.08em; }
+.footer-tagline { font-size:11px; color:rgba(255,255,255,0.35); margin-top:6px; }
+.footer-nav { display:flex; flex-direction:column; gap:12px; }
+.footer-nav a { font-size:12px; color:rgba(255,255,255,0.5); transition:color var(--transition); }
+.footer-nav a:hover { color:var(--gold); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.06); padding-top:20px; display:flex; flex-direction:column; gap:8px; }
+.footer-info { font-size:11px; color:rgba(255,255,255,0.25); line-height:1.7; }
+.footer-copy { font-size:10px; color:rgba(255,255,255,0.2); font-family:'Inter',sans-serif; }
+
+/* RESPONSIVE */
+@media (min-width:768px) {
+  .header-inner { height:68px; }
+  .profile-top { flex-direction:row; align-items:center; gap:28px; }
+  .values-grid { grid-template-columns:repeat(3,1fr); }
+  .section { padding:72px 40px; }
+  .footer-top { flex-direction:row; justify-content:space-between; }
+  .footer-nav { flex-direction:row; gap:24px; }
+  .footer-bottom { flex-direction:row; justify-content:space-between; align-items:center; }
+}
+@media (min-width:1200px) {
+  .hamburger { display:none; }
+  .nav-links { display:flex; }
+  .nav-cta { display:inline-block; }
+  .section { padding:88px 40px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+      THE TO YOU
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="service.html">サービス</a></li>
+        <li><a href="about.html" class="active">会社概要</a></li>
+        <li><a href="contact.html" class="nav-cta">お問い合わせ</a></li>
+      </ul>
+    </nav>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="service.html">サービス</a></li>
+      <li><a href="about.html">会社概要</a></li>
+    </ul>
+    <a href="contact.html" class="m-cta">お問い合わせはこちら</a>
+  </div>
+</header>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-label">About</div>
+    <h1 class="page-title">会社概要</h1>
+    <p class="page-desc">AIと人の力で、中小企業の経営者を支える。</p>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<section class="section section-sub">
+  <div class="section-inner">
+    <div class="sec-label">Representative</div>
+    <h2 class="sec-title">代表プロフィール</h2>
+
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="profile-avatar">
+          <svg width="44" height="52" viewBox="0 0 44 52" fill="none">
+            <circle cx="22" cy="14" r="11" fill="#07172E" stroke="#C09D59" stroke-width="1.5"/>
+            <circle cx="17" cy="13" r="2" fill="#C09D59"/>
+            <circle cx="27" cy="13" r="2" fill="#C09D59"/>
+            <path d="M17 18 Q22 21 27 18" stroke="#C09D59" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            <rect x="8" y="28" width="28" height="20" rx="7" fill="#07172E" stroke="#C09D59" stroke-width="1.5"/>
+            <rect x="18" y="24" width="8" height="6" rx="2" fill="#07172E"/>
+          </svg>
+        </div>
+        <div class="profile-name-block">
+          <div class="profile-name-ja">村中　光希</div>
+          <div class="profile-name-en">KOKI MURANAKA</div>
+        </div>
+      </div>
+      <div class="profile-body">
+        <p class="profile-message">
+          「経営者が本業に集中できる環境をつくる」をミッションに、AIを活用した業務代行サービスを提供しています。煩雑な雑用業務をAIの力で効率化・自動化し、中小企業の経営者が時間とエネルギーを本来の仕事に向けられるよう支援します。
+        </p>
+        <div class="profile-tags">
+          <span class="tag">AI業務代行</span>
+          <span class="tag">ブランディング</span>
+          <span class="tag">SNS運用</span>
+          <span class="tag">マニュアル制作</span>
+          <span class="tag">ECサイト構築</span>
+          <span class="tag">動画編集</span>
+          <span class="tag">人材紹介</span>
+        </div>
+        <div class="contact-list">
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="contact-text"><strong>所在地</strong>福岡</div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="contact-text"><strong>電話番号</strong>080-1700-4977</div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="contact-text"><strong>メールアドレス</strong>thetoyou.ai@gmail.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="section">
+  <div class="section-inner">
+    <div class="sec-label">Mission & Values</div>
+    <h2 class="sec-title">ミッション・バリュー</h2>
+    <div class="mission-wrap">
+      <div class="mission-main">
+        <div class="mission-quote">「雑用」をなくして、<br>経営者の時間を取り戻す。</div>
+        <p class="mission-body">AIを活用した業務代行で、煩雑な作業から解放し、あなたが本当にやるべきことだけに集中できる環境を提供します。小さな会社でも、大きな会社に負けない生産性を実現することが私たちのゴールです。</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div>
+            <div class="value-title">AI活用の最大化</div>
+            <div class="value-desc">最新AIツールを常にキャッチアップし、クライアントの業務に最適な形で活用します。</div>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="value-title">相談しやすい距離感</div>
+            <div class="value-desc">気軽に相談できる関係を大切に。内容・予算・スケジュールは全て柔軟に対応します。</div>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.8" stroke-linecap="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="value-title">納品品質へのこだわり</div>
+            <div class="value-desc">AIに任せきりにせず、人の目で品質を確認。クライアントが使えるものを確実に届けます。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY INFO -->
+<section class="section section-sub">
+  <div class="section-inner">
+    <div class="sec-label">Company Info</div>
+    <h2 class="sec-title">基本情報</h2>
+    <table class="info-table">
+      <tr>
+        <th>屋号</th>
+        <td>THE TO YOU（ザツヨウ）</td>
+      </tr>
+      <tr>
+        <th>代表</th>
+        <td>村中 光希</td>
+      </tr>
+      <tr>
+        <th>事業形態</th>
+        <td>個人事業主</td>
+      </tr>
+      <tr>
+        <th>所在地</th>
+        <td>福岡</td>
+      </tr>
+      <tr>
+        <th>電話番号</th>
+        <td>080-1700-4977</td>
+      </tr>
+      <tr>
+        <th>メール</th>
+        <td>thetoyou.ai@gmail.com</td>
+      </tr>
+      <tr>
+        <th>主な事業</th>
+        <td>AI活用業務代行・ブランディング構築・SNS運用代行・マニュアル制作・ECサイト構築・HP修正・動画編集・人材紹介</td>
+      </tr>
+      <tr>
+        <th>対応エリア</th>
+        <td>全国（オンライン対応）</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <div class="cta-inner">
+    <div class="cta-title">まずはお気軽に<br>ご相談ください</div>
+    <p class="cta-sub">内容・予算・作業量、すべて相談ベースで対応します。</p>
+    <a href="contact.html" class="btn-gold">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      お問い合わせはこちら
+    </a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark"><span></span><span></span><span></span><span></span></div>
+          THE TO YOU
+        </div>
+        <div class="footer-tagline">AI Agent & Business Support Specialist</div>
+      </div>
+      <nav class="footer-nav">
+        <a href="service.html">サービス</a>
+        <a href="about.html">会社概要</a>
+        <a href="contact.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-info">福岡　代表：村中 光希</div>
+      <div class="footer-copy">© 2025 THE TO YOU All Rights Reserved.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
