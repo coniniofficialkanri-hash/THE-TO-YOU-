@@ -2,131 +2,58 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GAOO+ 管理アプリ MVP — ラフ v3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GAOO+ 管理システム</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #FF4E8B;
-    --brand-sub:  #FF8CB4;
-    --brand-glow: rgba(255,78,139,0.15);
-    --gold:       #FFD166;
-    --dark:       #0A0A0F;
-    --dark2:      #111118;
-    --dark3:      #18181F;
-    --dark4:      #1E1E28;
-    --surface:    #1A1A24;
-    --surface2:   #20202C;
-    --border:     rgba(255,255,255,0.07);
-    --border2:    rgba(255,255,255,0.12);
-    --text:       #FFFFFF;
-    --text2:      rgba(255,255,255,0.55);
-    --text3:      rgba(255,255,255,0.3);
-    --green:      #00E5A0;
-    --green-bg:   rgba(0,229,160,0.1);
-    --yellow:     #FFD166;
-    --yellow-bg:  rgba(255,209,102,0.1);
-    --red:        #FF4E4E;
-    --red-bg:     rgba(255,78,78,0.1);
+    --brand: #FF4E8B;
+    --brand-sub: #FF8CB4;
+    --brand-glow: rgba(255,78,139,0.12);
+    --gold: #FFD166;
+    --dark: #0A0A0F;
+    --dark2: #111118;
+    --dark3: #18181F;
+    --surface: #1A1A24;
+    --surface2: #20202C;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #FFFFFF;
+    --text2: rgba(255,255,255,0.55);
+    --text3: rgba(255,255,255,0.3);
+    --green: #00E5A0;
+    --green-bg: rgba(0,229,160,0.1);
+    --yellow: #FFD166;
+    --yellow-bg: rgba(255,209,102,0.1);
+    --red: #FF4E4E;
+    --red-bg: rgba(255,78,78,0.1);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    background: #060609;
-    font-family: 'Noto Sans JP', sans-serif;
-    padding: 48px 24px 72px;
-  }
-
-  .page-label {
-    text-align: center;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--brand);
-    letter-spacing: 0.15em;
-    margin-bottom: 8px;
-  }
-  .page-title {
-    text-align: center;
-    font-size: 24px;
-    font-weight: 900;
-    color: white;
-    letter-spacing: -0.03em;
-    margin-bottom: 4px;
-  }
-  .page-title span { color: var(--brand); }
-  .page-sub {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text3);
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 56px;
-  }
-
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    justify-content: center;
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-
-  .screen-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-  }
-  .screen-label {
-    color: var(--text3);
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    text-align: center;
-  }
-  .screen-label strong {
-    display: block;
-    color: var(--text2);
-    font-size: 12px;
-    margin-bottom: 2px;
-  }
-
-  /* PHONE */
-  .phone {
-    width: 375px;
-    min-height: 812px;
     background: var(--dark);
-    border-radius: 48px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow:
-      0 0 0 10px #0f0f14,
-      0 0 0 12px #1a1a22,
-      0 60px 120px rgba(0,0,0,0.8),
-      0 0 80px rgba(255,78,139,0.06);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    padding-bottom: 80px;
   }
 
-  .status-bar {
-    background: var(--dark2);
-    padding: 14px 24px 8px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text2);
-    flex-shrink: 0;
-  }
-  .status-bar .icons { display: flex; gap: 5px; font-size: 11px; }
-
-  .app-header {
-    background: var(--dark2);
-    padding: 10px 20px 14px;
+  /* HEADER */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
   }
   .logo {
     font-size: 20px;
@@ -137,14 +64,17 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .header-sub { font-size: 10px; color: var(--text3); margin-top: 1px; font-family: 'DM Mono', monospace; }
   .header-right { display: flex; align-items: center; gap: 10px; }
-  .icon-btn {
+  .notif-btn {
     width: 36px; height: 36px;
     background: var(--surface2);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 16px;
     position: relative;
+    cursor: pointer;
+    border: 1px solid var(--border);
   }
   .notif-dot {
     position: absolute; top: 5px; right: 5px;
@@ -159,45 +89,72 @@
     background: linear-gradient(135deg, var(--brand), var(--gold));
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 900; color: white;
+    cursor: pointer;
   }
 
-  .screen-body {
-    flex: 1;
-    padding: 14px 16px;
+  /* MAIN */
+  .main { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* TOP BAR */
+  .top-bar {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .date-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+  .alert-badge {
+    background: var(--red-bg);
+    border: 1px solid rgba(255,78,78,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--red);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .alert-badge:hover { background: rgba(255,78,78,0.18); }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .kpi-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 6px;
+    text-align: center;
+    position: relative;
     overflow: hidden;
   }
-
-  .bottom-nav {
-    background: var(--dark2);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding: 10px 0 22px;
-    flex-shrink: 0;
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--brand);
+    opacity: 0.4;
   }
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    font-size: 10px;
-    color: var(--text3);
-    font-weight: 600;
+  .kpi-card.danger::after { background: var(--red); opacity: 0.7; }
+  .kpi-card.good::after { background: var(--green); opacity: 0.7; }
+  .kpi-card.warn::after { background: var(--yellow); opacity: 0.7; }
+  .kpi-num {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: -0.04em;
+    line-height: 1;
   }
-  .nav-item.active { color: var(--brand); }
-  .nav-icon { font-size: 20px; }
+  .kpi-card.danger .kpi-num { color: var(--red); }
+  .kpi-card.good .kpi-num { color: var(--green); }
+  .kpi-card.warn .kpi-num { color: var(--yellow); }
+  .kpi-label { font-size: 10px; color: var(--text2); margin-top: 4px; font-weight: 600; }
 
-  /* COMPONENTS */
-  .card {
-    background: var(--surface);
-    border-radius: 14px;
-    padding: 14px;
-    border: 1px solid var(--border);
-  }
-
+  /* SECTION TITLE */
   .sec-title {
     font-size: 11px;
     font-weight: 700;
@@ -209,57 +166,86 @@
     justify-content: space-between;
     align-items: center;
   }
-  .sec-title a { color: var(--brand); font-size: 11px; text-transform: none; letter-spacing: 0; }
-
-  /* STATUS BADGES */
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+  .sec-title a {
+    color: var(--brand);
     font-size: 11px;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 20px;
+    text-transform: none;
+    letter-spacing: 0;
+    text-decoration: none;
+    font-weight: 600;
   }
-  .status-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
-  .status-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(255,209,102,0.2); }
-  .status-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.2); }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
-  /* ALERT CARDS */
-  .alert {
+  /* PRIORITY LIST */
+  .priority-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 11px 13px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
   }
-  .alert-red { background: var(--red-bg); border: 1px solid rgba(255,78,78,0.2); }
-  .alert-yellow { background: var(--yellow-bg); border: 1px solid rgba(255,209,102,0.2); }
-  .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-  .alert-body { flex: 1; }
-  .alert-title { font-size: 12px; font-weight: 700; color: var(--text); }
-  .alert-sub { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.5; }
+  .priority-item:hover { border-color: rgba(255,78,139,0.3); background: rgba(255,78,139,0.04); }
+  .priority-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 900;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+  .p1 { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.3); }
+  .p2 { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.3); }
+  .p3 { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(255,209,102,0.3); }
+  .priority-info { flex: 1; min-width: 0; }
+  .priority-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .priority-reason { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .priority-action {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--brand);
+    border: 1px solid rgba(255,78,139,0.3);
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: var(--brand-glow);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 
-  /* MANAGER LIST ITEM */
+  /* MANAGER LIST */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
   .mgr-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 0;
+    padding: 11px 14px;
     border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
   }
   .mgr-item:last-child { border-bottom: none; }
+  .mgr-item:hover { background: rgba(255,255,255,0.03); }
   .mgr-rank {
-    width: 22px;
+    width: 20px;
     font-size: 12px;
     font-weight: 900;
     color: var(--text3);
     font-family: 'DM Mono', monospace;
-    flex-shrink: 0;
     text-align: center;
+    flex-shrink: 0;
   }
-  .mgr-rank.top { color: var(--red); }
+  .mgr-rank.danger { color: var(--red); }
+  .mgr-rank.warn { color: var(--yellow); }
   .mgr-avatar {
     width: 38px; height: 38px;
     border-radius: 50%;
@@ -271,611 +257,218 @@
   .mgr-name { font-size: 13px; font-weight: 700; color: var(--text); }
   .mgr-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
   .mgr-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .mgr-income { font-size: 12px; font-weight: 700; color: var(--gold); font-family: 'DM Mono', monospace; }
-
-  /* KPI ROW */
-  .kpi-row { display: flex; gap: 8px; }
-  .kpi-card {
-    flex: 1;
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 11px 8px;
-    text-align: center;
-    border: 1px solid var(--border);
+  .status {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 20px;
   }
-  .kpi-num {
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: -0.04em;
-    line-height: 1;
-  }
-  .kpi-label { font-size: 10px; color: var(--text2); margin-top: 3px; font-weight: 600; }
-  .kpi-card.danger .kpi-num { color: var(--red); }
-  .kpi-card.warn .kpi-num { color: var(--yellow); }
-  .kpi-card.good .kpi-num { color: var(--green); }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .s-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.2); }
+  .s-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(255,209,102,0.2); }
+  .s-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
+  .mgr-income { font-size: 11px; font-weight: 700; color: var(--gold); font-family: 'DM Mono', monospace; }
 
-  /* PRIORITY BAR */
-  .priority-bar {
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: rgba(17,17,24,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
     display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 10px 13px;
-    border: 1px solid var(--border);
+    padding: 10px 0 24px;
+    z-index: 100;
   }
-  .priority-num {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 900;
-    flex-shrink: 0;
-    font-family: 'DM Mono', monospace;
-  }
-  .p1 { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.3); }
-  .p2 { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(255,209,102,0.3); }
-  .p3 { background: var(--surface); color: var(--text2); border: 1px solid var(--border2); }
-  .priority-info { flex: 1; }
-  .priority-title { font-size: 13px; font-weight: 700; color: var(--text); }
-  .priority-reason { font-size: 11px; color: var(--text2); margin-top: 2px; }
-  .priority-action {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--brand);
-    border: 1px solid rgba(255,78,139,0.3);
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: var(--brand-glow);
-    white-space: nowrap;
-  }
-
-  /* PROGRESS */
-  .progress-wrap {
-    background: var(--surface2);
-    border-radius: 10px;
-    height: 5px;
-    overflow: hidden;
-    margin-top: 5px;
-  }
-  .progress-bar {
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, var(--brand), var(--gold));
-  }
-
-  /* LOGIN */
-  .login-bg {
+  .nav-item {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: var(--dark);
-  }
-  .login-hero {
-    padding: 60px 28px 44px;
-    background: linear-gradient(160deg, #1f0018 0%, var(--dark) 65%);
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .login-hero::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 240px; height: 240px;
-    background: radial-gradient(circle, rgba(255,78,139,0.18) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .login-logo {
-    font-size: 40px;
-    font-weight: 900;
-    letter-spacing: -0.05em;
-    background: linear-gradient(135deg, var(--brand), var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 6px;
-  }
-  .login-tagline { font-size: 13px; color: var(--text2); line-height: 1.6; }
-  .login-body { flex: 1; padding: 36px 24px; display: flex; flex-direction: column; gap: 16px; }
-  .login-title { font-size: 22px; font-weight: 900; color: var(--text); letter-spacing: -0.03em; }
-  .login-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-top: 4px; }
-  .google-btn {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 16px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 8px;
-  }
-  .g-icon {
-    width: 24px; height: 24px;
-    background: white;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 900; color: #EA4335;
-  }
-  .login-roles {
-    background: var(--surface2);
-    border-radius: 12px;
-    padding: 12px 14px;
-    border: 1px solid var(--border);
-    margin-top: 4px;
-  }
-  .login-roles-title { font-size: 10px; color: var(--text3); font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
-  .role-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-  .role-chip {
-    font-size: 10px; font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
-  .rc-admin { background: var(--brand-glow); color: var(--brand); border: 1px solid rgba(255,78,139,0.25); }
-  .rc-senior { background: rgba(255,209,102,0.1); color: var(--gold); border: 1px solid rgba(255,209,102,0.25); }
-  .rc-mgr { background: var(--surface); color: var(--text2); border: 1px solid var(--border2); }
-
-  /* MGR DETAIL HERO */
-  .detail-hero {
-    background: linear-gradient(160deg, #1f0018 0%, var(--dark2) 100%);
-    padding: 18px 20px 24px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .detail-hero::before {
-    content: '';
-    position: absolute;
-    top: -30px; right: -30px;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle, rgba(255,78,139,0.18) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .detail-back { font-size: 13px; color: var(--brand); font-weight: 600; margin-bottom: 14px; }
-  .detail-avatar-lg {
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand), var(--gold));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px; font-weight: 900;
-    margin-bottom: 8px;
-    box-shadow: 0 0 20px rgba(255,78,139,0.35);
-  }
-  .detail-name { font-size: 20px; font-weight: 900; color: var(--text); }
-  .detail-badges { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
-
-  /* LIVER ITEM (simplified) */
-  .liver-sm {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .liver-sm:last-child { border-bottom: none; }
-  .liver-av-sm {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: white;
-    flex-shrink: 0;
-  }
-  .liver-sm-name { font-size: 13px; font-weight: 700; color: var(--text); }
-  .liver-sm-meta { font-size: 11px; color: var(--text2); margin-top: 1px; }
-
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--brand), #FF8CB4);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    padding: 15px;
-    font-size: 15px;
-    font-weight: 700;
-    width: 100%;
-    text-align: center;
-    font-family: 'Noto Sans JP', sans-serif;
-    box-shadow: 0 4px 20px rgba(255,78,139,0.3);
-  }
-
-  .today-label {
-    font-size: 11px;
+    gap: 3px;
+    font-size: 10px;
     color: var(--text3);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.05em;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s;
   }
+  .nav-item.active { color: var(--brand); }
+  .nav-item:hover { color: var(--text2); }
+  .nav-item.active:hover { color: var(--brand); }
+  .nav-icon { font-size: 20px; line-height: 1; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .main > * {
+    animation: fadeUp 0.4s ease both;
+  }
+  .main > *:nth-child(1) { animation-delay: 0.05s; }
+  .main > *:nth-child(2) { animation-delay: 0.1s; }
+  .main > *:nth-child(3) { animation-delay: 0.15s; }
+  .main > *:nth-child(4) { animation-delay: 0.2s; }
+  .main > *:nth-child(5) { animation-delay: 0.25s; }
 </style>
 </head>
 <body>
 
-<div class="page-label">GAOO+ MANAGEMENT SYSTEM — MVP MOCKUP v3</div>
-<h1 class="page-title"><span>GAOO+</span> 管理アプリ　MVP画面ラフ</h1>
-<p class="page-sub">幹部マネージャー向け「判断ツール」設計 · 4 screens</p>
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="logo">GAOO+</div>
+    <div class="header-sub">幹部ダッシュボード</div>
+  </div>
+  <div class="header-right">
+    <a href="alerts.html" class="notif-btn">🔔<div class="notif-dot"></div></a>
+    <div class="avatar">佐</div>
+  </div>
+</div>
 
-<div class="grid">
+<!-- MAIN -->
+<div class="main">
 
-  <!-- ① ログイン -->
-  <div class="screen-wrap">
-    <div class="phone">
-      <div class="login-bg">
-        <div class="login-hero">
-          <div class="login-logo">GAOO+</div>
-          <div class="login-tagline">ライバー管理システム<br>幹部マネージャー専用</div>
-        </div>
-        <div class="login-body">
-          <div>
-            <div class="login-title">ログイン</div>
-            <div class="login-sub">会社から指定されたGoogleアカウントでサインインしてください</div>
-          </div>
-          <div class="google-btn">
-            <div class="g-icon">G</div>
-            Googleアカウントでログイン
-          </div>
-          <div class="login-roles">
-            <div class="login-roles-title">アクセスレベル</div>
-            <div class="role-chips">
-              <span class="role-chip rc-admin">管理者</span>
-              <span class="role-chip rc-senior">幹部マネージャー</span>
-              <span class="role-chip rc-mgr">マネージャー</span>
-            </div>
-          </div>
-          <div style="margin-top:auto;text-align:center;">
-            <span style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">GAOO+ Management v1.0</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="screen-label"><strong>① ログイン画面</strong>Google OAuth · ロール別アクセス</div>
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="date-label">2026.03.23 · MON</div>
+    <a href="alerts.html" class="alert-badge">⚠ 要対応 3件</a>
   </div>
 
-  <!-- ② 幹部ダッシュボード（メイン） -->
-  <div class="screen-wrap">
-    <div class="phone">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
-      </div>
-      <div class="app-header">
-        <div>
-          <div class="logo">GAOO+</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:1px;">幹部ダッシュボード</div>
-        </div>
-        <div class="header-right">
-          <div class="icon-btn">🔔<div class="notif-dot"></div></div>
-          <div class="avatar">佐</div>
-        </div>
-      </div>
-      <div class="screen-body">
-
-        <!-- 日付 + 一言サマリー -->
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <div class="today-label">2026.03.21 · FRI</div>
-          <div style="background:var(--red-bg);border:1px solid rgba(255,78,78,0.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--red);">⚠ 要対応 3件</div>
-        </div>
-
-        <!-- チーム全体KPI -->
-        <div class="kpi-row">
-          <div class="kpi-card">
-            <div class="kpi-num">140</div>
-            <div class="kpi-label">総ライバー</div>
-          </div>
-          <div class="kpi-card danger">
-            <div class="kpi-num">40</div>
-            <div class="kpi-label">未稼働</div>
-          </div>
-          <div class="kpi-card good">
-            <div class="kpi-num">72%</div>
-            <div class="kpi-label">稼働率</div>
-          </div>
-          <div class="kpi-card warn">
-            <div class="kpi-num">8</div>
-            <div class="kpi-label">期限切れ</div>
-          </div>
-        </div>
-
-        <!-- 今すぐ対応（優先度順） -->
-        <div>
-          <div class="sec-title">今すぐ対応 <span style="font-size:10px;color:var(--text3);">優先度順</span></div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div class="priority-bar">
-              <div class="priority-num p1">1</div>
-              <div class="priority-info">
-                <div class="priority-title">鈴木 マネージャー</div>
-                <div class="priority-reason">7日間動きなし・未稼働3名</div>
-              </div>
-              <div class="priority-action">介入する</div>
-            </div>
-            <div class="priority-bar">
-              <div class="priority-num p1">2</div>
-              <div class="priority-info">
-                <div class="priority-title">山田 マネージャー</div>
-                <div class="priority-reason">売上先月比-42%・急落中</div>
-              </div>
-              <div class="priority-action">介入する</div>
-            </div>
-            <div class="priority-bar">
-              <div class="priority-num p2">3</div>
-              <div class="priority-info">
-                <div class="priority-title">中村 マネージャー</div>
-                <div class="priority-reason">配信者アクティブ低下</div>
-              </div>
-              <div class="priority-action">確認する</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- マネージャー一覧（ステータス別） -->
-        <div>
-          <div class="sec-title">マネージャー一覧 <a>全員 →</a></div>
-          <div class="card" style="padding:0 14px;">
-            <div class="mgr-item" style="padding-top:12px;">
-              <div class="mgr-rank top">1</div>
-              <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF8B4E);">鈴</div>
-              <div class="mgr-info">
-                <div class="mgr-name">鈴木 マネージャー</div>
-                <div class="mgr-meta">担当8名 · 稼働中5名</div>
-              </div>
-              <div class="mgr-right">
-                <span class="status status-red"><span class="status-dot"></span>要対応</span>
-              </div>
-            </div>
-            <div class="mgr-item">
-              <div class="mgr-rank top">2</div>
-              <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF4E8B);">山</div>
-              <div class="mgr-info">
-                <div class="mgr-name">山田 マネージャー</div>
-                <div class="mgr-meta">担当10名 · 稼働中6名</div>
-              </div>
-              <div class="mgr-right">
-                <span class="status status-red"><span class="status-dot"></span>要対応</span>
-              </div>
-            </div>
-            <div class="mgr-item">
-              <div class="mgr-rank" style="color:var(--yellow);">3</div>
-              <div class="mgr-avatar" style="background:linear-gradient(135deg,#FFD166,#FF8CB4);">中</div>
-              <div class="mgr-info">
-                <div class="mgr-name">中村 マネージャー</div>
-                <div class="mgr-meta">担当12名 · 稼働中9名</div>
-              </div>
-              <div class="mgr-right">
-                <span class="status status-yellow"><span class="status-dot"></span>注意</span>
-              </div>
-            </div>
-            <div class="mgr-item">
-              <div class="mgr-rank">4</div>
-              <div class="mgr-avatar" style="background:linear-gradient(135deg,#00E5A0,#4EA8FF);">田</div>
-              <div class="mgr-info">
-                <div class="mgr-name">田中 マネージャー</div>
-                <div class="mgr-meta">担当12名 · 稼働中11名</div>
-              </div>
-              <div class="mgr-right">
-                <span class="status status-green"><span class="status-dot"></span>順調</span>
-                <div class="mgr-income">¥420k</div>
-              </div>
-            </div>
-            <div class="mgr-item">
-              <div class="mgr-rank">5</div>
-              <div class="mgr-avatar" style="background:linear-gradient(135deg,#4EA8FF,#8B7FFF);">高</div>
-              <div class="mgr-info">
-                <div class="mgr-name">高橋 マネージャー</div>
-                <div class="mgr-meta">担当15名 · 稼働中14名</div>
-              </div>
-              <div class="mgr-right">
-                <span class="status status-green"><span class="status-dot"></span>順調</span>
-                <div class="mgr-income">¥610k</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="bottom-nav">
-        <div class="nav-item active"><div class="nav-icon">📊</div>全体</div>
-        <div class="nav-item"><div class="nav-icon">👔</div>担当者</div>
-        <div class="nav-item"><div class="nav-icon">⚠️</div>アラート</div>
-        <div class="nav-item"><div class="nav-icon">⚙️</div>設定</div>
-      </div>
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num">140</div>
+      <div class="kpi-label">総ライバー</div>
     </div>
-    <div class="screen-label"><strong>② 幹部ダッシュボード（メイン）</strong>優先度順対応リスト · ステータス一覧 · KPI</div>
+    <div class="kpi-card danger">
+      <div class="kpi-num">40</div>
+      <div class="kpi-label">未稼働</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-num">72%</div>
+      <div class="kpi-label">稼働率</div>
+    </div>
+    <div class="kpi-card warn">
+      <div class="kpi-num">8</div>
+      <div class="kpi-label">期限切れ</div>
+    </div>
   </div>
 
-  <!-- ③ マネージャー詳細 -->
-  <div class="screen-wrap">
-    <div class="phone">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
+  <!-- PRIORITY -->
+  <div>
+    <div class="sec-title">今すぐ対応 <span style="font-size:10px;color:var(--text3);text-transform:none;letter-spacing:0;">優先度順</span></div>
+    <a href="manager.html" class="priority-item">
+      <div class="priority-num p1">1</div>
+      <div class="priority-info">
+        <div class="priority-name">鈴木 マネージャー</div>
+        <div class="priority-reason">7日間動きなし・未稼働3名</div>
       </div>
-      <div class="detail-hero">
-        <div class="detail-back">← ダッシュボードに戻る</div>
-        <div style="display:flex;align-items:flex-start;gap:14px;">
-          <div class="detail-avatar-lg">鈴</div>
-          <div style="flex:1;">
-            <div class="detail-name">鈴木 マネージャー</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:3px;">担当8名 · 最終更新7日前</div>
-            <div class="detail-badges">
-              <span class="status status-red"><span class="status-dot"></span>要対応</span>
-              <span style="font-size:11px;color:var(--red);font-weight:700;">優先度 #1</span>
-            </div>
-          </div>
-        </div>
+      <div class="priority-action">介入する</div>
+    </a>
+    <a href="manager.html" class="priority-item">
+      <div class="priority-num p2">2</div>
+      <div class="priority-info">
+        <div class="priority-name">山田 マネージャー</div>
+        <div class="priority-reason">売上先月比-42%・急落中</div>
       </div>
-      <div class="screen-body">
-
-        <!-- 問題サマリー -->
-        <div class="alert alert-red">
-          <div class="alert-icon">🚨</div>
-          <div class="alert-body">
-            <div class="alert-title">介入が必要な状態です</div>
-            <div class="alert-sub">7日間活動なし · 未稼働3名が期限超過 · 売上0円/今月</div>
-          </div>
-        </div>
-
-        <!-- KPI -->
-        <div class="kpi-row">
-          <div class="kpi-card danger">
-            <div class="kpi-num">3</div>
-            <div class="kpi-label">未稼働</div>
-          </div>
-          <div class="kpi-card danger">
-            <div class="kpi-num">¥0</div>
-            <div class="kpi-label">今月売上</div>
-          </div>
-          <div class="kpi-card warn">
-            <div class="kpi-num">62%</div>
-            <div class="kpi-label">稼働率</div>
-          </div>
-        </div>
-
-        <!-- 担当ライバー -->
-        <div>
-          <div class="sec-title">担当ライバー</div>
-          <div class="card" style="padding:0 14px;">
-            <div class="liver-sm" style="padding-top:10px;">
-              <div class="liver-av-sm" style="background:linear-gradient(135deg,#FF4E8B,#FFD166);">あ</div>
-              <div style="flex:1;">
-                <div class="liver-sm-name">あいか</div>
-                <div class="liver-sm-meta">TikTok · 稼働中</div>
-              </div>
-              <span class="status status-green" style="font-size:10px;">順調</span>
-            </div>
-            <div class="liver-sm">
-              <div class="liver-av-sm" style="background:linear-gradient(135deg,#FF4E4E,#FF8B4E);">み</div>
-              <div style="flex:1;">
-                <div class="liver-sm-name">みなみ</div>
-                <div class="liver-sm-meta">ポコチャ · 未稼働 · 期限超過</div>
-              </div>
-              <span class="status status-red" style="font-size:10px;">要対応</span>
-            </div>
-            <div class="liver-sm">
-              <div class="liver-av-sm" style="background:linear-gradient(135deg,#FF4E4E,#FF4E8B);">さ</div>
-              <div style="flex:1;">
-                <div class="liver-sm-name">さくら</div>
-                <div class="liver-sm-meta">TikTok · 未稼働 · 期限3日後</div>
-              </div>
-              <span class="status status-red" style="font-size:10px;">要対応</span>
-            </div>
-            <div class="liver-sm">
-              <div class="liver-av-sm" style="background:linear-gradient(135deg,#4EA8FF,#00E5A0);">ゆ</div>
-              <div style="flex:1;">
-                <div class="liver-sm-name">ゆいな</div>
-                <div class="liver-sm-meta">TikTok · 稼働中</div>
-              </div>
-              <span class="status status-green" style="font-size:10px;">順調</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- アクション -->
-        <div class="btn-primary">📩 鈴木に指示を送る</div>
-        <div style="background:var(--surface2);border-radius:14px;padding:14px;border:1px solid var(--border);text-align:center;font-size:13px;color:var(--text2);font-weight:600;">📝 メモを追加</div>
-
+      <div class="priority-action">介入する</div>
+    </a>
+    <a href="manager.html" class="priority-item">
+      <div class="priority-num p3">3</div>
+      <div class="priority-info">
+        <div class="priority-name">中村 マネージャー</div>
+        <div class="priority-reason">配信者アクティブ低下</div>
       </div>
-      <div class="bottom-nav">
-        <div class="nav-item"><div class="nav-icon">📊</div>全体</div>
-        <div class="nav-item active"><div class="nav-icon">👔</div>担当者</div>
-        <div class="nav-item"><div class="nav-icon">⚠️</div>アラート</div>
-        <div class="nav-item"><div class="nav-icon">⚙️</div>設定</div>
-      </div>
-    </div>
-    <div class="screen-label"><strong>③ マネージャー詳細</strong>問題サマリー · 担当ライバー · アクション</div>
+      <div class="priority-action">確認する</div>
+    </a>
   </div>
 
-  <!-- ④ アラート一覧 -->
-  <div class="screen-wrap">
-    <div class="phone">
-      <div class="status-bar">
-        <span>9:41</span>
-        <div class="icons"><span>●●●</span><span>WiFi</span><span>🔋</span></div>
-      </div>
-      <div class="app-header">
-        <div style="font-size:17px;font-weight:900;color:var(--text);">アラート</div>
-        <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;">8件</div>
-      </div>
-      <div class="screen-body">
-
-        <div style="display:flex;gap:8px;">
-          <div style="flex:1;background:var(--red-bg);border:1px solid rgba(255,78,78,0.2);border-radius:20px;padding:6px 0;text-align:center;font-size:11px;font-weight:700;color:var(--red);">🔴 要対応 3</div>
-          <div style="flex:1;background:var(--yellow-bg);border:1px solid rgba(255,209,102,0.2);border-radius:20px;padding:6px 0;text-align:center;font-size:11px;font-weight:700;color:var(--yellow);">🟡 注意 5</div>
+  <!-- MANAGER LIST -->
+  <div>
+    <div class="sec-title">マネージャー一覧 <a href="#">全員 →</a></div>
+    <div class="card">
+      <a href="manager.html" class="mgr-item">
+        <div class="mgr-rank danger">1</div>
+        <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF8B4E);">鈴</div>
+        <div class="mgr-info">
+          <div class="mgr-name">鈴木 マネージャー</div>
+          <div class="mgr-meta">担当8名 · 稼働中5名</div>
         </div>
-
-        <!-- 要対応アラート -->
-        <div class="sec-title">🔴 要対応</div>
-
-        <div class="alert alert-red">
-          <div class="alert-icon">⛔</div>
-          <div class="alert-body">
-            <div class="alert-title">鈴木 — 7日間動きなし</div>
-            <div class="alert-sub">最終アクティブ：3/14 · 未稼働3名が期限超過中</div>
-          </div>
+        <div class="mgr-right">
+          <span class="status s-red"><span class="status-dot"></span>要対応</span>
         </div>
-
-        <div class="alert alert-red">
-          <div class="alert-icon">📉</div>
-          <div class="alert-body">
-            <div class="alert-title">山田チーム — 売上急落</div>
-            <div class="alert-sub">先月比 -42% · 主要ライバー2名が配信停止</div>
-          </div>
+      </a>
+      <a href="manager.html" class="mgr-item">
+        <div class="mgr-rank danger">2</div>
+        <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF4E8B);">山</div>
+        <div class="mgr-info">
+          <div class="mgr-name">山田 マネージャー</div>
+          <div class="mgr-meta">担当10名 · 稼働中6名</div>
         </div>
-
-        <div class="alert alert-red">
-          <div class="alert-icon">⏰</div>
-          <div class="alert-body">
-            <div class="alert-title">期限超過 — みなみ（鈴木担当）</div>
-            <div class="alert-sub">登録期限を5日超過 · 強制配信ルール適用対象</div>
-          </div>
+        <div class="mgr-right">
+          <span class="status s-red"><span class="status-dot"></span>要対応</span>
         </div>
-
-        <!-- 注意アラート -->
-        <div class="sec-title" style="margin-top:4px;">🟡 注意</div>
-
-        <div class="alert alert-yellow">
-          <div class="alert-icon">📊</div>
-          <div class="alert-body">
-            <div class="alert-title">中村チーム — 配信頻度低下</div>
-            <div class="alert-sub">担当ライバー平均配信回数が先週比 -30%</div>
-          </div>
+      </a>
+      <a href="manager.html" class="mgr-item">
+        <div class="mgr-rank warn">3</div>
+        <div class="mgr-avatar" style="background:linear-gradient(135deg,#FFD166,#FF8CB4);">中</div>
+        <div class="mgr-info">
+          <div class="mgr-name">中村 マネージャー</div>
+          <div class="mgr-meta">担当12名 · 稼働中9名</div>
         </div>
-
-        <div class="alert alert-yellow">
-          <div class="alert-icon">👤</div>
-          <div class="alert-body">
-            <div class="alert-title">未稼働者 — 期限3日以内 5名</div>
-            <div class="alert-sub">今週中に対応しないと強制ルール適用</div>
-          </div>
+        <div class="mgr-right">
+          <span class="status s-yellow"><span class="status-dot"></span>注意</span>
         </div>
-
-        <div class="alert alert-yellow">
-          <div class="alert-icon">💰</div>
-          <div class="alert-body">
-            <div class="alert-title">木村チーム — 売上伸び鈍化</div>
-            <div class="alert-sub">先月比 +2% · 目標達成率 68%</div>
-          </div>
+      </a>
+      <a href="manager.html" class="mgr-item">
+        <div class="mgr-rank">4</div>
+        <div class="mgr-avatar" style="background:linear-gradient(135deg,#00E5A0,#4EA8FF);">田</div>
+        <div class="mgr-info">
+          <div class="mgr-name">田中 マネージャー</div>
+          <div class="mgr-meta">担当12名 · 稼働中11名</div>
         </div>
-
-      </div>
-      <div class="bottom-nav">
-        <div class="nav-item"><div class="nav-icon">📊</div>全体</div>
-        <div class="nav-item"><div class="nav-icon">👔</div>担当者</div>
-        <div class="nav-item active"><div class="nav-icon">⚠️</div>アラート</div>
-        <div class="nav-item"><div class="nav-icon">⚙️</div>設定</div>
-      </div>
+        <div class="mgr-right">
+          <span class="status s-green"><span class="status-dot"></span>順調</span>
+          <div class="mgr-income">¥420k</div>
+        </div>
+      </a>
+      <a href="manager.html" class="mgr-item">
+        <div class="mgr-rank">5</div>
+        <div class="mgr-avatar" style="background:linear-gradient(135deg,#4EA8FF,#8B7FFF);">高</div>
+        <div class="mgr-info">
+          <div class="mgr-name">高橋 マネージャー</div>
+          <div class="mgr-meta">担当15名 · 稼働中14名</div>
+        </div>
+        <div class="mgr-right">
+          <span class="status s-green"><span class="status-dot"></span>順調</span>
+          <div class="mgr-income">¥610k</div>
+        </div>
+      </a>
     </div>
-    <div class="screen-label"><strong>④ アラート一覧</strong>要対応 · 注意 · 見逃せないものだけ表示</div>
   </div>
 
 </div>
 
-<div style="text-align:center;margin-top:64px;color:rgba(255,255,255,0.12);font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.1em;">
-  GAOO+ MANAGEMENT SYSTEM — MVP MOCKUP v3.0 · "行動を決めるツール"
-</div>
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html" class="nav-item active">
+    <div class="nav-icon">📊</div>全体
+  </a>
+  <a href="manager.html" class="nav-item">
+    <div class="nav-icon">👔</div>担当者
+  </a>
+  <a href="alerts.html" class="nav-item">
+    <div class="nav-icon">⚠️</div>アラート
+  </a>
+  <a href="login.html" class="nav-item">
+    <div class="nav-icon">⚙️</div>設定
+  </a>
+</nav>
 
 </body>
 </html>
