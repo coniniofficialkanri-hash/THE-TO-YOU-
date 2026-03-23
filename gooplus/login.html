@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GAOO+ — ログイン</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #FF4E8B;
+    --brand-sub: #FF8CB4;
+    --brand-glow: rgba(255,78,139,0.15);
+    --gold: #FFD166;
+    --dark: #0A0A0F;
+    --dark2: #111118;
+    --surface: #1A1A24;
+    --surface2: #20202C;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #FFFFFF;
+    --text2: rgba(255,255,255,0.55);
+    --text3: rgba(255,255,255,0.3);
+    --red: #FF4E4E;
+    --yellow: #FFD166;
+    --green: #00E5A0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #1f0018 0%, #12000e 40%, var(--dark) 100%);
+    padding: 70px 32px 52px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,78,139,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,209,102,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .logo-wrap { position: relative; z-index: 1; margin-bottom: 6px; }
+  .logo {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    filter: drop-shadow(0 0 24px rgba(255,78,139,0.4));
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: rgba(255,209,102,0.6);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'DM Mono', monospace;
+    margin-top: 6px;
+    position: relative; z-index: 1;
+  }
+  .hero-tagline {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-top: 16px;
+    position: relative; z-index: 1;
+  }
+
+  /* DIVIDER */
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    position: relative; z-index: 1;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,78,139,0.3));
+  }
+  .divider-line.rev { background: linear-gradient(90deg, rgba(255,78,139,0.3), transparent); }
+  .divider-dot { font-size: 10px; color: rgba(255,78,139,0.5); }
+
+  /* BODY */
+  .body {
+    flex: 1;
+    padding: 36px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .body-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.03em;
+  }
+  .body-sub {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-top: 6px;
+  }
+
+  /* ROLE CARDS */
+  .role-section {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .role-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .role-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .role-chip {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+  .rc-admin {
+    background: rgba(255,78,139,0.12);
+    color: var(--brand);
+    border: 1px solid rgba(255,78,139,0.25);
+  }
+  .rc-senior {
+    background: rgba(255,209,102,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(255,209,102,0.25);
+  }
+  .rc-mgr {
+    background: var(--surface);
+    color: var(--text2);
+    border: 1px solid var(--border2);
+  }
+
+  /* GOOGLE BTN */
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 17px 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .google-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,78,139,0.06), rgba(255,209,102,0.04));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .google-btn:hover::before { opacity: 1; }
+  .google-btn:hover { border-color: rgba(255,78,139,0.3); }
+  .google-btn:active { transform: scale(0.98); }
+  .g-icon {
+    width: 26px; height: 26px;
+    background: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #EA4335;
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+  .google-btn span { position: relative; z-index: 1; }
+
+  /* FEATURES */
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .feature-icon { font-size: 20px; flex-shrink: 0; }
+  .feature-info { flex: 1; }
+  .feature-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .feature-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  /* NOTE */
+  .note {
+    font-size: 11px;
+    color: var(--text3);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* VERSION */
+  .version {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  /* LOADING STATE */
+  .loading {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text2);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero { animation: fadeUp 0.5s ease both; }
+  .body > * { animation: fadeUp 0.4s ease both; }
+  .body > *:nth-child(1) { animation-delay: 0.1s; }
+  .body > *:nth-child(2) { animation-delay: 0.15s; }
+  .body > *:nth-child(3) { animation-delay: 0.2s; }
+  .body > *:nth-child(4) { animation-delay: 0.25s; }
+  .body > *:nth-child(5) { animation-delay: 0.3s; }
+  .body > *:nth-child(6) { animation-delay: 0.35s; }
+
+  /* GLOW PULSE */
+  @keyframes glowPulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255,78,139,0.35)); }
+    50% { filter: drop-shadow(0 0 36px rgba(255,78,139,0.6)); }
+  }
+  .logo { animation: glowPulse 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-wrap">
+    <div class="logo">GAOO+</div>
+    <div class="logo-sub">Management System</div>
+  </div>
+  <div class="hero-tagline">
+    ライバー事務所の業務を<br>まるごとデジタル化する
+  </div>
+  <div class="hero-divider">
+    <div class="divider-line"></div>
+    <div class="divider-dot">✦</div>
+    <div class="divider-line rev"></div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <div>
+    <div class="body-title">ログイン</div>
+    <div class="body-sub">会社から指定されたGoogleアカウントでサインインしてください</div>
+  </div>
+
+  <!-- GOOGLE BTN -->
+  <a href="index.html" class="google-btn" id="loginBtn" onclick="handleLogin(event)">
+    <div class="g-icon">G</div>
+    <span>Googleアカウントでログイン</span>
+  </a>
+  <div class="loading" id="loadingState">
+    <div class="spinner"></div>
+    <span>認証中...</span>
+  </div>
+
+  <!-- ROLES -->
+  <div class="role-section">
+    <div class="role-title">アクセスレベル</div>
+    <div class="role-chips">
+      <span class="role-chip rc-admin">管理者</span>
+      <span class="role-chip rc-senior">幹部マネージャー</span>
+      <span class="role-chip rc-mgr">マネージャー</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">📊</div>
+      <div class="feature-info">
+        <div class="feature-title">リアルタイム状況把握</div>
+        <div class="feature-sub">全マネージャー・ライバーの状況を一画面で確認</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">⚠️</div>
+      <div class="feature-info">
+        <div class="feature-title">自動アラート</div>
+        <div class="feature-sub">問題が起きたら即座に通知・優先度順で表示</div>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">👔</div>
+      <div class="feature-info">
+        <div class="feature-title">マネージャー管理</div>
+        <div class="feature-sub">担当ライバー・売上・稼働状況を詳細確認</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    ※ ログインには管理者によるアカウント登録が必要です<br>
+    アクセスできない場合は管理者にお問い合わせください
+  </div>
+
+  <div class="version">GAOO+ Management v1.0.0</div>
+
+</div>
+
+<script>
+  function handleLogin(e) {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const loading = document.getElementById('loadingState');
+    btn.style.display = 'none';
+    loading.style.display = 'flex';
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
