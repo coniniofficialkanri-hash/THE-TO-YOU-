@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>GAOO+ — マイページ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #FF4E8B;
+    --brand-sub: #FF8CB4;
+    --brand-glow: rgba(255,78,139,0.12);
+    --gold: #FFD166;
+    --dark: #0A0A0F;
+    --dark2: #111118;
+    --surface: #1A1A24;
+    --surface2: #20202C;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #FFFFFF;
+    --text2: rgba(255,255,255,0.55);
+    --text3: rgba(255,255,255,0.3);
+    --green: #00E5A0;
+    --green-bg: rgba(0,229,160,0.1);
+    --yellow: #FFD166;
+    --yellow-bg: rgba(255,209,102,0.1);
+    --red: #FF4E4E;
+    --red-bg: rgba(255,78,78,0.1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    padding-bottom: 90px;
+  }
+
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    font-size: 20px; font-weight: 900; letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--brand), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .header-sub { font-size: 10px; color: var(--text3); margin-top: 1px; font-family: 'DM Mono', monospace; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .icon-btn {
+    width: 36px; height: 36px; background: var(--surface2);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; border: 1px solid var(--border); cursor: pointer;
+    text-decoration: none; color: var(--text); transition: background 0.15s; position: relative;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.08); }
+  .notif-dot {
+    position: absolute; top: 5px; right: 5px; width: 8px; height: 8px;
+    background: var(--red); border-radius: 50%; border: 2px solid var(--dark2);
+  }
+  .add-btn {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--brand), #FF8CB4);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 300; color: white; text-decoration: none;
+    box-shadow: 0 4px 12px rgba(255,78,139,0.35); transition: opacity 0.15s;
+  }
+  .add-btn:hover { opacity: 0.85; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; color: white;
+  }
+
+  .main { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+  .top-bar { display: flex; justify-content: space-between; align-items: center; }
+  .date-label { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.04em; }
+  .alert-badge {
+    background: var(--red-bg); border: 1px solid rgba(255,78,78,0.25);
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
+    color: var(--red); cursor: pointer; transition: background 0.2s; text-decoration: none;
+  }
+  .alert-badge:hover { background: rgba(255,78,78,0.18); }
+
+  .greeting { display: flex; justify-content: space-between; align-items: flex-start; }
+  .greeting-sub { font-size: 12px; color: var(--text3); font-weight: 500; }
+  .greeting-name { font-size: 19px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; margin-top: 2px; }
+  .role-pill {
+    font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+    background: var(--brand-glow); color: var(--brand); border: 1px solid rgba(255,78,139,0.25);
+  }
+
+  .alert {
+    border-radius: 12px; padding: 11px 13px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .alert-red { background: var(--red-bg); border: 1px solid rgba(255,78,78,0.2); }
+  .alert-yellow { background: var(--yellow-bg); border: 1px solid rgba(255,209,102,0.2); }
+  .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .alert-title { font-size: 12px; font-weight: 700; color: var(--text); }
+  .alert-sub { font-size: 11px; color: var(--text2); margin-top: 2px; line-height: 1.5; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .kpi-card {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 6px; text-align: center; position: relative; overflow: hidden;
+  }
+  .kpi-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--brand); opacity: 0.4;
+  }
+  .kpi-card.danger::after { background: var(--red); opacity: 0.7; }
+  .kpi-card.good::after { background: var(--green); opacity: 0.7; }
+  .kpi-card.warn::after { background: var(--yellow); opacity: 0.7; }
+  .kpi-num { font-size: 20px; font-weight: 900; color: var(--text); font-family: 'DM Mono', monospace; letter-spacing: -0.04em; line-height: 1; }
+  .kpi-card.danger .kpi-num { color: var(--red); }
+  .kpi-card.good .kpi-num { color: var(--green); }
+  .kpi-card.warn .kpi-num { color: var(--yellow); }
+  .kpi-label { font-size: 10px; color: var(--text2); margin-top: 4px; font-weight: 600; }
+
+  .sec-title {
+    font-size: 11px; font-weight: 700; color: var(--text3); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .sec-title a { color: var(--brand); font-size: 11px; text-transform: none; letter-spacing: 0; text-decoration: none; font-weight: 600; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+  .appo-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .appo-item:last-child { border-bottom: none; }
+  .appo-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .appo-info { flex: 1; min-width: 0; }
+  .appo-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .appo-meta { font-size: 11px; color: var(--text2); margin-top: 2px; display: flex; gap: 6px; align-items: center; }
+  .platform-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); }
+  .appo-time { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+
+  .liver-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; text-decoration: none; }
+  .liver-item:last-child { border-bottom: none; }
+  .liver-item:hover { background: rgba(255,255,255,0.03); }
+  .liver-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 900; color: white; flex-shrink: 0; }
+  .liver-info { flex: 1; min-width: 0; }
+  .liver-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .liver-meta { font-size: 11px; color: var(--text2); margin-top: 2px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .liver-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .status { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .s-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,78,78,0.2); }
+  .s-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(255,209,102,0.2); }
+  .s-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
+  .liver-income { font-size: 11px; font-weight: 700; color: var(--gold); font-family: 'DM Mono', monospace; }
+  .deadline-tag { font-size: 10px; color: var(--red); font-weight: 600; }
+
+  .memo-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; font-size: 13px; color: var(--text2); line-height: 1.7; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+  .overlay.show { opacity: 1; pointer-events: all; }
+  .modal {
+    position: fixed; bottom: 0; left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: 100%; max-width: 430px;
+    background: var(--dark2); border-radius: 24px 24px 0 0;
+    border-top: 1px solid var(--border2); padding: 20px 20px 44px;
+    z-index: 200; transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .modal.show { transform: translateX(-50%) translateY(0); }
+  .modal-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 2px; margin: 0 auto 20px; }
+  .modal-title { font-size: 17px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.02em; }
+  .modal-field { margin-bottom: 12px; }
+  .modal-field label { display: block; font-size: 11px; font-weight: 700; color: var(--text2); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .modal-field input, .modal-field select, .modal-field textarea {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif; outline: none;
+    -webkit-appearance: none; appearance: none; transition: border-color 0.2s;
+  }
+  .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { border-color: rgba(255,78,139,0.5); background: rgba(255,78,139,0.03); }
+  .modal-field input::placeholder, .modal-field textarea::placeholder { color: var(--text3); }
+  .modal-field textarea { resize: none; min-height: 70px; line-height: 1.6; }
+  .modal-field select option { background: #1A1A24; color: white; }
+  .modal-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-btn {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, var(--brand), #FF8CB4);
+    color: white; border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    box-shadow: 0 4px 16px rgba(255,78,139,0.3); margin-top: 4px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .modal-btn:hover { opacity: 0.9; }
+  .modal-btn:active { transform: scale(0.98); }
+
+  .toast {
+    position: fixed; top: 76px; left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: var(--green); color: #0A0A0F;
+    font-size: 13px; font-weight: 700; padding: 11px 20px;
+    border-radius: 20px; opacity: 0; transition: all 0.3s;
+    z-index: 300; white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0,229,160,0.4); pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: rgba(17,17,24,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border); display: flex; padding: 10px 0 24px; z-index: 100;
+  }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: var(--text3); font-weight: 600; cursor: pointer; text-decoration: none; transition: color 0.15s; }
+  .nav-item.active { color: var(--brand); }
+  .nav-item:hover { color: var(--text2); }
+  .nav-icon { font-size: 20px; line-height: 1; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .main > * { animation: fadeUp 0.4s ease both; }
+  .main > *:nth-child(1) { animation-delay: 0.05s; }
+  .main > *:nth-child(2) { animation-delay: 0.1s; }
+  .main > *:nth-child(3) { animation-delay: 0.15s; }
+  .main > *:nth-child(4) { animation-delay: 0.2s; }
+  .main > *:nth-child(5) { animation-delay: 0.25s; }
+  .main > *:nth-child(6) { animation-delay: 0.3s; }
+  .main > *:nth-child(7) { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">GAOO+</div>
+    <div class="header-sub">マイページ</div>
+  </div>
+  <div class="header-right">
+    <a href="register.html" class="add-btn">+</a>
+    <div class="icon-btn" style="cursor:default;"><div class="notif-dot"></div>🔔</div>
+    <div class="avatar">田</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="top-bar">
+    <div class="date-label" id="todayDate"></div>
+    <a href="#" class="alert-badge" id="alertBadge">⚠ 未稼働 2名</a>
+  </div>
+
+  <div class="greeting">
+    <div>
+      <div class="greeting-sub">お疲れ様です</div>
+      <div class="greeting-name">田中 マネージャー</div>
+    </div>
+    <span class="role-pill">マネージャー</span>
+  </div>
+
+  <div class="alert alert-red">
+    <div class="alert-icon">⚠️</div>
+    <div>
+      <div class="alert-title">未稼働ライバーが2名います</div>
+      <div class="alert-sub">みなみ・さくら — 期限まで残3日。今週中に対応してください。</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-num" id="kpi-total">12</div><div class="kpi-label">担当</div></div>
+    <div class="kpi-card good"><div class="kpi-num" id="kpi-active">9</div><div class="kpi-label">稼働中</div></div>
+    <div class="kpi-card danger"><div class="kpi-num" id="kpi-inactive">2</div><div class="kpi-label">未稼働</div></div>
+    <div class="kpi-card warn"><div class="kpi-num" id="kpi-income">¥422k</div><div class="kpi-label">今月売上</div></div>
+  </div>
+
+  <div>
+    <div class="sec-title">今日のアポ <a href="#" onclick="openModal('appoModal'); return false;">+ 追加</a></div>
+    <div class="card" id="appoList">
+      <div class="appo-item">
+        <div class="appo-icon" style="background:var(--brand-glow);">🗓</div>
+        <div class="appo-info">
+          <div class="appo-title">さくら — 初回面談</div>
+          <div class="appo-meta"><span class="platform-tag">TikTok</span><span>Zoom</span></div>
+        </div>
+        <span class="appo-time" style="background:var(--brand-glow);color:var(--brand);border:1px solid rgba(255,78,139,0.25);">14:00</span>
+      </div>
+      <div class="appo-item">
+        <div class="appo-icon" style="background:var(--green-bg);">🗓</div>
+        <div class="appo-info">
+          <div class="appo-title">みなみ — 進捗確認</div>
+          <div class="appo-meta"><span class="platform-tag">Pococha</span><span>LINE通話</span></div>
+        </div>
+        <span class="appo-time" style="background:var(--green-bg);color:var(--green);border:1px solid rgba(0,229,160,0.25);">17:30</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="sec-title">担当ライバー <a href="register.html">+ 登録</a></div>
+    <div class="card" id="liverList"></div>
+  </div>
+
+  <div>
+    <div class="sec-title">最近のメモ <a href="#" onclick="openModal('memoModal'); return false;">+ 追加</a></div>
+    <div class="memo-box" id="memoArea">さくら — 来月から配信頻度を週5に増やしたい。バトル相手を積極的に探している。次回面談で目標設定を確認する。</div>
+  </div>
+
+</div>
+
+<nav class="bottom-nav">
+  <a href="manager_home.html" class="nav-item active"><div class="nav-icon">🏠</div>ホーム</a>
+  <a href="register.html" class="nav-item"><div class="nav-icon">➕</div>登録</a>
+  <a href="#" class="nav-item" onclick="openModal('appoModal'); return false;"><div class="nav-icon">📅</div>アポ</a>
+  <a href="login.html" class="nav-item"><div class="nav-icon">⚙️</div>設定</a>
+</nav>
+
+<!-- APPO MODAL -->
+<div class="overlay" id="appoOverlay" onclick="closeModal('appoModal')"></div>
+<div class="modal" id="appoModal">
+  <div class="modal-handle"></div>
+  <div class="modal-title">📅 アポを登録</div>
+  <div class="modal-field"><label>ライバー名</label><input type="text" id="appo-liver" placeholder="例）さくら"></div>
+  <div class="modal-field"><label>内容</label><input type="text" id="appo-content" placeholder="例）初回面談・進捗確認"></div>
+  <div class="modal-two">
+    <div class="modal-field"><label>日付</label><input type="date" id="appo-date"></div>
+    <div class="modal-field"><label>時間</label><input type="time" id="appo-time"></div>
+  </div>
+  <div class="modal-field">
+    <label>方法</label>
+    <select id="appo-method">
+      <option value="">選択してください</option>
+      <option>Zoom</option><option>LINE通話</option><option>電話</option><option>対面</option>
+    </select>
+  </div>
+  <button class="modal-btn" onclick="saveAppo()">登録する</button>
+</div>
+
+<!-- MEMO MODAL -->
+<div class="overlay" id="memoOverlay" onclick="closeModal('memoModal')"></div>
+<div class="modal" id="memoModal">
+  <div class="modal-handle"></div>
+  <div class="modal-title">📝 メモを追加</div>
+  <div class="modal-field"><label>ライバー名</label><input type="text" id="memo-liver" placeholder="例）さくら"></div>
+  <div class="modal-field"><label>メモ内容</label><textarea id="memo-content" placeholder="面談内容・気づき・次回対応など..."></textarea></div>
+  <button class="modal-btn" onclick="saveMemo()">保存する</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const defaultLivers = [
+    { id:'l1', nickname:'あいか', managerId:'tanaka', apps:['TikTok'],  status:'active',    statusLabel:'稼働中', statusColor:'green',  income:128000 },
+    { id:'l2', nickname:'ゆいな', managerId:'tanaka', apps:['Pococha'], status:'active',    statusLabel:'稼働中', statusColor:'green',  income:84000  },
+    { id:'l3', nickname:'はな',   managerId:'tanaka', apps:['TikTok'],  status:'active',    statusLabel:'稼働中', statusColor:'green',  income:210000 },
+    { id:'l4', nickname:'みなみ', managerId:'tanaka', apps:['Pococha'], status:'inactive',  statusLabel:'未稼働', statusColor:'red',    income:0, deadline:'残3日' },
+    { id:'l5', nickname:'さくら', managerId:'tanaka', apps:['TikTok'],  status:'preparing', statusLabel:'準備中', statusColor:'yellow', income:0, deadline:'残3日' },
+  ];
+  const avatarColors = [
+    'linear-gradient(135deg,#FF4E8B,#FFD166)',
+    'linear-gradient(135deg,#4EA8FF,#00E5A0)',
+    'linear-gradient(135deg,#FF4E4E,#FF8B4E)',
+    'linear-gradient(135deg,#FFD166,#FF8CB4)',
+    'linear-gradient(135deg,#8B7FFF,#4EA8FF)',
+  ];
+
+  function getLivers() {
+    const stored = JSON.parse(localStorage.getItem('livers') || '[]');
+    return [...defaultLivers, ...stored.filter(l => l.managerId === 'tanaka')];
+  }
+
+  function renderLivers() {
+    const livers = getLivers();
+    const list = document.getElementById('liverList');
+    list.innerHTML = livers.map((l, i) => {
+      const sc = {green:'s-green', yellow:'s-yellow', red:'s-red'}[l.statusColor] || 's-yellow';
+      const bg = avatarColors[i % avatarColors.length];
+      const income = l.income > 0 ? `¥${Math.floor(l.income/1000)}k` : null;
+      return `<div class="liver-item">
+        <div class="liver-avatar" style="background:${bg};">${l.nickname.charAt(0)}</div>
+        <div class="liver-info">
+          <div class="liver-name">${l.nickname}</div>
+          <div class="liver-meta">
+            ${l.apps?.[0] ? `<span class="platform-tag">${l.apps[0]}</span>` : ''}
+            ${l.deadline ? `<span class="deadline-tag">⏰${l.deadline}</span>` : ''}
+          </div>
+        </div>
+        <div class="liver-right">
+          <span class="status ${sc}"><span class="status-dot"></span>${l.statusLabel}</span>
+          ${income ? `<div class="liver-income">${income}</div>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    const total = livers.length;
+    const active = livers.filter(l => l.status === 'active').length;
+    const inactive = livers.filter(l => l.status === 'inactive').length;
+    const totalIncome = livers.reduce((s,l) => s+(l.income||0), 0);
+    document.getElementById('kpi-total').textContent = total;
+    document.getElementById('kpi-active').textContent = active;
+    document.getElementById('kpi-inactive').textContent = inactive;
+    document.getElementById('kpi-income').textContent = totalIncome > 0 ? `¥${Math.floor(totalIncome/1000)}k` : '¥0';
+  }
+
+  function setDate() {
+    const d = new Date();
+    const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+    document.getElementById('todayDate').textContent =
+      `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} · ${days[d.getDay()]}`;
+  }
+
+  function openModal(id) {
+    document.getElementById(id.replace('Modal','Overlay')).classList.add('show');
+    document.getElementById(id).classList.add('show');
+  }
+  function closeModal(id) {
+    document.getElementById(id.replace('Modal','Overlay')).classList.remove('show');
+    document.getElementById(id).classList.remove('show');
+  }
+
+  function saveAppo() {
+    const liver = document.getElementById('appo-liver').value.trim();
+    const content = document.getElementById('appo-content').value.trim();
+    const date = document.getElementById('appo-date').value;
+    const time = document.getElementById('appo-time').value;
+    const method = document.getElementById('appo-method').value;
+    if (!liver || !content) { showToast('⚠ ライバー名と内容を入力してください'); return; }
+
+    const appos = JSON.parse(localStorage.getItem('appointments') || '[]');
+    appos.push({ id:'a_'+Date.now(), liver, content, date, time, method, managerId:'tanaka', createdAt:new Date().toISOString() });
+    localStorage.setItem('appointments', JSON.stringify(appos));
+
+    const item = document.createElement('div');
+    item.className = 'appo-item';
+    item.innerHTML = `
+      <div class="appo-icon" style="background:var(--brand-glow);">🗓</div>
+      <div class="appo-info">
+        <div class="appo-title">${liver} — ${content}</div>
+        <div class="appo-meta">${method ? `<span>${method}</span>` : ''}</div>
+      </div>
+      <span class="appo-time" style="background:var(--brand-glow);color:var(--brand);border:1px solid rgba(255,78,139,0.25);">${time || date || '—'}</span>`;
+    document.getElementById('appoList').appendChild(item);
+
+    showToast('📅 アポを登録しました');
+    closeModal('appoModal');
+    ['appo-liver','appo-content','appo-date','appo-time','appo-method'].forEach(id => document.getElementById(id).value='');
+  }
+
+  function saveMemo() {
+    const liver = document.getElementById('memo-liver').value.trim();
+    const content = document.getElementById('memo-content').value.trim();
+    if (!content) { showToast('⚠ メモ内容を入力してください'); return; }
+
+    const memos = JSON.parse(localStorage.getItem('memos') || '[]');
+    memos.push({ id:'m_'+Date.now(), liver, content, managerId:'tanaka', createdAt:new Date().toISOString() });
+    localStorage.setItem('memos', JSON.stringify(memos));
+
+    document.getElementById('memoArea').textContent = `${liver ? liver+' — ' : ''}${content}`;
+    showToast('📝 メモを保存しました');
+    closeModal('memoModal');
+    document.getElementById('memo-liver').value='';
+    document.getElementById('memo-content').value='';
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  setDate();
+  renderLivers();
+</script>
+
+</body>
+</html>
