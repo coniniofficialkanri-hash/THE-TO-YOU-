@@ -66,6 +66,17 @@
   }
   .header-sub { font-size: 10px; color: var(--text3); margin-top: 1px; font-family: 'DM Mono', monospace; }
   .header-right { display: flex; align-items: center; gap: 10px; }
+  .add-btn {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--brand), #FF8CB4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 300; color: white;
+    text-decoration: none; flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(255,78,139,0.4);
+    transition: opacity 0.2s; line-height: 1;
+  }
+  .add-btn:hover { opacity: 0.85; }
   .notif-btn {
     width: 36px; height: 36px;
     background: var(--surface2);
@@ -325,6 +336,7 @@
     <div class="header-sub">幹部ダッシュボード</div>
   </div>
   <div class="header-right">
+    <a href="register.html" class="add-btn">＋</a>
     <a href="alerts.html" class="notif-btn">🔔<div class="notif-dot"></div></a>
     <div class="avatar">佐</div>
   </div>
@@ -362,7 +374,7 @@
   <!-- PRIORITY -->
   <div>
     <div class="sec-title">今すぐ対応 <span style="font-size:10px;color:var(--text3);text-transform:none;letter-spacing:0;">優先度順</span></div>
-    <a href="manager.html" class="priority-item">
+    <a href="manager.html?id=suzuki" class="priority-item">
       <div class="priority-num p1">1</div>
       <div class="priority-info">
         <div class="priority-name">鈴木 マネージャー</div>
@@ -370,7 +382,7 @@
       </div>
       <div class="priority-action">介入する</div>
     </a>
-    <a href="manager.html" class="priority-item">
+    <a href="manager.html?id=yamada" class="priority-item">
       <div class="priority-num p2">2</div>
       <div class="priority-info">
         <div class="priority-name">山田 マネージャー</div>
@@ -378,7 +390,7 @@
       </div>
       <div class="priority-action">介入する</div>
     </a>
-    <a href="manager.html" class="priority-item">
+    <a href="manager.html?id=nakamura" class="priority-item">
       <div class="priority-num p3">3</div>
       <div class="priority-info">
         <div class="priority-name">中村 マネージャー</div>
@@ -392,7 +404,7 @@
   <div>
     <div class="sec-title">マネージャー一覧 <a href="#">全員 →</a></div>
     <div class="card">
-      <a href="manager.html" class="mgr-item">
+      <a href="manager.html?id=suzuki" class="mgr-item">
         <div class="mgr-rank danger">1</div>
         <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF8B4E);">鈴</div>
         <div class="mgr-info">
@@ -403,7 +415,7 @@
           <span class="status s-red"><span class="status-dot"></span>要対応</span>
         </div>
       </a>
-      <a href="manager.html" class="mgr-item">
+      <a href="manager.html?id=yamada" class="mgr-item">
         <div class="mgr-rank danger">2</div>
         <div class="mgr-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF4E8B);">山</div>
         <div class="mgr-info">
@@ -414,7 +426,7 @@
           <span class="status s-red"><span class="status-dot"></span>要対応</span>
         </div>
       </a>
-      <a href="manager.html" class="mgr-item">
+      <a href="manager.html?id=nakamura" class="mgr-item">
         <div class="mgr-rank warn">3</div>
         <div class="mgr-avatar" style="background:linear-gradient(135deg,#FFD166,#FF8CB4);">中</div>
         <div class="mgr-info">
@@ -425,7 +437,7 @@
           <span class="status s-yellow"><span class="status-dot"></span>注意</span>
         </div>
       </a>
-      <a href="manager.html" class="mgr-item">
+      <a href="manager.html?id=tanaka" class="mgr-item">
         <div class="mgr-rank">4</div>
         <div class="mgr-avatar" style="background:linear-gradient(135deg,#00E5A0,#4EA8FF);">田</div>
         <div class="mgr-info">
@@ -437,7 +449,7 @@
           <div class="mgr-income">¥420k</div>
         </div>
       </a>
-      <a href="manager.html" class="mgr-item">
+      <a href="manager.html?id=takahashi" class="mgr-item">
         <div class="mgr-rank">5</div>
         <div class="mgr-avatar" style="background:linear-gradient(135deg,#4EA8FF,#8B7FFF);">高</div>
         <div class="mgr-info">

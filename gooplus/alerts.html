@@ -48,13 +48,53 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
-    padding: 14px 20px 14px;
+    padding: 14px 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
   }
-  .header-title { font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.02em; }
-  .header-count { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .hdr-back {
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; text-decoration: none; color: var(--text);
+    flex-shrink: 0; border: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .hdr-back:hover { background: rgba(255,255,255,0.08); }
+  .header-title {
+    flex: 1; text-align: center;
+    font-size: 17px; font-weight: 900; color: var(--text); letter-spacing: -0.02em;
+  }
+  .hdr-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .add-btn {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--brand), #FF8CB4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 300; color: white;
+    text-decoration: none; flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(255,78,139,0.4);
+    transition: opacity 0.2s; line-height: 1;
+  }
+  .add-btn:hover { opacity: 0.85; }
+  .notif-btn {
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; text-decoration: none; flex-shrink: 0;
+    border: 1px solid var(--border); transition: background 0.15s;
+  }
+  .notif-btn:hover { background: rgba(255,255,255,0.08); }
+  .hdr-avatar {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--brand), var(--gold));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0; cursor: pointer;
+  }
 
   /* MAIN */
   .main { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
@@ -235,10 +275,13 @@
 
 <!-- HEADER -->
 <div class="header">
-  <div>
-    <div class="header-title">アラート</div>
+  <a href="index.html" class="hdr-back">←</a>
+  <div class="header-title">アラート</div>
+  <div class="hdr-right">
+    <a href="register.html" class="add-btn">＋</a>
+    <a href="alerts.html" class="notif-btn">🔔</a>
+    <div class="hdr-avatar">佐</div>
   </div>
-  <div class="header-count">8件 · 2026.03.23</div>
 </div>
 
 <!-- MAIN -->
@@ -284,7 +327,7 @@
       要対応
     </div>
 
-    <a href="manager.html" class="alert-card alert-red">
+    <a href="manager.html?id=suzuki" class="alert-card alert-red">
       <div class="alert-icon">⛔</div>
       <div class="alert-body">
         <div class="alert-title">鈴木 — 7日間動きなし</div>
@@ -297,7 +340,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-red">
+    <a href="manager.html?id=yamada" class="alert-card alert-red">
       <div class="alert-icon">📉</div>
       <div class="alert-body">
         <div class="alert-title">山田チーム — 売上急落</div>
@@ -310,7 +353,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-red">
+    <a href="manager.html?id=suzuki" class="alert-card alert-red">
       <div class="alert-icon">⏰</div>
       <div class="alert-body">
         <div class="alert-title">期限超過 — みなみ（鈴木担当）</div>
@@ -333,7 +376,7 @@
       注意
     </div>
 
-    <a href="manager.html" class="alert-card alert-yellow">
+    <a href="manager.html?id=nakamura" class="alert-card alert-yellow">
       <div class="alert-icon">📊</div>
       <div class="alert-body">
         <div class="alert-title">中村チーム — 配信頻度低下</div>
@@ -346,7 +389,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-yellow">
+    <a href="index.html" class="alert-card alert-yellow">
       <div class="alert-icon">👤</div>
       <div class="alert-body">
         <div class="alert-title">期限3日以内 — 未稼働5名</div>
@@ -359,7 +402,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-yellow">
+    <a href="manager.html?id=kimura" class="alert-card alert-yellow">
       <div class="alert-icon">💰</div>
       <div class="alert-body">
         <div class="alert-title">木村チーム — 売上伸び鈍化</div>
@@ -372,7 +415,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-yellow">
+    <a href="manager.html?id=nishida" class="alert-card alert-yellow">
       <div class="alert-icon">🔄</div>
       <div class="alert-body">
         <div class="alert-title">西田 — 新規登録が止まっている</div>
@@ -385,7 +428,7 @@
       <div class="alert-arrow">›</div>
     </a>
 
-    <a href="manager.html" class="alert-card alert-yellow">
+    <a href="index.html" class="alert-card alert-yellow">
       <div class="alert-icon">📱</div>
       <div class="alert-body">
         <div class="alert-title">ライバー5名 — アクティブ低下</div>

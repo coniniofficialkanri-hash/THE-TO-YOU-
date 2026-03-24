@@ -41,6 +41,81 @@
     padding-bottom: 80px;
   }
 
+  /* COMMON HEADER */
+  .header {
+    position: sticky;
+    top: 0; z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hdr-back {
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; text-decoration: none; color: var(--text);
+    flex-shrink: 0; border: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .hdr-back:hover { background: rgba(255,255,255,0.08); }
+  .hdr-title {
+    flex: 1; text-align: center;
+    font-size: 16px; font-weight: 900;
+    color: var(--text); letter-spacing: -0.02em;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .hdr-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .hdr-add {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--brand), #FF8CB4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 300; color: white;
+    text-decoration: none; flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(255,78,139,0.4);
+    transition: opacity 0.2s; line-height: 1;
+  }
+  .hdr-add:hover { opacity: 0.85; }
+  .hdr-notif {
+    width: 36px; height: 36px;
+    background: var(--surface2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+    border: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .hdr-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brand), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900; color: white; cursor: pointer;
+  }
+  /* ADD LIVER BTN */
+  .add-liver-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 13px;
+    background: rgba(255,78,139,0.06);
+    border: 1px dashed rgba(255,78,139,0.4);
+    border-radius: 12px; color: var(--brand);
+    font-size: 13px; font-weight: 700;
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 10px;
+  }
+  .add-liver-btn:hover { background: rgba(255,78,139,0.12); border-style: solid; }
+  /* EMPTY STATE */
+  .liver-empty {
+    text-align: center; padding: 32px 20px;
+    color: var(--text3); font-size: 13px;
+  }
+
   /* HERO */
   .hero {
     background: linear-gradient(160deg, #1f0018 0%, var(--dark2) 70%);
@@ -308,9 +383,19 @@
 </head>
 <body>
 
+<!-- COMMON HEADER -->
+<div class="header">
+  <a href="index.html" class="hdr-back">←</a>
+  <div class="hdr-title" id="hdrTitle">マネージャー詳細</div>
+  <div class="hdr-right">
+    <a href="#" class="hdr-add" id="addLiverHdrBtn">＋</a>
+    <a href="alerts.html" class="hdr-notif">🔔</a>
+    <div class="hdr-avatar">佐</div>
+  </div>
+</div>
+
 <!-- HERO -->
 <div class="hero">
-  <a href="index.html" class="back-btn">← ダッシュボードに戻る</a>
   <div class="hero-content">
     <div class="hero-avatar">鈴</div>
     <div class="hero-info">
@@ -354,62 +439,9 @@
 
   <!-- 担当ライバー -->
   <div>
-    <div class="sec-title">担当ライバー（8名）</div>
-    <div class="card">
-      <div class="liver-item">
-        <div class="liver-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF8B4E);">み</div>
-        <div class="liver-info">
-          <div class="liver-name">みなみ</div>
-          <div class="liver-meta">ポコチャ · 未稼働 · 期限超過</div>
-        </div>
-        <div class="liver-right">
-          <span class="badge b-red"><span class="badge-dot"></span>要対応</span>
-        </div>
-      </div>
-      <div class="liver-item">
-        <div class="liver-avatar" style="background:linear-gradient(135deg,#FF4E4E,#FF4E8B);">さ</div>
-        <div class="liver-info">
-          <div class="liver-name">さくら</div>
-          <div class="liver-meta">TikTok · 未稼働 · 期限3日後</div>
-        </div>
-        <div class="liver-right">
-          <span class="badge b-red"><span class="badge-dot"></span>要対応</span>
-        </div>
-      </div>
-      <div class="liver-item">
-        <div class="liver-avatar" style="background:linear-gradient(135deg,#FFD166,#FF8CB4);">り</div>
-        <div class="liver-info">
-          <div class="liver-name">りな</div>
-          <div class="liver-meta">TikTok · 配信頻度低下</div>
-        </div>
-        <div class="liver-right">
-          <span class="badge b-yellow"><span class="badge-dot"></span>注意</span>
-          <div class="liver-income">¥32k</div>
-        </div>
-      </div>
-      <div class="liver-item">
-        <div class="liver-avatar" style="background:linear-gradient(135deg,#FF4E8B,#FFD166);">あ</div>
-        <div class="liver-info">
-          <div class="liver-name">あいか</div>
-          <div class="liver-meta">TikTok · 稼働中</div>
-        </div>
-        <div class="liver-right">
-          <span class="badge b-green"><span class="badge-dot"></span>順調</span>
-          <div class="liver-income">¥128k</div>
-        </div>
-      </div>
-      <div class="liver-item">
-        <div class="liver-avatar" style="background:linear-gradient(135deg,#4EA8FF,#00E5A0);">ゆ</div>
-        <div class="liver-info">
-          <div class="liver-name">ゆいな</div>
-          <div class="liver-meta">TikTok · 稼働中</div>
-        </div>
-        <div class="liver-right">
-          <span class="badge b-green"><span class="badge-dot"></span>順調</span>
-          <div class="liver-income">¥84k</div>
-        </div>
-      </div>
-    </div>
+    <div class="sec-title" id="liverSecTitle">担当ライバー（--名）</div>
+    <a href="#" class="add-liver-btn" id="addLiverBtn">➕ ライバーを追加</a>
+    <div class="card" id="liverList"></div>
   </div>
 
   <!-- 業務フロー -->
@@ -481,5 +513,114 @@
   </a>
 </nav>
 
+<script>
+  /* ── URL パラメータ取得 ── */
+  const mid = new URLSearchParams(location.search).get('id') || 'suzuki';
+
+  /* ── マネージャー初期データ ── */
+  const MGR_DATA = {
+    suzuki:    { label:'鈴', name:'鈴木 マネージャー', status:'red',    statusText:'要対応', statusClass:'b-red',    liverCount:8,  activeCount:5,  alertText:'即時介入が必要な状態です', alertSub:'7日間活動なし · 未稼働3名が期限超過 · 今月売上 ¥0', alertClass:'alert-red', alertIcon:'🚨' },
+    yamada:    { label:'山', name:'山田 マネージャー', status:'red',    statusText:'要対応', statusClass:'b-red',    liverCount:10, activeCount:6,  alertText:'売上急落中・要介入',        alertSub:'先月比 -42% · 主要ライバー2名配信停止 · 目標達成率28%', alertClass:'alert-red', alertIcon:'📉' },
+    nakamura:  { label:'中', name:'中村 マネージャー', status:'yellow', statusText:'注意',   statusClass:'b-yellow', liverCount:12, activeCount:9,  alertText:'配信頻度が低下しています',   alertSub:'担当ライバー平均配信回数 先週比 -30%', alertClass:'alert-yellow', alertIcon:'⚠️' },
+    tanaka:    { label:'田', name:'田中 マネージャー', status:'green',  statusText:'順調',   statusClass:'b-green',  liverCount:12, activeCount:11, alertText:null },
+    takahashi: { label:'高', name:'高橋 マネージャー', status:'green',  statusText:'順調',   statusClass:'b-green',  liverCount:15, activeCount:14, alertText:null },
+  };
+
+  /* ── ライバー初期データ（フォールバック） ── */
+  const INIT_LIVERS = [
+    { id:'il1', nickname:'みなみ', apps:['Pococha'], statusLabel:'未稼働', statusColor:'red',    manager:'suzuki',    avatarBg:'linear-gradient(135deg,#FF4E4E,#FF8B4E)' },
+    { id:'il2', nickname:'さくら', apps:['TikTok'],  statusLabel:'未稼働', statusColor:'red',    manager:'suzuki',    avatarBg:'linear-gradient(135deg,#FF4E4E,#FF4E8B)' },
+    { id:'il3', nickname:'りな',   apps:['TikTok'],  statusLabel:'準備中', statusColor:'yellow', manager:'suzuki',    avatarBg:'linear-gradient(135deg,#FFD166,#FF8CB4)' },
+    { id:'il4', nickname:'あいか', apps:['TikTok'],  statusLabel:'稼働中', statusColor:'green',  manager:'suzuki',    avatarBg:'linear-gradient(135deg,#FF4E8B,#FFD166)' },
+    { id:'il5', nickname:'ゆいな', apps:['TikTok'],  statusLabel:'稼働中', statusColor:'green',  manager:'suzuki',    avatarBg:'linear-gradient(135deg,#4EA8FF,#00E5A0)' },
+    { id:'il6', nickname:'はな',   apps:['TikTok'],  statusLabel:'未稼働', statusColor:'red',    manager:'yamada',    avatarBg:'linear-gradient(135deg,#FF4E8B,#FFD166)' },
+    { id:'il7', nickname:'あおい', apps:['Pococha'], statusLabel:'稼働中', statusColor:'green',  manager:'yamada',    avatarBg:'linear-gradient(135deg,#FF4E4E,#FF8B4E)' },
+    { id:'il8', nickname:'ゆき',   apps:['TikTok'],  statusLabel:'稼働中', statusColor:'green',  manager:'nakamura',  avatarBg:'linear-gradient(135deg,#4EA8FF,#00E5A0)' },
+    { id:'il9', nickname:'ひかり', apps:['TikTok'],  statusLabel:'稼働中', statusColor:'green',  manager:'tanaka',    avatarBg:'linear-gradient(135deg,#FFD166,#FF8CB4)' },
+    { id:'il10',nickname:'なつ',   apps:['TikTok'],  statusLabel:'稼働中', statusColor:'green',  manager:'takahashi', avatarBg:'linear-gradient(135deg,#00E5A0,#4EA8FF)' },
+  ];
+
+  function init() {
+    const m = MGR_DATA[mid];
+    if (!m) return;
+
+    /* ヘッダー・ヒーロー更新 */
+    document.getElementById('hdrTitle').textContent = m.name;
+    document.querySelector('.hero-avatar').textContent = m.label;
+    document.querySelector('.hero-name').textContent = m.name;
+    document.querySelector('.hero-sub').textContent = `担当${m.liverCount}名 · 稼働中${m.activeCount}名`;
+
+    const badgeEl = document.querySelector('.hero-badges');
+    badgeEl.innerHTML = `<span class="badge ${m.statusClass}"><span class="badge-dot"></span>${m.statusText}</span>`;
+
+    /* アラートブロック */
+    const alertEl = document.querySelector('.alert');
+    if (alertEl) {
+      if (m.alertText) {
+        alertEl.className = `alert ${m.alertClass}`;
+        alertEl.querySelector('.alert-icon').textContent = m.alertIcon;
+        alertEl.querySelector('.alert-title').textContent = m.alertText;
+        alertEl.querySelector('.alert-sub').textContent = m.alertSub;
+        alertEl.style.display = '';
+      } else {
+        alertEl.style.display = 'none';
+      }
+    }
+
+    /* KPI */
+    const inactive = m.liverCount - m.activeCount;
+    const rate = m.liverCount > 0 ? Math.round(m.activeCount / m.liverCount * 100) : 0;
+    const kpiCards = document.querySelectorAll('.kpi-row .kpi-card');
+    if (kpiCards[0]) kpiCards[0].querySelector('.kpi-num').textContent = inactive;
+    if (kpiCards[2]) kpiCards[2].querySelector('.kpi-num').textContent = rate + '%';
+
+    /* + ライバーを追加 ボタン */
+    const link = `register.html?manager=${mid}`;
+    document.getElementById('addLiverBtn').href = link;
+    document.getElementById('addLiverHdrBtn').href = link;
+
+    /* 指示ボタン */
+    const btnPrimary = document.querySelector('.btn-primary');
+    if (btnPrimary) btnPrimary.textContent = `📩 ${m.label}に指示を送る`;
+
+    /* ライバーリスト描画 */
+    renderLivers();
+  }
+
+  function renderLivers() {
+    const stored = JSON.parse(localStorage.getItem('livers') || '[]');
+    const myLivers = stored.length
+      ? stored.filter(l => l.manager === mid)
+      : INIT_LIVERS.filter(l => l.manager === mid);
+
+    const m = MGR_DATA[mid] || {};
+    document.getElementById('liverSecTitle').textContent = `担当ライバー（${myLivers.length}名）`;
+
+    const container = document.getElementById('liverList');
+    if (!myLivers.length) {
+      container.innerHTML = '<div class="liver-empty">担当ライバーがいません</div>';
+      return;
+    }
+
+    container.innerHTML = myLivers.map(l => {
+      const sc = l.statusColor === 'green' ? 'b-green' : l.statusColor === 'red' ? 'b-red' : 'b-yellow';
+      const apps = (l.apps || []).join(' · ') || '—';
+      const initial = (l.nickname || l.name || '?')[0];
+      const bg = l.avatarBg || 'linear-gradient(135deg,var(--brand),var(--gold))';
+      return `<div class="liver-item">
+        <div class="liver-avatar" style="background:${bg}">${initial}</div>
+        <div class="liver-info">
+          <div class="liver-name">${l.nickname || l.name}</div>
+          <div class="liver-meta">${apps} · ${l.statusLabel}</div>
+        </div>
+        <div class="liver-right">
+          <span class="badge ${sc}"><span class="badge-dot"></span>${l.statusLabel}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  init();
+</script>
 </body>
 </html>
