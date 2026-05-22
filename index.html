@@ -3,1488 +3,995 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE TO YOU | AI × 業務代行</title>
+<title>THE TO YOU｜AI活用の伴走者</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   CSS VARIABLES
-============================================================ */
-:root {
-  --bg-main: #DDE3EE;
-  --bg-sub: #ffffff;
-  --bg-dark: #07172E;
-  --gold: #C09D59;
-  --gold-light: rgba(192,157,89,0.15);
-  --text: #07172E;
-  --text-muted: rgba(7,23,46,0.5);
-  --text-light: rgba(7,23,46,0.35);
-  --border: rgba(7,23,46,0.1);
-  --border-gold: rgba(192,157,89,0.35);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --max-width: 1100px;
-  --transition: 0.2s ease;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0D1F4E;--navy-deep:#060f2a;
+  --gold:#C9A84C;--gold-dim:rgba(201,168,76,0.15);
+  --blue:#5BC4E5;--blue-dim:rgba(91,196,229,0.10);
+  --white:#fff;--off:#F8F7F3;
+  --text:#14142a;--muted:rgba(20,20,42,0.48);
+  --line:rgba(20,20,42,0.08);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden;line-height:1.8;}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;height:62px;
+  background:rgba(6,15,42,0.88);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:0.5px solid rgba(91,196,229,0.1);
+  transform:translateY(-100%);
+  animation:navSlide 0.7s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes navSlide{to{transform:translateY(0);}}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+  color:var(--gold);letter-spacing:0.14em;text-decoration:none;
+  position:relative;
+}
+.nav-logo::after{
+  content:'';position:absolute;bottom:-3px;left:0;width:0;height:0.5px;
+  background:var(--gold);transition:width 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.nav-logo:hover::after{width:100%;}
+.nav-links{display:flex;gap:30px;list-style:none;}
+.nav-links a{
+  font-size:11px;color:rgba(255,255,255,0.5);
+  text-decoration:none;letter-spacing:0.12em;
+  transition:color 0.3s;position:relative;padding-bottom:2px;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:0.5px;
+  background:var(--gold);transition:width 0.3s;
+}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+  font-size:11px;font-weight:500;color:var(--navy);
+  background:var(--gold);padding:9px 20px;
+  letter-spacing:0.1em;text-decoration:none;
+  transition:opacity 0.3s,transform 0.2s;
+}
+.nav-cta:hover{opacity:0.85;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--gold);transition:all 0.3s;}
+.hamburger span:last-child{width:14px;}
+
+/* ─── HERO ─── */
+#hero{
+  min-height:100vh;background:var(--navy-deep);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;padding-top:62px;
 }
 
-/* ============================================================
-   RESET & BASE
-============================================================ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: var(--bg-main);
-  color: var(--text);
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
+/* Animated grid */
+.h-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(91,196,229,0.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(91,196,229,0.045) 1px,transparent 1px);
+  background-size:36px 36px;
+  opacity:0;animation:fadeIn 2s 0.4s forwards;
 }
-a { text-decoration: none; color: inherit; }
-img { max-width: 100%; display: block; }
+/* Floating particles */
+.h-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.h-p{
+  position:absolute;border-radius:50%;
+  animation:floatUp linear infinite;opacity:0;
+}
+/* Circles */
+.h-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(91,196,229,0.07);
+  pointer-events:none;
+  animation:ringPulse ease-in-out infinite;
+}
+.h-ring-1{width:500px;height:500px;top:-100px;right:-160px;animation-duration:6s;animation-delay:0s;}
+.h-ring-2{width:320px;height:320px;top:20px;right:-60px;animation-duration:8s;animation-delay:1s;}
+.h-ring-3{width:180px;height:180px;top:120px;right:60px;animation-duration:5s;animation-delay:0.5s;}
+@keyframes ringPulse{0%,100%{opacity:0.5;transform:scale(1);}50%{opacity:1;transform:scale(1.04);}}
 
-/* ============================================================
-   HEADER / NAV
-============================================================ */
-.header {
-  background: var(--bg-dark);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 1px solid rgba(192,157,89,0.15);
+/* Accent lines */
+.h-line{position:absolute;pointer-events:none;overflow:hidden;}
+.h-line::after{
+  content:'';position:absolute;inset:0;
+  animation:lineReveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation-delay:1.2s;transform:scaleX(0);transform-origin:left;
 }
-.header-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 20px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  color: #fff;
-  letter-spacing: 0.08em;
-}
-.logo-mark {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  width: 28px;
-}
-.logo-mark span {
-  display: block;
-  height: 2px;
-  background: var(--gold);
-  border-radius: 1px;
-  transition: width var(--transition);
-}
-.logo-mark span:nth-child(1) { width: 100%; }
-.logo-mark span:nth-child(2) { width: 100%; }
-.logo-mark span:nth-child(3) { width: 100%; }
-.logo-mark span:nth-child(4) { width: 55%; }
+.h-line-1{top:130px;right:-60px;width:340px;height:1px;transform:rotate(-17deg);}
+.h-line-1::after{background:linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent);}
+.h-line-2{top:175px;right:-30px;width:220px;height:1px;transform:rotate(-17deg);}
+.h-line-2::after{background:linear-gradient(90deg,transparent,rgba(91,196,229,0.35),transparent);animation-delay:1.5s;}
+@keyframes lineReveal{to{transform:scaleX(1);}}
 
-/* PC NAV */
-.nav-links {
-  display: none;
-  align-items: center;
-  gap: 32px;
-  list-style: none;
+/* Anim block */
+.h-anim-wrap{
+  position:relative;z-index:2;
+  padding:32px 24px 0;
+  opacity:0;transform:translateY(40px);
+  animation:riseUp 1s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-.nav-links a {
-  font-size: 13px;
-  color: rgba(255,255,255,0.65);
-  letter-spacing: 0.04em;
-  transition: color var(--transition);
-  position: relative;
+.h-anim-inner{
+  max-width:520px;margin:0 auto;
+  background:rgba(255,255,255,0.03);
+  border:0.5px solid rgba(91,196,229,0.18);
+  border-radius:6px;padding:20px 18px 16px;
 }
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 1px;
-  background: var(--gold);
-  transition: width var(--transition);
+.a-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:0.26em;
+  color:var(--blue);text-transform:uppercase;
+  text-align:center;margin-bottom:14px;
 }
-.nav-links a:hover { color: #fff; }
-.nav-links a:hover::after { width: 100%; }
-.nav-cta {
-  display: none;
-  background: var(--gold);
-  color: var(--bg-dark) !important;
-  font-weight: 700 !important;
-  font-size: 12px !important;
-  padding: 8px 18px;
-  border-radius: var(--radius-sm);
-  transition: opacity var(--transition) !important;
+.a-cards{display:flex;gap:8px;margin-bottom:12px;}
+.a-card{
+  flex:1;background:rgba(91,196,229,0.06);
+  border:0.5px solid rgba(91,196,229,0.2);
+  border-radius:5px;padding:9px 10px;min-width:0;
 }
-.nav-cta:hover { opacity: 0.88; }
-.nav-cta::after { display: none !important; }
+.a-card-lbl{font-size:9px;color:rgba(91,196,229,0.65);letter-spacing:0.07em;margin-bottom:5px;}
+.a-dots{display:flex;gap:4px;align-items:center;}
+.a-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:aDot 1.4s ease-in-out infinite;}
+.a-dot:nth-child(2){animation-delay:0.2s;}.a-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes aDot{0%,100%{opacity:0.25;transform:scale(0.7);}50%{opacity:1;transform:scale(1.15);}}
+.a-bars{display:flex;flex-direction:column;gap:3px;margin-top:2px;}
+.a-bar{height:3px;border-radius:2px;background:rgba(91,196,229,0.2);position:relative;overflow:hidden;}
+.a-bar-f{position:absolute;left:0;top:0;bottom:0;background:var(--blue);border-radius:2px;animation:aScan 2s ease-in-out infinite;}
+.a-bar:nth-child(1) .a-bar-f{width:70%;animation-delay:0s;}
+.a-bar:nth-child(2) .a-bar-f{width:45%;animation-delay:0.3s;}
+.a-bar:nth-child(3) .a-bar-f{width:85%;animation-delay:0.6s;}
+@keyframes aScan{0%{opacity:0.35;}50%{opacity:1;}100%{opacity:0.35;}}
+.a-arrows{display:flex;justify-content:center;gap:6px;margin-bottom:10px;}
+.a-arr{font-size:10px;color:var(--gold);opacity:0;animation:aArr 1.8s ease-in-out infinite;}
+.a-arr:nth-child(2){animation-delay:0.3s;}.a-arr:nth-child(3){animation-delay:0.6s;}
+@keyframes aArr{0%,100%{opacity:0;transform:translateX(-5px);}50%{opacity:1;transform:translateX(0);}}
+.a-chart{background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:5px;padding:10px 12px 8px;}
+.a-chart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.a-chart-lbl{font-size:9px;color:rgba(255,255,255,0.35);}
+.a-chart-val{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--gold);}
+.a-chart-unit{font-size:9px;color:rgba(201,168,76,0.55);margin-left:2px;}
+.a-chart-bars{display:flex;align-items:flex-end;gap:5px;height:68px;}
+.a-bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.a-b{width:100%;border-radius:2px 2px 0 0;background:rgba(201,168,76,0.18);position:relative;overflow:hidden;}
+.a-b-f{position:absolute;bottom:0;left:0;right:0;border-radius:2px 2px 0 0;background:var(--gold);animation:barUp 3s cubic-bezier(0.16,1,0.3,1) infinite;}
+.a-bc:nth-child(1) .a-b-f{animation-delay:0.1s;}.a-bc:nth-child(2) .a-b-f{animation-delay:0.3s;}
+.a-bc:nth-child(3) .a-b-f{animation-delay:0.5s;}.a-bc:nth-child(4) .a-b-f{animation-delay:0.7s;}
+.a-bc:nth-child(5) .a-b-f{animation-delay:0.9s;}.a-bc:nth-child(6) .a-b-f{animation-delay:1.1s;}
+@keyframes barUp{0%{height:15%;opacity:0.4;}60%{height:100%;opacity:1;}85%{height:100%;opacity:1;}100%{height:15%;opacity:0.4;}}
+.a-bl{font-size:7px;color:rgba(255,255,255,0.22);}
+.a-trend{margin-top:6px;height:1.5px;background:rgba(255,255,255,0.04);border-radius:1px;overflow:hidden;}
+.a-trend-f{height:100%;background:var(--blue);animation:trendW 3s cubic-bezier(0.16,1,0.3,1) infinite;}
+@keyframes trendW{0%{width:0;opacity:0;}60%{width:100%;opacity:1;}85%{width:100%;opacity:1;}100%{width:0;opacity:0;}}
+.a-stats{display:flex;gap:6px;margin-top:10px;}
+.a-stat{flex:1;background:rgba(201,168,76,0.07);border:0.5px solid rgba(201,168,76,0.18);border-radius:5px;padding:6px 8px;text-align:center;}
+.a-stat-n{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--gold);display:block;animation:sStat 3s ease-in-out infinite;}
+@keyframes sStat{0%{opacity:0.45;}60%{opacity:1;}100%{opacity:0.45;}}
+.a-stat-d{font-size:8px;color:rgba(255,255,255,0.28);display:block;margin-top:1px;}
 
-/* HAMBURGER */
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 4px;
-  background: none;
-  border: none;
+/* Hero copy */
+.h-copy{
+  position:relative;z-index:2;
+  padding:22px 24px 52px;max-width:540px;margin:0 auto;width:100%;
 }
-.hamburger span {
-  display: block;
-  width: 22px;
-  height: 1.5px;
-  background: var(--gold);
-  border-radius: 2px;
-  transition: all 0.25s ease;
+.h-tag{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;font-size:10px;
+  letter-spacing:0.22em;color:var(--blue);
+  border:0.5px solid rgba(91,196,229,0.35);padding:5px 13px;
+  margin-bottom:18px;text-transform:uppercase;
+  opacity:0;animation:riseUp 0.8s 1s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-.hamburger span:last-child { width: 14px; }
-.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 22px; }
-.hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 22px; }
+.h-catch{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(26px,6.5vw,42px);font-weight:700;
+  color:#fff;line-height:1.5;letter-spacing:0.02em;margin-bottom:18px;
+}
+.h-catch em{font-style:normal;color:var(--gold);}
+.h-catch .line{
+  display:block;overflow:hidden;
+}
+.h-catch .line span{
+  display:block;
+  opacity:0;transform:translateY(100%);
+  animation:lineUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.h-catch .line:nth-child(1) span{animation-delay:1.1s;}
+.h-catch .line:nth-child(2) span{animation-delay:1.25s;}
+.h-catch .line:nth-child(3) span{animation-delay:1.4s;}
+.h-catch .line:nth-child(4) span{animation-delay:1.55s;}
+@keyframes lineUp{to{opacity:1;transform:translateY(0);}}
+.h-sub{
+  font-size:13px;color:rgba(255,255,255,0.48);
+  line-height:1.9;margin-bottom:30px;letter-spacing:0.04em;
+  opacity:0;animation:riseUp 0.8s 1.8s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.h-btn{
+  display:inline-flex;align-items:center;gap:14px;
+  background:var(--gold);color:var(--navy);
+  font-size:14px;font-weight:500;padding:18px 28px;
+  letter-spacing:0.07em;text-decoration:none;
+  transition:opacity 0.3s,transform 0.25s,box-shadow 0.3s;
+  opacity:0;animation:riseUp 0.8s 2s cubic-bezier(0.16,1,0.3,1) forwards;
+  position:relative;overflow:hidden;
+}
+.h-btn::before{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);
+  animation:btnShine 3s 2.5s ease-in-out infinite;
+}
+@keyframes btnShine{0%{left:-100%;}30%{left:150%;}100%{left:150%;}}
+.h-btn:hover{opacity:0.88;transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,168,76,0.25);}
+.h-note{
+  margin-top:12px;font-size:10px;
+  color:rgba(255,255,255,0.28);letter-spacing:0.1em;
+  opacity:0;animation:fadeIn 0.8s 2.2s forwards;
+}
+.scroll-hint{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding-bottom:36px;position:relative;z-index:2;
+  opacity:0;animation:fadeIn 1s 2.5s forwards;
+}
+.scroll-hint span{font-family:'Cormorant Garamond',serif;font-size:9px;letter-spacing:0.26em;color:rgba(255,255,255,0.28);text-transform:uppercase;}
+.scroll-bar{width:1px;height:30px;overflow:hidden;background:rgba(255,255,255,0.1);}
+.scroll-bar-inner{width:100%;height:50%;background:var(--gold);animation:scrollDrop 2s ease-in-out infinite;}
+@keyframes scrollDrop{0%{transform:translateY(-100%);}50%{transform:translateY(100%);}100%{transform:translateY(200%);}}
 
-/* MOBILE MENU */
-.mobile-menu {
-  display: none;
-  background: var(--bg-dark);
-  border-top: 1px solid rgba(192,157,89,0.15);
-  padding: 20px;
+/* ─── COMMON ─── */
+@keyframes riseUp{to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{to{opacity:1;}}
+@keyframes floatUp{0%{transform:translateY(0);opacity:0;}10%{opacity:1;}90%{opacity:0.6;}100%{transform:translateY(-120vh);opacity:0;}}
+section{padding:88px 24px;}
+.wrap{max-width:700px;margin:0 auto;}
+.s-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:0.3em;color:var(--blue);
+  text-transform:uppercase;display:block;margin-bottom:10px;
 }
-.mobile-menu.open { display: block; }
-.mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 0; }
-.mobile-menu a {
-  display: block;
-  padding: 14px 0;
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  letter-spacing: 0.04em;
-  transition: color var(--transition);
+.s-title{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(22px,4.8vw,30px);font-weight:700;
+  line-height:1.5;color:var(--navy);margin-bottom:44px;
 }
-.mobile-menu a:hover { color: var(--gold); }
-.mobile-menu .m-cta {
-  display: block;
-  margin-top: 16px;
-  background: var(--gold);
-  color: var(--bg-dark);
-  font-weight: 700;
-  font-size: 14px;
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  text-align: center;
+/* Animated underline on section titles */
+.s-title-line{
+  display:inline-block;position:relative;
 }
+.s-title-line::after{
+  content:'';position:absolute;bottom:-6px;left:0;
+  width:0;height:2px;background:var(--gold);
+  transition:width 0.8s cubic-bezier(0.16,1,0.3,1);
+}
+.s-title-line.active::after{width:100%;}
 
-/* ============================================================
-   HERO
-============================================================ */
-.hero {
-  background: var(--bg-main);
-  padding: 52px 20px 48px;
+/* Scroll reveal */
+.reveal{
+  opacity:0;transform:translateY(52px);
+  transition:opacity 1.1s cubic-bezier(0.16,1,0.3,1),
+              transform 1.1s cubic-bezier(0.16,1,0.3,1);
 }
-.hero-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-.hero-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(7,23,46,0.07);
-  border: 1px solid rgba(7,23,46,0.16);
-  color: var(--text);
-  font-size: 10px;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.14em;
-  padding: 5px 14px;
-  border-radius: 100px;
-  margin-bottom: 18px;
-  width: fit-content;
-}
-.hero-tag::before {
-  content: '';
-  width: 5px; height: 5px;
-  background: var(--gold);
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100%{ opacity:1; transform:scale(1); }
-  50%{ opacity:0.3; transform:scale(0.7); }
-}
-.hero-catch {
-  font-size: clamp(28px, 6vw, 52px);
-  font-weight: 700;
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  margin-bottom: 16px;
-}
-.hero-catch .accent { color: var(--gold); }
-.hero-sub {
-  font-size: clamp(13px, 2vw, 15px);
-  color: var(--text-muted);
-  line-height: 1.85;
-  margin-bottom: 32px;
-  max-width: 480px;
-}
-.hero-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--bg-dark);
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 16px 28px;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0.03em;
-  transition: opacity var(--transition);
-  border: none;
-  cursor: pointer;
-}
-.btn-primary:hover { opacity: 0.85; }
-.btn-primary svg { flex-shrink: 0; }
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,0.5);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 13px;
-  padding: 14px 28px;
-  border-radius: var(--radius-sm);
-  transition: all var(--transition);
-  cursor: pointer;
-}
-.btn-secondary:hover { background: #fff; color: var(--text); }
+.reveal.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.08s;}.d2{transition-delay:0.18s;}.d3{transition-delay:0.28s;}
+.d4{transition-delay:0.4s;}.d5{transition-delay:0.52s;}.d6{transition-delay:0.64s;}
 
-/* HERO ILLUST */
-.hero-illust-wrap {
-  background: var(--bg-sub);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  padding: 32px 20px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+/* Slide from left */
+.reveal-left{
+  opacity:0;transform:translateX(-40px);
+  transition:opacity 1s cubic-bezier(0.16,1,0.3,1),
+              transform 1s cubic-bezier(0.16,1,0.3,1);
 }
-.hero-illust-wrap svg {
-  width: 100%;
-  max-width: 340px;
-  height: auto;
-}
-.illust-caption {
-  font-size: 11px;
-  color: var(--text-light);
-  letter-spacing: 0.06em;
-  text-align: center;
-}
+.reveal-left.in{opacity:1;transform:translateX(0);}
 
-/* ============================================================
-   STATS
-============================================================ */
-.stats {
-  background: var(--bg-sub);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+/* ─── CREDIBILITY BAR ─── */
+.cred-bar{
+  background:var(--navy);padding:20px 24px;
+  overflow:hidden;
 }
-.stats-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.cred-inner{
+  max-width:700px;margin:0 auto;
+  display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+  justify-content:center;
 }
-.stat-item {
-  text-align: center;
-  padding: 22px 12px;
+.cred-item{
+  display:flex;align-items:center;gap:10px;
+  padding:0 20px;border-right:0.5px solid rgba(91,196,229,0.2);
 }
-.stat-item:not(:last-child) {
-  border-right: 1px solid var(--border);
-}
-.stat-num {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(18px, 3vw, 26px);
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-.stat-unit {
-  font-size: 11px;
-  color: var(--gold);
-  font-weight: 600;
-  margin-left: 1px;
-}
-.stat-label {
-  font-size: 10px;
-  color: var(--text-light);
-  margin-top: 4px;
-  letter-spacing: 0.04em;
-}
+.cred-item:last-child{border-right:none;}
+.cred-icon{font-size:18px;opacity:0.8;}
+.cred-text{font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:0.06em;line-height:1.5;}
+.cred-text strong{color:var(--gold);font-weight:500;display:block;font-size:12px;}
 
-/* ============================================================
-   SECTION COMMON
-============================================================ */
-.section {
-  padding: 60px 20px;
+/* ─── VMV ─── */
+#vmv{background:var(--off);}
+#vmv .s-title{color:var(--navy);}
+.vmv-list{display:flex;flex-direction:column;gap:0;}
+.vmv-item{
+  padding:30px 0;border-bottom:0.5px solid var(--line);
+  display:flex;flex-direction:column;gap:7px;
 }
-.section-sub {
-  background: var(--bg-sub);
+.vmv-item:first-child{padding-top:0;}
+.vmv-item:last-child{border-bottom:none;padding-bottom:0;}
+.vmv-lbl{
+  font-family:'Cormorant Garamond',serif;
+  font-size:10px;letter-spacing:0.28em;
+  color:var(--blue);text-transform:uppercase;
 }
-.sec-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 9.5px;
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  font-weight: 600;
+.vmv-ttl{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(18px,4vw,24px);font-weight:700;
+  color:var(--navy);line-height:1.55;
+  position:relative;padding-left:16px;
 }
-.sec-title {
-  font-size: clamp(20px, 3.5vw, 30px);
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.45;
-  margin-bottom: 8px;
+.vmv-ttl::before{
+  content:'';position:absolute;left:0;top:6px;
+  width:3px;height:calc(100% - 8px);
+  background:var(--gold);border-radius:2px;
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  transition-delay:0.2s;
 }
-.sec-desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.8;
-  margin-bottom: 32px;
-  max-width: 520px;
-}
-.section-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
+.vmv-item.in .vmv-ttl::before{transform:scaleY(1);}
+.vmv-desc{font-size:13px;color:var(--muted);line-height:1.9;padding-left:16px;}
 
-/* ============================================================
-   PLANS — アコーディオン版
-============================================================ */
-.plans-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* ─── SERVICE ─── */
+#service{background:var(--white);}
+.plan-grid{
+  display:flex;flex-direction:column;gap:16px;
 }
+.plan-card{
+  border:0.5px solid var(--line);padding:28px 26px;
+  position:relative;overflow:hidden;
+  transition:border-color 0.4s,transform 0.3s,box-shadow 0.4s;
+  cursor:default;
+}
+.plan-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.04),transparent);
+  opacity:0;transition:opacity 0.4s;
+}
+.plan-card:hover{
+  border-color:rgba(201,168,76,0.35);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(13,31,78,0.08);
+}
+.plan-card:hover::before{opacity:1;}
+.plan-card.feat{
+  background:var(--navy);border-color:var(--navy);
+}
+.plan-card.feat:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 48px rgba(13,31,78,0.25);
+}
+.plan-badge{
+  display:inline-block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:9px;letter-spacing:0.2em;
+  padding:4px 10px;margin-bottom:14px;text-transform:uppercase;
+}
+.plan-badge.def{color:var(--blue);border:0.5px solid rgba(91,196,229,0.3);}
+.plan-badge.hot{color:var(--navy);background:var(--gold);}
+.plan-name{
+  font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;
+  color:var(--navy);margin-bottom:6px;
+}
+.plan-card.feat .plan-name{color:#fff;}
+.plan-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:38px;font-weight:600;color:var(--gold);
+  line-height:1;margin-bottom:18px;
+}
+.plan-price span{font-size:13px;font-weight:400;color:var(--muted);margin-left:4px;}
+.plan-card.feat .plan-price span{color:rgba(255,255,255,0.35);}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.plan-feats li{
+  font-size:13px;color:var(--muted);
+  padding-left:18px;position:relative;line-height:1.7;
+}
+.plan-feats li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:8px;height:1px;background:var(--gold);
+}
+.plan-card.feat .plan-feats li{color:rgba(255,255,255,0.55);}
+.spot-card{
+  border:0.5px dashed rgba(13,31,78,0.18);
+  padding:24px;display:flex;flex-direction:column;gap:7px;
+  transition:border-color 0.3s;
+}
+.spot-card:hover{border-color:rgba(201,168,76,0.3);}
+.spot-name{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:600;color:var(--navy);}
+.spot-desc{font-size:13px;color:var(--muted);line-height:1.85;}
 
-.plan-card {
-  background: var(--bg-main);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: box-shadow var(--transition);
+/* ─── WHY ─── */
+#why{background:var(--navy);}
+#why .s-title{color:#fff;}
+#why .s-label{color:var(--blue);}
+.why-list{display:flex;flex-direction:column;gap:0;}
+.why-item{
+  display:flex;gap:22px;align-items:flex-start;
+  padding:32px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);
 }
-.plan-card:hover {
-  box-shadow: 0 8px 24px rgba(7,23,46,0.07);
+.why-item:last-child{border-bottom:none;}
+.why-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:54px;font-weight:600;
+  color:var(--gold);line-height:1;min-width:58px;
+  opacity:0.55;transition:opacity 0.4s;
 }
-.plan-card.featured {
-  background: var(--bg-dark);
-  border-color: var(--gold);
+.why-item:hover .why-n{opacity:1;}
+.why-body{}
+.why-ttl{
+  font-family:'Noto Serif JP',serif;
+  font-size:17px;font-weight:700;
+  color:#fff;margin-bottom:9px;line-height:1.5;
 }
+.why-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.95;}
 
-/* カードヘッダー（クリック可能な行） */
-.plan-card-header {
-  padding: 18px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: background var(--transition);
-  user-select: none;
+/* ─── PROFILE ─── */
+#profile{background:var(--white);}
+.profile-wrap{display:flex;flex-direction:column;gap:28px;}
+.profile-top{display:flex;align-items:flex-start;gap:20px;}
+.profile-av{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--navy);display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;
+  color:var(--gold);flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(201,168,76,0.2);
+  transition:box-shadow 0.4s;
 }
-.plan-card-header:hover { background: rgba(7,23,46,0.03); }
-.plan-card.featured .plan-card-header:hover { background: rgba(255,255,255,0.03); }
+.profile-av:hover{box-shadow:0 0 0 6px rgba(201,168,76,0.15);}
+.profile-meta{}
+.profile-name{
+  font-family:'Noto Serif JP',serif;font-size:22px;font-weight:700;
+  color:var(--navy);margin-bottom:3px;
+}
+.profile-en{
+  font-family:'Cormorant Garamond',serif;font-size:11px;
+  letter-spacing:0.22em;color:var(--blue);
+  text-transform:uppercase;display:block;margin-bottom:12px;
+}
+/* Career badges */
+.career-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.career-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;letter-spacing:0.05em;
+  padding:5px 12px;border-radius:2px;
+}
+.career-badge.gold{color:var(--navy);background:var(--gold);}
+.career-badge.line{color:var(--navy);border:0.5px solid rgba(13,31,78,0.25);}
+.career-badge.blue{color:var(--navy);border:0.5px solid rgba(91,196,229,0.5);background:rgba(91,196,229,0.06);}
+.profile-text{font-size:14px;color:var(--muted);line-height:1.95;margin-bottom:20px;}
+.profile-text strong{color:var(--navy);font-weight:500;}
+.profile-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.profile-tag{
+  font-size:11px;color:var(--navy);
+  border:0.5px solid var(--line);padding:5px 12px;
+  letter-spacing:0.05em;transition:border-color 0.3s,color 0.3s;
+}
+.profile-tag:hover{border-color:var(--gold);color:var(--navy);}
 
-.plan-icon {
-  width: 44px; height: 44px;
-  border-radius: 10px;
-  background: rgba(7,23,46,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+/* ─── FLOW ─── */
+#flow{background:var(--off);}
+#flow .s-title{color:var(--navy);}
+.flow-list{display:flex;flex-direction:column;}
+.flow-item{
+  display:flex;gap:22px;padding:26px 0;
+  border-bottom:0.5px solid var(--line);
+  position:relative;
 }
-.plan-card.featured .plan-icon { background: var(--gold-light); }
-.plan-info { flex: 1; }
-.plan-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 3px;
+.flow-item:last-child{border-bottom:none;}
+.flow-step{
+  font-family:'Cormorant Garamond',serif;
+  font-size:12px;font-weight:600;
+  color:var(--blue);letter-spacing:0.12em;
+  min-width:52px;padding-top:3px;
 }
-.plan-card.featured .plan-name { color: #fff; }
-.plan-price {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: var(--gold);
-  font-weight: 600;
+.flow-body{}
+.flow-ttl{
+  font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;
+  color:var(--navy);margin-bottom:7px;
 }
+.flow-desc{font-size:13px;color:var(--muted);line-height:1.88;}
 
-/* + トグルボタン */
-.plan-toggle {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: rgba(7,23,46,0.08);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease, background 0.2s, border-color 0.2s;
+/* ─── CTA ─── */
+#contact{background:var(--navy-deep);padding:88px 24px;}
+.cta-wrap{max-width:580px;margin:0 auto;text-align:center;}
+.cta-title{
+  font-family:'Noto Serif JP',serif;
+  font-size:clamp(22px,5vw,32px);font-weight:700;
+  color:#fff;line-height:1.55;margin-bottom:12px;
 }
-.plan-card.featured .plan-toggle {
-  background: rgba(192,157,89,0.15);
-  border-color: rgba(192,157,89,0.3);
+.cta-title em{font-style:normal;color:var(--gold);}
+.cta-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.9;margin-bottom:44px;}
+.form-wrap{display:flex;flex-direction:column;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-lbl{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:0.1em;}
+.form-input,.form-ta{
+  background:rgba(255,255,255,0.04);
+  border:0.5px solid rgba(255,255,255,0.12);
+  color:#fff;font-family:'Noto Sans JP',sans-serif;
+  font-size:13px;padding:13px 16px;outline:none;
+  transition:border-color 0.3s,background 0.3s;width:100%;
 }
-.plan-card.open .plan-toggle {
-  transform: rotate(45deg);
-  background: var(--bg-dark);
-  border-color: var(--bg-dark);
+.form-input:focus,.form-ta:focus{
+  border-color:rgba(91,196,229,0.55);
+  background:rgba(91,196,229,0.04);
 }
-.plan-card.open .plan-toggle svg { stroke: #fff; }
-.plan-card.featured.open .plan-toggle {
-  background: var(--gold);
-  border-color: var(--gold);
+.form-input::placeholder,.form-ta::placeholder{color:rgba(255,255,255,0.2);}
+.form-ta{min-height:130px;resize:vertical;}
+.form-btn{
+  background:var(--gold);color:var(--navy);border:none;cursor:pointer;
+  font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:500;
+  padding:18px 24px;letter-spacing:0.08em;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:opacity 0.3s,transform 0.25s;
+  position:relative;overflow:hidden;margin-top:4px;
 }
-.plan-card.featured.open .plan-toggle svg { stroke: var(--bg-dark); }
+.form-btn::before{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  animation:btnShine 4s 1s ease-in-out infinite;
+}
+.form-btn:hover{opacity:0.88;transform:translateY(-1px);}
+.form-note{font-size:11px;color:rgba(255,255,255,0.22);letter-spacing:0.08em;margin-top:8px;}
 
-/* アコーディオン本体 */
-.plan-body-accordion {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.45s ease;
+/* ─── FOOTER ─── */
+footer{background:#040b1e;padding:36px 24px;text-align:center;border-top:0.5px solid rgba(91,196,229,0.08);}
+.ft-logo{
+  font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;
+  color:var(--gold);letter-spacing:0.15em;display:block;margin-bottom:10px;
 }
-.plan-card.open .plan-body-accordion {
-  max-height: 1400px;
-}
-.plan-body-inner {
-  padding: 20px 20px 20px;
-  border-top: 1px solid var(--border);
-  background: var(--bg-sub);
-}
-.plan-card.featured .plan-body-inner {
-  background: var(--bg-sub);
-  border-top-color: rgba(192,157,89,0.2);
-}
+.ft-text{font-size:11px;color:rgba(255,255,255,0.22);letter-spacing:0.08em;line-height:1.9;}
 
-/* PLAN FEATURES */
-.plan-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-.plan-feature { display: flex; align-items: flex-start; gap: 10px; }
-.feature-check {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: var(--gold-light);
-  border: 1px solid rgba(192,157,89,0.3);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 2px;
+/* ─── PC ─── */
+@media(min-width:768px){
+  nav{padding:0 48px;}
+  .hamburger{display:none;}
+  .nav-links{display:flex;}
+  section{padding:108px 48px;}
+  #contact{padding:108px 48px;}
+  .h-anim-wrap{padding:40px 48px 0;}
+  .h-anim-inner{max-width:580px;}
+  .h-copy{padding:28px 48px 64px;max-width:640px;}
+  .plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .spot-card{grid-column:1/-1;}
+  .profile-wrap{flex-direction:row;gap:36px;}
+  .vmv-item{flex-direction:row;gap:36px;}
+  .vmv-lbl{min-width:78px;padding-top:4px;}
+  .vmv-ttl{padding-left:0;}
+  .vmv-ttl::before{display:none;}
+  .vmv-desc{padding-left:0;}
+  .cred-bar{padding:20px 48px;}
 }
-.feature-text { font-size: 13px; color: var(--text); line-height: 1.6; }
-.feature-text strong { color: var(--text); font-weight: 700; display: block; }
-.feature-text span { color: var(--text-muted); font-size: 12px; }
-
-/* ANALYSIS VISUAL */
-.analysis-visual {
-  background: var(--bg-sub);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  margin-bottom: 24px;
+@media(min-width:1024px){
+  .plan-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .spot-card{grid-column:auto;}
 }
-.analysis-visual-title { font-size: 11px; color: var(--text-light); letter-spacing: 0.08em; margin-bottom: 16px; font-family: 'Inter', sans-serif; text-transform: uppercase; }
-.analysis-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-.abar-row { display: flex; align-items: center; gap: 10px; }
-.abar-label { font-size: 11px; color: var(--text-muted); width: 80px; flex-shrink: 0; }
-.abar-track { flex: 1; height: 8px; background: rgba(7,23,46,0.07); border-radius: 4px; overflow: hidden; }
-.abar-fill { height: 100%; border-radius: 4px; background: var(--gold); }
-.abar-val { font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--gold); width: 36px; text-align: right; }
-.analysis-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.ametric { background: rgba(7,23,46,0.04); border-radius: 8px; padding: 10px; text-align: center; }
-.ametric-num { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
-.ametric-label { font-size: 9.5px; color: var(--text-light); margin-top: 2px; }
-
-/* FLOW VISUAL */
-.flow-visual { display: flex; align-items: center; gap: 0; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; }
-.flow-step {
-  flex: 1; min-width: 80px;
-  background: var(--bg-sub);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px 8px;
-  text-align: center;
-}
-.flow-step-num { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
-.flow-step-text { font-size: 10.5px; color: var(--text); font-weight: 700; line-height: 1.4; }
-.flow-arrow { color: var(--gold); font-size: 16px; padding: 0 6px; flex-shrink: 0; }
-
-/* GPT VISUAL */
-.gpt-visual {
-  background: var(--bg-dark);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  margin-bottom: 24px;
-}
-.gpt-chat { display: flex; flex-direction: column; gap: 10px; }
-.gpt-msg { display: flex; gap: 8px; align-items: flex-start; }
-.gpt-msg.user { flex-direction: row-reverse; }
-.gpt-avatar {
-  width: 28px; height: 28px; border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.gpt-msg.user .gpt-avatar { background: var(--gold-light); border: 1px solid rgba(192,157,89,0.3); }
-.gpt-bubble {
-  background: rgba(255,255,255,0.07);
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-size: 11.5px;
-  color: rgba(255,255,255,0.8);
-  max-width: 200px;
-  line-height: 1.6;
-}
-.gpt-msg.user .gpt-bubble { background: rgba(192,157,89,0.2); color: #fff; }
-.gpt-label { font-size: 9.5px; color: rgba(255,255,255,0.25); text-align: center; margin-top: 4px; }
-
-/* PLAN VISUALS — アコーディオン内の図解エリア（グレーとネイビーの中間色） */
-.plan-body-inner .flow-visual {
-  background: #1E3550;
-  border-radius: var(--radius-md);
-  padding: 16px 12px;
-}
-.plan-body-inner .flow-step {
-  background: rgba(255,255,255,0.07);
-  border-color: rgba(255,255,255,0.12);
-}
-.plan-body-inner .flow-step-text { color: rgba(255,255,255,0.88); }
-.plan-body-inner .flow-step-num { color: var(--gold); }
-.plan-body-inner .flow-arrow { color: var(--gold); }
-
-.plan-body-inner .analysis-visual {
-  background: #1E3550;
-  border-color: rgba(255,255,255,0.08);
-}
-.plan-body-inner .analysis-visual-title { color: rgba(255,255,255,0.35); }
-.plan-body-inner .abar-label { color: rgba(255,255,255,0.55); }
-.plan-body-inner .abar-track { background: rgba(255,255,255,0.1); }
-.plan-body-inner .ametric { background: rgba(255,255,255,0.07); }
-.plan-body-inner .ametric-num { color: #fff; }
-.plan-body-inner .ametric-label { color: rgba(255,255,255,0.38); }
-
-.plan-body-inner .gpt-visual { background: #1E3550; }
-
-/* PLAN NOTE & CTA */
-.plan-note {
-  background: rgba(7,23,46,0.02);
-  border-left: 3px solid var(--gold);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 12px 16px;
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 20px;
-}
-.plan-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--bg-dark);
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 15px 28px;
-  border-radius: var(--radius-sm);
-  width: 100%;
-  transition: opacity var(--transition);
-}
-.plan-cta:hover { opacity: 0.85; }
-.plan-card.featured .plan-cta { background: var(--gold); color: var(--bg-dark); }
-
-/* ============================================================
-   INDUSTRY SERVICES
-============================================================ */
-.industry-grid { display: flex; flex-direction: column; gap: 12px; }
-
-.industry-item {
-  background: var(--bg-sub);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.industry-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 22px;
-  cursor: pointer;
-  transition: background var(--transition);
-  user-select: none;
-}
-.industry-header:hover { background: rgba(7,23,46,0.02); }
-.industry-header-left { display: flex; align-items: center; gap: 14px; }
-.industry-icon {
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  background: var(--bg-main);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.industry-name { font-size: 15px; font-weight: 700; color: var(--text); }
-.industry-toggle {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: var(--bg-main);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.3s ease, background 0.2s;
-}
-.industry-item.open .industry-toggle { transform: rotate(45deg); background: var(--bg-dark); border-color: var(--bg-dark); }
-.industry-toggle svg { transition: stroke 0.2s; }
-.industry-item.open .industry-toggle svg { stroke: #fff; }
-
-.industry-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-}
-.industry-item.open .industry-body { max-height: 2000px; }
-
-.industry-services { padding: 0 22px 22px; display: flex; flex-direction: column; gap: 12px; }
-.industry-divider { height: 1px; background: var(--border); margin-bottom: 4px; }
-
-.service-item { display: flex; flex-direction: column; gap: 3px; padding: 12px 14px; background: var(--bg-main); border-radius: var(--radius-sm); }
-.service-item-title { font-size: 13px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
-.service-item-title::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
-.service-item-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; padding-left: 12px; }
-
-/* ============================================================
-   CTA BANNER
-============================================================ */
-.cta-banner {
-  background: var(--bg-dark);
-  padding: 60px 20px;
-}
-.cta-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  text-align: center;
-}
-.cta-title {
-  font-size: clamp(20px, 3.5vw, 30px);
-  font-weight: 700;
-  color: #fff;
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-.cta-sub {
-  font-size: 13px;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.8;
-  margin-bottom: 28px;
-}
-.btn-gold {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: var(--gold);
-  color: var(--bg-dark);
-  font-weight: 700;
-  font-size: 15px;
-  padding: 17px 40px;
-  border-radius: var(--radius-sm);
-  transition: opacity var(--transition);
-  cursor: pointer;
-}
-.btn-gold:hover { opacity: 0.88; }
-
-/* ============================================================
-   FOOTER
-============================================================ */
-.footer {
-  background: var(--bg-dark);
-  border-top: 1px solid rgba(192,157,89,0.15);
-  padding: 40px 20px 30px;
-}
-.footer-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-.footer-top {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-bottom: 32px;
-}
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  color: #fff;
-  letter-spacing: 0.08em;
-}
-.footer-tagline {
-  font-size: 11px;
-  color: rgba(255,255,255,0.35);
-  margin-top: 6px;
-  letter-spacing: 0.06em;
-}
-.footer-nav { display: flex; flex-direction: column; gap: 12px; }
-.footer-nav a {
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  transition: color var(--transition);
-}
-.footer-nav a:hover { color: var(--gold); }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.footer-info {
-  font-size: 11px;
-  color: rgba(255,255,255,0.25);
-  line-height: 1.7;
-}
-.footer-copy {
-  font-size: 10px;
-  color: rgba(255,255,255,0.2);
-  font-family: 'Inter', sans-serif;
-}
-
-/* ============================================================
-   RESPONSIVE — TABLET 768px+
-============================================================ */
-@media (min-width: 768px) {
-  .header-inner { height: 68px; }
-
-  .hero { padding: 72px 40px 68px; }
-  .hero-inner {
-    flex-direction: row;
-    align-items: center;
-    gap: 48px;
-  }
-  .hero-text { flex: 1; }
-  .hero-btns { flex-direction: row; }
-  .hero-illust-wrap {
-    flex: 0 0 340px;
-    padding: 28px 20px 20px;
-  }
-
-  .section { padding: 72px 40px; }
-
-  .footer-top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
-  .footer-nav { flex-direction: row; gap: 24px; }
-  .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
-}
-
-/* ============================================================
-   RESPONSIVE — PC 1200px+
-============================================================ */
-@media (min-width: 1200px) {
-  .hamburger { display: none; }
-  .nav-links { display: flex; }
-  .nav-cta { display: inline-block; }
-
-  .hero { padding: 96px 40px 80px; }
-  .hero-inner { gap: 72px; }
-  .hero-illust-wrap { flex: 0 0 420px; padding: 40px 32px 28px; }
-
-  .section { padding: 88px 40px; }
+@media(max-width:767px){
+  .nav-links{display:none;}
+  .nav-cta{display:none;}
+  .hamburger{display:flex;}
+  .cred-item{border-right:none;border-bottom:0.5px solid rgba(91,196,229,0.15);padding:10px 0;width:100%;}
+  .cred-item:last-child{border-bottom:none;}
+  .cred-inner{flex-direction:column;gap:0;}
 }
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-   HEADER
-============================================================ -->
-<header class="header">
-  <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-mark">
-        <span></span><span></span><span></span><span></span>
-      </div>
-      THE TO YOU
-    </a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="service.html">サービス</a></li>
-        <li><a href="about.html">会社概要</a></li>
-        <li><a href="contact.html" class="nav-cta">お問い合わせ</a></li>
-      </ul>
-    </nav>
-    <button class="hamburger" id="hamburger" aria-label="メニュー">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-  <div class="mobile-menu" id="mobileMenu">
-    <ul>
-      <li><a href="service.html">サービス</a></li>
-      <li><a href="about.html">会社概要</a></li>
-    </ul>
-    <a href="contact.html" class="m-cta">お問い合わせはこちら</a>
-  </div>
-</header>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">THE TO YOU</a>
+  <ul class="nav-links">
+    <li><a href="#vmv">理念</a></li>
+    <li><a href="#service">サービス</a></li>
+    <li><a href="#profile">プロフィール</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">無料相談する</a>
+  <div class="hamburger" id="hbg"><span></span><span></span><span></span></div>
+</nav>
 
-<!-- ============================================================
-   HERO
-============================================================ -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-text">
-      <div class="hero-tag">AI × 業務代行</div>
-      <h1 class="hero-catch">あなたの雑用、<br><span class="accent">AIが片付ける。</span></h1>
-      <p class="hero-sub">煩雑な業務をAIで自動化・代行。中小企業の経営者が本業に集中できる環境をつくります。</p>
-      <div class="hero-btns">
-        <a href="contact.html" class="btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C09D59" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          まずは無料相談する
-        </a>
-        <a href="service.html" class="btn-secondary">サービス・料金を見る →</a>
+<!-- HERO -->
+<section id="hero">
+  <div class="h-grid"></div>
+  <div class="h-particles" id="particles"></div>
+  <div class="h-ring h-ring-1"></div>
+  <div class="h-ring h-ring-2"></div>
+  <div class="h-ring h-ring-3"></div>
+  <div class="h-line h-line-1"></div>
+  <div class="h-line h-line-2"></div>
+
+  <div class="h-anim-wrap">
+    <div class="h-anim-inner">
+      <div class="a-label">AI が動く</div>
+      <div class="a-cards">
+        <div class="a-card">
+          <div class="a-card-lbl">データ分析</div>
+          <div class="a-dots"><div class="a-dot"></div><div class="a-dot"></div><div class="a-dot"></div></div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-lbl">業務自動化</div>
+          <div class="a-bars">
+            <div class="a-bar"><div class="a-bar-f"></div></div>
+            <div class="a-bar"><div class="a-bar-f"></div></div>
+            <div class="a-bar"><div class="a-bar-f"></div></div>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="a-card-lbl">提案生成</div>
+          <div class="a-dots">
+            <div class="a-dot" style="animation-delay:.1s"></div>
+            <div class="a-dot" style="animation-delay:.3s"></div>
+            <div class="a-dot" style="animation-delay:.5s"></div>
+          </div>
+        </div>
+      </div>
+      <div class="a-arrows"><span class="a-arr">▶</span><span class="a-arr">▶</span><span class="a-arr">▶</span></div>
+      <div class="a-chart">
+        <div class="a-chart-head">
+          <span class="a-chart-lbl">月次売上推移</span>
+          <span class="a-chart-val">+187<span class="a-chart-unit">%</span></span>
+        </div>
+        <div class="a-chart-bars">
+          <div class="a-bc"><div class="a-b" style="height:30%"><div class="a-b-f"></div></div><div class="a-bl">1月</div></div>
+          <div class="a-bc"><div class="a-b" style="height:42%"><div class="a-b-f"></div></div><div class="a-bl">2月</div></div>
+          <div class="a-bc"><div class="a-b" style="height:54%"><div class="a-b-f"></div></div><div class="a-bl">3月</div></div>
+          <div class="a-bc"><div class="a-b" style="height:66%"><div class="a-b-f"></div></div><div class="a-bl">4月</div></div>
+          <div class="a-bc"><div class="a-b" style="height:82%"><div class="a-b-f"></div></div><div class="a-bl">5月</div></div>
+          <div class="a-bc"><div class="a-b" style="height:100%"><div class="a-b-f"></div></div><div class="a-bl">6月</div></div>
+        </div>
+        <div class="a-trend"><div class="a-trend-f"></div></div>
+      </div>
+      <div class="a-stats">
+        <div class="a-stat"><span class="a-stat-n">+43%</span><span class="a-stat-d">成約率</span></div>
+        <div class="a-stat"><span class="a-stat-n">-60h</span><span class="a-stat-d">月間削減</span></div>
+        <div class="a-stat"><span class="a-stat-n">×2.4</span><span class="a-stat-d">生産性</span></div>
       </div>
     </div>
+  </div>
 
-    <div class="hero-illust-wrap">
-      <svg viewBox="0 0 300 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 人間（左） -->
-        <circle cx="52" cy="28" r="14" fill="#DDE3EE" stroke="#07172E" stroke-width="1.5"/>
-        <rect x="38" y="46" width="28" height="32" rx="6" fill="#DDE3EE" stroke="#07172E" stroke-width="1.5"/>
-        <line x1="38" y1="54" x2="22" y2="44" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="66" y1="54" x2="86" y2="50" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="46" y1="78" x2="42" y2="100" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="58" y1="78" x2="62" y2="100" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"/>
-        <rect x="6" y="6" width="30" height="18" rx="5" fill="#fff" stroke="#07172E" stroke-width="1"/>
-        <path d="M20 24 L18 30 L24 24" fill="#fff" stroke="#07172E" stroke-width="1" stroke-linejoin="round"/>
-        <text x="21" y="19" text-anchor="middle" font-size="10" fill="#07172E" font-family="sans-serif">…</text>
-        <!-- 矢印 -->
-        <path d="M92 58 Q110 45 118 60" stroke="#C09D59" stroke-width="1.8" stroke-dasharray="4 3" fill="none" stroke-linecap="round"/>
-        <polygon points="114,68 122,58 124,70" fill="#C09D59"/>
-        <!-- ロボット -->
-        <line x1="150" y1="14" x2="150" y2="22" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="150" cy="11" r="4" fill="#C09D59"/>
-        <rect x="132" y="22" width="36" height="28" rx="8" fill="#07172E"/>
-        <rect x="139" y="30" width="8" height="6" rx="2" fill="#C09D59"/>
-        <rect x="153" y="30" width="8" height="6" rx="2" fill="#C09D59"/>
-        <rect x="130" y="54" width="40" height="36" rx="6" fill="#07172E"/>
-        <rect x="137" y="60" width="26" height="18" rx="3" fill="#DDE3EE" opacity="0.12"/>
-        <line x1="143" y1="66" x2="157" y2="66" stroke="#C09D59" stroke-width="1" stroke-linecap="round"/>
-        <line x1="143" y1="71" x2="153" y2="71" stroke="#C09D59" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-        <line x1="130" y1="62" x2="108" y2="72" stroke="#07172E" stroke-width="2" stroke-linecap="round"/>
-        <rect x="98" y="68" width="12" height="8" rx="2" fill="#07172E"/>
-        <line x1="170" y1="62" x2="192" y2="72" stroke="#07172E" stroke-width="2" stroke-linecap="round"/>
-        <rect x="190" y="68" width="12" height="8" rx="2" fill="#07172E"/>
-        <rect x="137" y="90" width="10" height="16" rx="3" fill="#07172E"/>
-        <rect x="153" y="90" width="10" height="16" rx="3" fill="#07172E"/>
-        <!-- タスクカード -->
-        <rect x="60" y="94" width="44" height="32" rx="5" fill="#fff" stroke="#07172E" stroke-width="1"/>
-        <text x="67" y="102" font-size="7" fill="#C09D59" font-family="sans-serif" font-weight="bold">TASK</text>
-        <line x1="66" y1="108" x2="98" y2="108" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <line x1="66" y1="114" x2="94" y2="114" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <line x1="66" y1="120" x2="90" y2="120" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <!-- 矢印2 -->
-        <path d="M208 72 Q220 58 228 68" stroke="#C09D59" stroke-width="1.8" stroke-dasharray="4 3" fill="none" stroke-linecap="round"/>
-        <polygon points="224,76 232,66 234,78" fill="#C09D59"/>
-        <!-- 成果物 -->
-        <rect x="232" y="46" width="36" height="44" rx="6" fill="#fff" stroke="#07172E" stroke-width="1.5"/>
-        <line x1="240" y1="62" x2="260" y2="62" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <line x1="240" y1="68" x2="260" y2="68" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <line x1="240" y1="74" x2="252" y2="74" stroke="#07172E" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
-        <circle cx="250" cy="38" r="10" fill="#DDE3EE" stroke="#07172E" stroke-width="1.5"/>
-        <polyline points="244,38 248,42 256,33" stroke="#C09D59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <!-- ラベル -->
-        <text x="52" y="118" text-anchor="middle" font-size="9" fill="rgba(7,23,46,0.4)" font-family="sans-serif">経営者</text>
-        <text x="150" y="120" text-anchor="middle" font-size="9" fill="rgba(7,23,46,0.4)" font-family="sans-serif">THE TO YOU</text>
-        <text x="250" y="104" text-anchor="middle" font-size="9" fill="rgba(7,23,46,0.4)" font-family="sans-serif">納品</text>
-      </svg>
-      <p class="illust-caption">依頼するだけ。あとはおまかせ。</p>
-    </div>
+  <div class="h-copy">
+    <div class="h-tag">AI Business Partner</div>
+    <h1 class="h-catch">
+      <span class="line"><span>AIを使う側か、</span></span>
+      <span class="line"><span>使われる側か。</span></span>
+      <span class="line"><span><em>その差が、</em></span></span>
+      <span class="line"><span><em>事業の差になる。</em></span></span>
+    </h1>
+    <p class="h-sub">地方の中小企業に、AI活用の伴走者を。</p>
+    <a href="#contact" class="h-btn">まずは無料相談する <span>→</span></a>
+    <p class="h-note">初回相談 無料・完全オンライン対応</p>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-bar"><div class="scroll-bar-inner"></div></div>
   </div>
 </section>
 
-<!-- ============================================================
-   STATS
-============================================================ -->
-<div class="stats">
-  <div class="stats-inner">
-    <div class="stat-item">
-      <div class="stat-num">¥9,800<span class="stat-unit">〜</span></div>
-      <div class="stat-label">月額プランあり</div>
+<!-- CREDIBILITY BAR -->
+<div class="cred-bar">
+  <div class="cred-inner">
+    <div class="cred-item reveal">
+      <span class="cred-icon">🏢</span>
+      <div class="cred-text">
+        <strong>大手企業 WEBコンサル出身</strong>
+        大規模デジタル戦略の立案・実行を経験
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">11<span class="stat-unit"> 種</span></div>
-      <div class="stat-label">対応サービス</div>
+    <div class="cred-item reveal d1">
+      <span class="cred-icon">🤖</span>
+      <div class="cred-text">
+        <strong>AI活用支援 複数社実績</strong>
+        中小企業のAI導入〜定着まで伴走
+      </div>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">全案件</div>
-      <div class="stat-label">要相談・柔軟対応</div>
+    <div class="cred-item reveal d2">
+      <span class="cred-icon">📍</span>
+      <div class="cred-text">
+        <strong>福岡県在住・全国オンライン対応</strong>
+        地方から日本中の経営者を支援
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-   PLANS SUMMARY（アコーディオン）
-============================================================ -->
-<section class="section section-sub">
-  <div class="section-inner">
-    <div class="sec-label">Services</div>
-    <div class="sec-title">料金プラン</div>
-    <p class="sec-desc">すべてのプランは作業内容・ボリュームによって変動します。まずはお気軽にご相談ください。</p>
-    <div class="plans-grid">
-
-      <!-- PLAN 1: 業務代行 -->
-      <div class="plan-card featured">
-        <div class="plan-card-header">
-          <div class="plan-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C09D59" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </div>
-          <div class="plan-info">
-            <div class="plan-name">業務代行プラン</div>
-            <div class="plan-price">月額 ¥35,000〜</div>
-          </div>
-          <div class="plan-toggle">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C09D59" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-        </div>
-        <div class="plan-body-accordion">
-          <div class="plan-body-inner">
-            <div class="flow-visual">
-              <div class="flow-step"><div class="flow-step-num">01</div><div class="flow-step-text">依頼・<br>ヒアリング</div></div>
-              <div class="flow-arrow">›</div>
-              <div class="flow-step"><div class="flow-step-num">02</div><div class="flow-step-text">AI処理・<br>作業</div></div>
-              <div class="flow-arrow">›</div>
-              <div class="flow-step"><div class="flow-step-num">03</div><div class="flow-step-text">確認・<br>修正</div></div>
-              <div class="flow-arrow">›</div>
-              <div class="flow-step"><div class="flow-step-num">04</div><div class="flow-step-text">納品</div></div>
-            </div>
-            <div class="plan-features">
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>資料・マニュアル作成</strong><span>業務マニュアル、ツール操作手順書、提案資料など</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>SNS・メール文章作成</strong><span>投稿文、メルマガ、返信テンプレートなど</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>データ整理・リスト作成</strong><span>顧客リスト整備、情報収集・まとめなど</span></div>
-              </div>
-            </div>
-            <div class="plan-note">※作業内容・ボリュームによって料金が変動します。まずはご相談ください。</div>
-            <a href="contact.html" class="plan-cta">このプランで相談する →</a>
-          </div>
+<!-- VMV -->
+<section id="vmv">
+  <div class="wrap">
+    <span class="s-label reveal">Philosophy</span>
+    <h2 class="s-title reveal d1">THE TO YOUが<br>掲げる思想</h2>
+    <div class="vmv-list">
+      <div class="vmv-item reveal d1">
+        <span class="vmv-lbl">Vision</span>
+        <div>
+          <p class="vmv-ttl">AIが進化するほど、<br>人も進化する。</p>
+          <p class="vmv-desc">テクノロジーの進化は、人間が退化するためにあるのではない。AIが賢くなるほど、それを使いこなす人間も賢くなる。そんな世界をつくる。</p>
         </div>
       </div>
-
-      <!-- PLAN 2: 分析含む提案代行 -->
-      <div class="plan-card">
-        <div class="plan-card-header">
-          <div class="plan-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <div class="plan-info">
-            <div class="plan-name">分析含む提案代行プラン</div>
-            <div class="plan-price">月額 ¥50,000〜</div>
-          </div>
-          <div class="plan-toggle">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-        </div>
-        <div class="plan-body-accordion">
-          <div class="plan-body-inner">
-            <div class="analysis-visual">
-              <div class="analysis-visual-title">Analysis Sample</div>
-              <div class="analysis-bars">
-                <div class="abar-row">
-                  <div class="abar-label">SNSエンゲージ</div>
-                  <div class="abar-track"><div class="abar-fill" style="width:78%"></div></div>
-                  <div class="abar-val">+78%</div>
-                </div>
-                <div class="abar-row">
-                  <div class="abar-label">サイト流入</div>
-                  <div class="abar-track"><div class="abar-fill" style="width:62%"></div></div>
-                  <div class="abar-val">+62%</div>
-                </div>
-                <div class="abar-row">
-                  <div class="abar-label">CV改善率</div>
-                  <div class="abar-track"><div class="abar-fill" style="width:45%"></div></div>
-                  <div class="abar-val">+45%</div>
-                </div>
-              </div>
-              <div class="analysis-metrics">
-                <div class="ametric"><div class="ametric-num">競合</div><div class="ametric-label">調査・比較</div></div>
-                <div class="ametric"><div class="ametric-num">課題</div><div class="ametric-label">抽出・整理</div></div>
-                <div class="ametric"><div class="ametric-num">改善</div><div class="ametric-label">提案・実行</div></div>
-              </div>
-            </div>
-            <div class="plan-features">
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>SNS・サイト分析レポート</strong><span>現状数値の可視化と改善ポイントの抽出</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>競合調査・市場分析</strong><span>競合他社の動向と差別化戦略の提案</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>改善提案＋実行代行</strong><span>提案だけでなく実際の作業まで一貫対応</span></div>
-              </div>
-            </div>
-            <div class="plan-note">※コンサルティング込みのプランです。作業内容によって料金が変動します。</div>
-            <a href="contact.html" class="plan-cta">このプランで相談する →</a>
-          </div>
+      <div class="vmv-item reveal d2">
+        <span class="vmv-lbl">Mission</span>
+        <div>
+          <p class="vmv-ttl">AIが賢くなるほど、<br>人間の頭を鍛え続ける。</p>
+          <p class="vmv-desc">道具に考えさせるな。AIに答えを委ねるのではなく、AIと一緒に考える力を磨き続ける。それがTHE TO YOUの使命だ。</p>
         </div>
       </div>
-
-      <!-- PLAN 3: 単発代行 -->
-      <div class="plan-card">
-        <div class="plan-card-header">
-          <div class="plan-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          </div>
-          <div class="plan-info">
-            <div class="plan-name">単発代行</div>
-            <div class="plan-price">1件 ¥15,000〜</div>
-          </div>
-          <div class="plan-toggle">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-        </div>
-        <div class="plan-body-accordion">
-          <div class="plan-body-inner">
-            <div class="plan-features">
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>スポット対応OK</strong><span>単発の資料作成・調査・文章作成など</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>最低価格¥15,000〜</strong><span>作業内容・ボリュームによって都度お見積り</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>まず試したい方に最適</strong><span>継続契約前のお試しとしても活用できます</span></div>
-              </div>
-            </div>
-            <div class="plan-note">※作業内容によって料金が変動します。まずはご相談ください。</div>
-            <a href="contact.html" class="plan-cta">このプランで相談する →</a>
-          </div>
+      <div class="vmv-item reveal d3">
+        <span class="vmv-lbl">Values</span>
+        <div>
+          <p class="vmv-ttl">使いこなす人を育てる。<br>使われる人をつくらない。</p>
+          <p class="vmv-desc">AIを導入することが目的ではない。あなた自身がAIを武器にして、事業を前進させる。そのための伴走者でありたい。</p>
         </div>
       </div>
-
-      <!-- PLAN 4: GPT納品 -->
-      <div class="plan-card">
-        <div class="plan-card-header">
-          <div class="plan-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          </div>
-          <div class="plan-info">
-            <div class="plan-name">GPT納品プラン</div>
-            <div class="plan-price">月額 ¥9,800</div>
-          </div>
-          <div class="plan-toggle">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </div>
-        </div>
-        <div class="plan-body-accordion">
-          <div class="plan-body-inner">
-            <div class="gpt-visual">
-              <div class="gpt-chat">
-                <div class="gpt-msg user">
-                  <div class="gpt-avatar"><svg width="12" height="12" fill="none" stroke="#C09D59" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-                  <div class="gpt-bubble">新規のお客様への返信文を作って</div>
-                </div>
-                <div class="gpt-msg">
-                  <div class="gpt-avatar"><svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg></div>
-                  <div class="gpt-bubble">はい！御社のトーンに合わせた返信文を作成しました。</div>
-                </div>
-              </div>
-              <div class="gpt-label">業務に特化したカスタムGPT</div>
-            </div>
-            <div class="plan-features">
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>業務専用GPTをカスタマイズ</strong><span>御社の業種・業務に特化した設定で納品</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>情報漏洩防止対策済み</strong><span>社内情報が学習に使われない設定で提供</span></div>
-              </div>
-              <div class="plan-feature">
-                <div class="feature-check"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#C09D59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div class="feature-text"><strong>代行なし・ツール提供のみ</strong><span>自社でAIを使いこなしたい方向け</span></div>
-              </div>
-            </div>
-            <div class="plan-note">※ChatGPT利用料（別途）が必要です。</div>
-            <a href="contact.html" class="plan-cta">このプランで相談する →</a>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-   INDUSTRY SERVICES
-============================================================ -->
-<section class="section">
-  <div class="section-inner">
-    <div class="sec-label">AI Use Cases by Industry</div>
-    <div class="sec-title">業界別 AI活用例</div>
-    <p class="sec-desc">「AIって自分の仕事に使えるの？」そんな疑問にお答えします。あなたの業界でAIができることを、具体的な例でご紹介します。</p>
-    <div class="industry-grid" id="industryGrid">
-
-      <!-- 人材業界 -->
-      <div class="industry-item" data-index="0">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div><div class="industry-name">人材業界</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">求人票の作成</div><div class="service-item-desc">企業情報・勤務体系とエリア×業態の相場・競合情報を調査し、AIで訴求力の高い求人票を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">スカウト文章の自動生成</div><div class="service-item-desc">候補者のプロフィールに合わせた個別最適なスカウトメールをAIで大量生成。返信率の向上を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">面接質問リストの作成</div><div class="service-item-desc">職種・ポジションに応じた面接質問リストと評価基準をAIで作成。採用品質の標準化に貢献。</div></div>
-            <div class="service-item"><div class="service-item-title">採用ページのコピーライティング</div><div class="service-item-desc">求職者に響く企業の魅力・社風・成長環境を整理し、採用サイト向けの原稿を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">内定者向け入社前フォローコンテンツ</div><div class="service-item-desc">内定者が安心して入社準備できるよう、FAQ・歓迎メッセージ・業務説明資料をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS採用投稿の代行</div><div class="service-item-desc">Instagram・X・LinkedInなどで採用ブランディングに効果的な投稿を定期作成・代行。</div></div>
-            <div class="service-item"><div class="service-item-title">競合他社の求人分析</div><div class="service-item-desc">競合の求人内容・給与・条件をAIでリサーチし、自社求人の差別化ポイントを抽出・提案。</div></div>
-            <div class="service-item"><div class="service-item-title">オンボーディング資料の作成</div><div class="service-item-desc">新入社員向けの業務手順書・社内ルール・よくある質問集をわかりやすく整備。</div></div>
-            <div class="service-item"><div class="service-item-title">求人媒体別の原稿最適化</div><div class="service-item-desc">Indeed・マイナビ・リクナビなど各媒体の特性に合わせた原稿に書き分けて納品。</div></div>
-            <div class="service-item"><div class="service-item-title">応募者管理シートの作成</div><div class="service-item-desc">選考フェーズ・評価・メモを一元管理できるスプレッドシートテンプレートを作成・整備。</div></div>
-            <div class="service-item"><div class="service-item-title">採用要件定義の整理</div><div class="service-item-desc">現場ヒアリングをもとに、必須スキル・歓迎スキル・カルチャーフィットをAIで言語化・整理。</div></div>
-          </div>
-        </div>
+<!-- SERVICE -->
+<section id="service">
+  <div class="wrap">
+    <span class="s-label reveal">Service</span>
+    <h2 class="s-title reveal d1">あなたの事業フェーズに<br>合わせたプランを</h2>
+    <div class="plan-grid">
+      <div class="plan-card reveal d1">
+        <span class="plan-badge def">Plan A</span>
+        <p class="plan-name">AIアドバイザー</p>
+        <p class="plan-price">¥30,000<span>/ 月</span></p>
+        <ul class="plan-feats">
+          <li>月1回の戦略MTG（60分）</li>
+          <li>AI活用の方向性アドバイス</li>
+          <li>ツール選定・導入サポート</li>
+          <li>チャット相談（随時）</li>
+        </ul>
       </div>
-
-      <!-- 新築・リフォーム業界 -->
-      <div class="industry-item" data-index="1">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </div>
-            <div><div class="industry-name">新築・リフォーム業界</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">施工事例ページの文章作成</div><div class="service-item-desc">写真と情報をもとに、施工前後の変化や工夫ポイントを伝える読まれる施工事例文を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">お客様の声テンプレート整備</div><div class="service-item-desc">ヒアリング内容をもとにお客様の声・体験談をわかりやすく編集・整形して納品。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS投稿の定期作成代行</div><div class="service-item-desc">施工写真をもとにInstagram・Facebookへの投稿文・ハッシュタグを定期的に作成・代行。</div></div>
-            <div class="service-item"><div class="service-item-title">見積書・提案書のフォーマット作成</div><div class="service-item-desc">顧客に見やすく伝わる見積書・プラン提案書のテンプレートをAIで整備。</div></div>
-            <div class="service-item"><div class="service-item-title">競合他社のサイト・SNS分析</div><div class="service-item-desc">地域競合の強み・弱みをリサーチし、自社差別化ポイントの整理・提案を実施。</div></div>
-            <div class="service-item"><div class="service-item-title">チラシ・DMのコピー作成</div><div class="service-item-desc">新規集客・キャンペーン告知向けのチラシ・DM原稿をAIで複数パターン作成。</div></div>
-            <div class="service-item"><div class="service-item-title">FAQ・よくある質問集の整備</div><div class="service-item-desc">問い合わせ対応の効率化のため、よく来る質問と回答をまとめたFAQページを作成。</div></div>
-            <div class="service-item"><div class="service-item-title">スタッフ紹介ページの文章作成</div><div class="service-item-desc">職人・営業スタッフの人柄が伝わるプロフィール文を作成し、信頼感の醸成を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">リフォームプラン説明資料の作成</div><div class="service-item-desc">お客様に提案するプランをわかりやすく説明する資料・スライドをAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">MEO対策用テキスト作成</div><div class="service-item-desc">Googleビジネスプロフィールの説明文・投稿文をSEOを意識して作成・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">アフターフォローメールの文章作成</div><div class="service-item-desc">工事後のお礼・メンテナンス案内・季節ごとのフォローメールテンプレートを整備。</div></div>
-            <div class="service-item"><div class="service-item-title">社内作業マニュアルの整備</div><div class="service-item-desc">現場手順・安全管理・クレーム対応などの社内マニュアルをわかりやすく文書化。</div></div>
-            <div class="service-item"><div class="service-item-title">リフォーム相談ヒアリングシートの作成</div><div class="service-item-desc">初回相談前に送付するヒアリングシートをわかりやすく設計・作成。面談準備を効率化。</div></div>
-            <div class="service-item"><div class="service-item-title">お客様向けアンケートの作成</div><div class="service-item-desc">施工後満足度・紹介意向を測るアンケートフォームをAIで設計し、サービス改善に活用。</div></div>
-          </div>
-        </div>
+      <div class="plan-card feat reveal d2">
+        <span class="plan-badge hot">Most Popular · Plan B</span>
+        <p class="plan-name">AIパートナー</p>
+        <p class="plan-price">¥50,000〜<span>/ 月</span></p>
+        <ul class="plan-feats">
+          <li>月2回の伴走MTG（90分）</li>
+          <li>業務フロー設計・改善</li>
+          <li>AIツール実装サポート</li>
+          <li>レポート・提案書作成代行</li>
+          <li>チャット相談（優先対応）</li>
+        </ul>
       </div>
-
-      <!-- 不動産業界 -->
-      <div class="industry-item" data-index="2">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-            </div>
-            <div><div class="industry-name">不動産業界</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">物件紹介文の作成</div><div class="service-item-desc">間取り・設備・立地情報をもとに、購入・賃貸検討者に響く物件紹介文をAIで量産。</div></div>
-            <div class="service-item"><div class="service-item-title">エリア紹介コンテンツの作成</div><div class="service-item-desc">学校・スーパー・交通アクセスなどエリアの魅力を伝えるページ・チラシ原稿を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS集客投稿の定期代行</div><div class="service-item-desc">新着物件・お役立ち情報・地域情報などをInstagram・Xで定期発信。フォロワー獲得を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">問い合わせ返信テンプレートの整備</div><div class="service-item-desc">よくある問い合わせパターンに対応した返信テンプレートを作成し、対応スピードを向上。</div></div>
-            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">会社概要・スタッフ紹介・選ばれる理由などのページ原稿をSEOを意識して作成・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">競合他社のサービス分析</div><div class="service-item-desc">地域競合の特徴・強み・価格帯をリサーチし、自社の差別化戦略策定を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">オーナー向け提案資料の作成</div><div class="service-item-desc">管理委託・売却・賃貸化などオーナーへの提案資料をわかりやすく作成。</div></div>
-            <div class="service-item"><div class="service-item-title">入居者向け案内資料の整備</div><div class="service-item-desc">入居時のルール説明・緊急連絡先・ゴミ出しルールなどの案内書類をわかりやすく整備。</div></div>
-            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleマップ経由の集客を強化するためのビジネスプロフィール文・口コミ返信文を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">成約後のサンクスメール作成</div><div class="service-item-desc">契約成立後のお礼・今後の流れ説明・アフターフォロー案内メールのテンプレートを整備。</div></div>
-          </div>
-        </div>
+      <div class="plan-card reveal d3">
+        <span class="plan-badge def">Plan C</span>
+        <p class="plan-name">専属AIパートナー</p>
+        <p class="plan-price">¥100,000〜<span>/ 月</span></p>
+        <ul class="plan-feats">
+          <li>週次MTG・無制限相談</li>
+          <li>事業全体のAI戦略設計</li>
+          <li>社内AI人材の育成支援</li>
+          <li>KPI設定〜進捗管理まで</li>
+          <li>優先対応・専任サポート</li>
+        </ul>
       </div>
-
-      <!-- EC・店舗販売 -->
-      <div class="industry-item" data-index="3">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-            </div>
-            <div><div class="industry-name">EC・店舗販売</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">商品説明文の作成</div><div class="service-item-desc">商品の特徴・素材・使い方を整理し、購買意欲を高める商品ページ原稿をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS販促投稿の定期代行</div><div class="service-item-desc">新商品・セール・おすすめ商品をInstagram・TikTok・Xで定期的に投稿代行。</div></div>
-            <div class="service-item"><div class="service-item-title">メルマガ・LINE配信文の作成</div><div class="service-item-desc">リピーター育成・セール告知・新商品案内などのメルマガ・LINE原稿を定期作成。</div></div>
-            <div class="service-item"><div class="service-item-title">レビュー・口コミ返信文の作成</div><div class="service-item-desc">Amazonや楽天などのレビューへの返信文をブランドトーンに合わせて作成・代行。</div></div>
-            <div class="service-item"><div class="service-item-title">競合商品・価格調査</div><div class="service-item-desc">競合商品の価格・特徴・レビュー傾向をリサーチし、自社商品の差別化ポイントを整理。</div></div>
-            <div class="service-item"><div class="service-item-title">商品LP（ランディングページ）原稿作成</div><div class="service-item-desc">1商品に特化した購入誘導LPのコピー・構成・原稿をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">カスタマーサポートテンプレート整備</div><div class="service-item-desc">返品・交換・問い合わせなどの対応テンプレートを整備し、サポート品質を均一化。</div></div>
-            <div class="service-item"><div class="service-item-title">ハッシュタグ・SEKワード調査</div><div class="service-item-desc">商品・サービスに合った効果的なハッシュタグ・検索キーワードをリサーチして提供。</div></div>
-            <div class="service-item"><div class="service-item-title">チラシ・POP原稿の作成</div><div class="service-item-desc">店舗での販促に使うチラシ・棚POPの文言をターゲットに合わせて作成。</div></div>
-            <div class="service-item"><div class="service-item-title">商品撮影用指示書の作成</div><div class="service-item-desc">EC掲載・SNS投稿向けの商品撮影アングル・構成・背景の指示書をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">季節・イベント別キャンペーン企画</div><div class="service-item-desc">バレンタイン・夏季セールなど季節イベントに合わせたキャンペーン企画・原稿を提案。</div></div>
-            <div class="service-item"><div class="service-item-title">スタッフ接客マニュアルの整備</div><div class="service-item-desc">接客フロー・よくある質問・クレーム対応などのマニュアルをわかりやすく作成。</div></div>
-            <div class="service-item"><div class="service-item-title">ブランドストーリーの文章作成</div><div class="service-item-desc">創業背景・こだわり・ビジョンを伝えるブランドストーリーをAIで執筆し、共感・ファン獲得を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">商品パッケージ用キャッチコピー作成</div><div class="service-item-desc">商品パッケージに載せる短文・キャッチコピー・使用シーン説明をAIで複数パターン作成。</div></div>
-            <div class="service-item"><div class="service-item-title">定期購入・サブスク訴求文の作成</div><div class="service-item-desc">定期購入やサブスクリプション商品のメリットを訴求するLPコピー・メール文をAIで作成。</div></div>
-          </div>
-        </div>
+      <div class="spot-card reveal d4">
+        <span class="plan-badge def" style="margin-bottom:8px;">Spot</span>
+        <p class="spot-name">スポット対応</p>
+        <p class="spot-desc">LP制作・提案資料作成・AI活用研修など、単発でのご依頼も承ります。まずはご相談ください。</p>
       </div>
-
-      <!-- 飲食業界 -->
-      <div class="industry-item" data-index="4">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-            </div>
-            <div><div class="industry-name">飲食業界</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">メニュー説明文の作成</div><div class="service-item-desc">食材・調理法・こだわりを伝えるメニュー説明文をAIで作成。食欲をそそる表現で集客に貢献。</div></div>
-            <div class="service-item"><div class="service-item-title">グルメサイト掲載文の最適化</div><div class="service-item-desc">食べログ・ホットペッパー等の掲載ページを読まれる・選ばれる原稿にリライト・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS投稿の定期代行</div><div class="service-item-desc">料理写真をもとにInstagram・Xの投稿文・ハッシュタグを定期作成。来店促進を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">口コミ返信文の作成</div><div class="service-item-desc">Googleマップ・食べログへの口コミに対する丁寧な返信文をAIで作成・代行。</div></div>
-            <div class="service-item"><div class="service-item-title">新メニュー考案のリサーチ</div><div class="service-item-desc">トレンド・競合メニュー・食材コストをリサーチし、新メニュー開発のアイデアを提案。</div></div>
-            <div class="service-item"><div class="service-item-title">テイクアウト・デリバリー販促文の作成</div><div class="service-item-desc">Uber Eats・出前館などのデリバリーページ・テイクアウトPRの原稿を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">求人・スタッフ募集文の作成</div><div class="service-item-desc">アルバイト・パート採用向けの求人票をターゲット層に響く表現で作成。</div></div>
-            <div class="service-item"><div class="service-item-title">スタッフ研修マニュアルの整備</div><div class="service-item-desc">接客・仕込み・開閉店作業などの業務手順をわかりやすくマニュアル化。新人教育を効率化。</div></div>
-            <div class="service-item"><div class="service-item-title">季節・イベントメニューの告知文作成</div><div class="service-item-desc">クリスマス・夏季限定・母の日などの特別メニュー告知チラシ・SNS原稿を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">食材仕入れ先リサーチ</div><div class="service-item-desc">コスト削減・品質向上のために、食材・業者情報をリサーチして比較表にまとめて提供。</div></div>
-            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleビジネスプロフィールを最適化し、地図検索での上位表示・来店増加を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">ポイントカード・会員向けDM原稿作成</div><div class="service-item-desc">リピーター向けのDM・ニュースレター・クーポン案内文をAIで定期作成。</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 保険・FP業界 -->
-      <div class="industry-item" data-index="5">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div><div class="industry-name">保険・FP業界</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">保険提案書・設計書の補足文作成</div><div class="service-item-desc">数字が並ぶ設計書に添える「わかりやすい説明文」をAIで作成。顧客への説明を簡略化。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS集客投稿の作成代行</div><div class="service-item-desc">保険の必要性・お金の知識・FPならではのお役立ち情報をSNSで定期発信。信頼構築を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">ニュースレター・メルマガ原稿の作成</div><div class="service-item-desc">既存顧客向けの定期ニュースレター・メルマガ原稿をAIで作成。関係維持・紹介促進に貢献。</div></div>
-            <div class="service-item"><div class="service-item-title">保険商品比較資料の作成</div><div class="service-item-desc">複数の保険商品を比較した一覧表・説明資料をAIで作成。顧客へのヒアリング・提案を効率化。</div></div>
-            <div class="service-item"><div class="service-item-title">ライフプラン提案書の文章作成</div><div class="service-item-desc">ヒアリング内容をもとにしたライフプラン提案書の文章部分をAIでわかりやすく作成。</div></div>
-            <div class="service-item"><div class="service-item-title">見込み客向けステップメールの作成</div><div class="service-item-desc">初回相談後のフォロー・信頼構築に使うステップメールのシナリオ・文章をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">お客様の声・事例集の整備</div><div class="service-item-desc">実際の相談事例・解決事例をもとに、信頼感を高める事例集・お客様の声ページを作成。</div></div>
-            <div class="service-item"><div class="service-item-title">セミナー資料・スライドの作成</div><div class="service-item-desc">保険・資産運用・老後設計などのセミナーで使う資料・スライドをAIで作成・整備。</div></div>
-            <div class="service-item"><div class="service-item-title">相談後のサンクスメール作成</div><div class="service-item-desc">初回相談・面談後に送るお礼メール・次回アポイントへ繋げるメールテンプレートを整備。</div></div>
-            <div class="service-item"><div class="service-item-title">ホームページ原稿の改善</div><div class="service-item-desc">選ばれる理由・サービス内容・実績などのページ原稿をSEOを意識してリライト・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">FP相談に向けたヒアリングシートの作成</div><div class="service-item-desc">初回面談前に送付するヒアリングシートをわかりやすく設計・作成。面談準備を効率化。</div></div>
-            <div class="service-item"><div class="service-item-title">競合FP・IFA事務所の調査</div><div class="service-item-desc">地域・オンライン競合のサービス・強み・集客方法をリサーチし、差別化戦略を提案。</div></div>
-            <div class="service-item"><div class="service-item-title">相続・終活向け説明資料の作成</div><div class="service-item-desc">相続手続き・遺言・終活準備について顧客が理解しやすい説明資料をAIで作成。</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 学習塾 -->
-      <div class="industry-item" data-index="6">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-            </div>
-            <div><div class="industry-name">学習塾</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">体験授業・入塾案内チラシの作成</div><div class="service-item-desc">保護者・生徒に響く体験授業案内・入塾募集チラシの原稿をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">保護者向け月次通信の作成</div><div class="service-item-desc">月ごとの学習状況・受験情報・塾からのお知らせをまとめた保護者通信をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS集客投稿の定期代行</div><div class="service-item-desc">合格実績・勉強法・受験情報などをInstagram・Xで定期発信。認知・信頼の獲得を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">塾の特徴・指導方針・合格実績などのページ原稿をSEOを意識して作成・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">競合塾のリサーチ・分析</div><div class="service-item-desc">地域競合塾の料金・特徴・口コミを調査し、自塾の差別化ポイント整理・提案を実施。</div></div>
-            <div class="service-item"><div class="service-item-title">問い合わせ返信テンプレートの整備</div><div class="service-item-desc">体験授業申込・料金問い合わせなどへの返信テンプレートをAIで整備。対応を効率化。</div></div>
-            <div class="service-item"><div class="service-item-title">講師向け授業マニュアルの作成</div><div class="service-item-desc">新人講師向けの授業進め方・生徒対応・保護者コミュニケーションマニュアルを整備。</div></div>
-            <div class="service-item"><div class="service-item-title">生徒向け学習計画テンプレートの作成</div><div class="service-item-desc">定期テスト・受験に向けた学習計画表のテンプレートをAIで作成・配布。</div></div>
-            <div class="service-item"><div class="service-item-title">合格実績ページのコンテンツ作成</div><div class="service-item-desc">合格者の声・体験談をもとに、信頼感・実績感が伝わるコンテンツページを作成。</div></div>
-            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleビジネスプロフィールを最適化し、地図検索からの問い合わせ増加を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">夏期・冬期講習の告知原稿作成</div><div class="service-item-desc">季節講習の案内チラシ・メール・SNS投稿文をAIで複数パターン作成。</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 病院・福祉系 -->
-      <div class="industry-item" data-index="7">
-        <div class="industry-header">
-          <div class="industry-header-left">
-            <div class="industry-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="1.5" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            </div>
-            <div><div class="industry-name">病院・福祉系</div></div>
-          </div>
-          <div class="industry-toggle"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        </div>
-        <div class="industry-body">
-          <div class="industry-services">
-            <div class="industry-divider"></div>
-            <div class="service-item"><div class="service-item-title">院内掲示・案内文の作成</div><div class="service-item-desc">待合室・診察室・受付に掲示する案内文・お知らせをわかりやすくAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">患者向け説明資料の作成</div><div class="service-item-desc">治療内容・注意事項・リハビリ方法などを患者がわかりやすく理解できる資料に整備。</div></div>
-            <div class="service-item"><div class="service-item-title">ホームページ原稿の作成・改善</div><div class="service-item-desc">診療科目・アクセス・スタッフ紹介などのページ原稿をSEOを意識して作成・改善。</div></div>
-            <div class="service-item"><div class="service-item-title">求人票・スタッフ募集文の作成</div><div class="service-item-desc">看護師・介護士・事務スタッフなど職種別の求人票を応募されやすい表現で作成。</div></div>
-            <div class="service-item"><div class="service-item-title">SNS発信コンテンツの作成代行</div><div class="service-item-desc">健康情報・季節の病気・医院の取り組みなどをSNSで定期発信。地域への認知拡大を支援。</div></div>
-            <div class="service-item"><div class="service-item-title">スタッフ研修マニュアルの整備</div><div class="service-item-desc">受付対応・感染対策・緊急時対応などの業務マニュアルをわかりやすく文書化。</div></div>
-            <div class="service-item"><div class="service-item-title">介護サービス説明資料の作成</div><div class="service-item-desc">ご利用者・ご家族向けにサービス内容・料金・スケジュールをわかりやすく整理した資料を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">地域連携先向け紹介資料の作成</div><div class="service-item-desc">医療機関・ケアマネ・地域包括支援センター向けの自施設紹介資料をAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">MEO対策テキストの最適化</div><div class="service-item-desc">Googleマップからの新患獲得を強化するビジネスプロフィール文・口コミ返信文を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">定期通信・院内ニュースの作成</div><div class="service-item-desc">患者・利用者向けの季節ごとの健康情報・行事案内などのニュースレターをAIで作成。</div></div>
-            <div class="service-item"><div class="service-item-title">クレーム・苦情対応マニュアルの整備</div><div class="service-item-desc">患者・家族からのクレームへの適切な対応手順・言葉遣いをマニュアル化。</div></div>
-            <div class="service-item"><div class="service-item-title">福祉施設向け行事企画書の作成</div><div class="service-item-desc">季節の行事・レクリエーション・家族参加イベントの企画書をAIで作成・提案。</div></div>
-            <div class="service-item"><div class="service-item-title">医院・施設紹介パンフレットの文章作成</div><div class="service-item-desc">新患獲得・地域連携に使う診療内容・特徴・アクセスをまとめたパンフレット原稿を作成。</div></div>
-            <div class="service-item"><div class="service-item-title">患者アンケート・満足度調査の作成</div><div class="service-item-desc">診療・介護サービスへの満足度を測るアンケートをAIで設計し、サービス改善に活用。</div></div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-   CTA
-============================================================ -->
-<div class="cta-banner">
-  <div class="cta-inner">
-    <div class="cta-title">まずはお気軽に<br>ご相談ください</div>
-    <p class="cta-sub">内容・予算・作業量、すべて相談ベースで対応します。<br>お気軽にメッセージをお送りください。</p>
-    <a href="contact.html" class="btn-gold">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#07172E" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      お問い合わせはこちら
-    </a>
-  </div>
-</div>
-
-<!-- ============================================================
-   FOOTER
-============================================================ -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-logo">
-          <div class="logo-mark">
-            <span></span><span></span><span></span><span></span>
-          </div>
-          THE TO YOU
+<!-- WHY -->
+<section id="why">
+  <div class="wrap">
+    <span class="s-label reveal">Why THE TO YOU</span>
+    <h2 class="s-title reveal d1">選ばれる3つの理由</h2>
+    <div class="why-list">
+      <div class="why-item reveal d1">
+        <div class="why-n">01</div>
+        <div class="why-body">
+          <p class="why-ttl">大手WEBコンサル×AI活用の<br>ハイブリッド知見</p>
+          <p class="why-desc">大手企業でのWEBコンサルタント経験で培った「事業の核心を捉える力」と、最前線のAI活用スキルを組み合わせ、中小企業に本質的な変革をもたらします。</p>
         </div>
-        <div class="footer-tagline">AI Agent & Business Support Specialist</div>
       </div>
-      <nav class="footer-nav">
-        <a href="service.html">サービス</a>
-        <a href="about.html">会社概要</a>
-        <a href="contact.html">お問い合わせ</a>
-      </nav>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-info">
-        〒811-2416 福岡県糟屋郡篠栗町田中2丁目5番23-202号　代表：村中 光希
+      <div class="why-item reveal d2">
+        <div class="why-n">02</div>
+        <div class="why-body">
+          <p class="why-ttl">「導入して終わり」にしない<br>伴走型支援</p>
+          <p class="why-desc">ツールを入れた翌月から成果が出るわけではない。定着するまで、使いこなせるまで、ずっと隣にいます。</p>
+        </div>
       </div>
-      <div class="footer-copy">© 2025 THE TO YOU All Rights Reserved.</div>
+      <div class="why-item reveal d3">
+        <div class="why-n">03</div>
+        <div class="why-body">
+          <p class="why-ttl">人間の思考力を落とさない<br>AI活用を設計する</p>
+          <p class="why-desc">AIに依存するのではなく、AIと共に考える力を育てる。使いこなす人間をつくることが、長期的な事業成長につながります。</p>
+        </div>
+      </div>
     </div>
   </div>
+</section>
+
+<!-- FLOW -->
+<section id="flow">
+  <div class="wrap">
+    <span class="s-label reveal">Flow</span>
+    <h2 class="s-title reveal d1">支援の流れ</h2>
+    <div class="flow-list">
+      <div class="flow-item reveal d1">
+        <span class="flow-step">Step 01</span>
+        <div class="flow-body">
+          <p class="flow-ttl">無料相談（オンライン・60分）</p>
+          <p class="flow-desc">現状の課題・事業の方向性・AIに対する疑問を何でもお話しください。この場でのご提案や無理な勧誘は一切ありません。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal d2">
+        <span class="flow-step">Step 02</span>
+        <div class="flow-body">
+          <p class="flow-ttl">課題整理・プラン提案</p>
+          <p class="flow-desc">ヒアリング内容をもとに、最適なプランと支援内容をご提案します。費用・進め方を明示した上で、ご検討いただけます。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal d3">
+        <span class="flow-step">Step 03</span>
+        <div class="flow-body">
+          <p class="flow-ttl">契約・キックオフ</p>
+          <p class="flow-desc">合意後、月内にキックオフMTGを実施。最初の3ヶ月間の目標・KPIを一緒に設定します。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal d4">
+        <span class="flow-step">Step 04</span>
+        <div class="flow-body">
+          <p class="flow-ttl">伴走・改善サイクル</p>
+          <p class="flow-desc">月次MTGと日常的なチャットサポートで、PDCAを回し続けます。数字を見ながら、常に最適な手を打ちます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile">
+  <div class="wrap">
+    <span class="s-label reveal">Profile</span>
+    <div class="profile-wrap reveal d1">
+      <div class="profile-top">
+        <div class="profile-av">KM</div>
+        <div class="profile-meta">
+          <p class="profile-name">村中 光希</p>
+          <span class="profile-en">Koki Muranaka</span>
+          <div class="career-row">
+            <span class="career-badge gold">🏢 大手企業 WEBコンサル出身</span>
+            <span class="career-badge blue">🤖 AI活用支援 複数社実績</span>
+            <span class="career-badge line">📍 福岡県在住</span>
+          </div>
+        </div>
+      </div>
+      <p class="profile-text">
+        大手企業でのWEBコンサルタントとして、<strong>大規模なデジタル戦略の立案・実行</strong>に携わる。その後、AI活用に特化した個人事業「THE TO YOU」を立ち上げ、地方の中小企業オーナーへの支援を開始。<br><br>
+        コーディングスキルなし・完全独学でAIを武器にし、複数社の売上改善・業務効率化を実現。「技術より先に、人を見る」スタンスで、信頼ベースの伴走型支援を続けている。<strong>AIが賢くなるほど、人間の頭を鍛え続ける</strong>という信念のもと、使いこなす側の人間を増やすことに全力を注いでいる。
+      </p>
+      <div class="profile-tags">
+        <span class="profile-tag">WEBコンサルタント経験</span>
+        <span class="profile-tag">AI活用支援</span>
+        <span class="profile-tag">業務効率化</span>
+        <span class="profile-tag">中小企業支援</span>
+        <span class="profile-tag">完全オンライン対応</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact">
+  <div class="cta-wrap">
+    <span class="s-label reveal" style="color:var(--blue);">Contact</span>
+    <h2 class="cta-title reveal d1">
+      まず、話してみてください。<br><em>それだけでいい。</em>
+    </h2>
+    <p class="cta-sub reveal d2">
+      AIについて何もわからなくても大丈夫です。<br>
+      現状の課題を聞かせていただくことから始めます。
+    </p>
+    <form class="form-wrap reveal d3" action="https://formspree.io/f/XXXXXXXX" method="POST">
+      <div class="form-group">
+        <label class="form-lbl" for="name">お名前</label>
+        <input class="form-input" type="text" id="name" name="name" placeholder="山田 太郎" required>
+      </div>
+      <div class="form-group">
+        <label class="form-lbl" for="company">会社名・屋号</label>
+        <input class="form-input" type="text" id="company" name="company" placeholder="株式会社〇〇">
+      </div>
+      <div class="form-group">
+        <label class="form-lbl" for="email">メールアドレス</label>
+        <input class="form-input" type="email" id="email" name="email" placeholder="info@example.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-lbl" for="msg">お問い合わせ内容</label>
+        <textarea class="form-ta" id="msg" name="message" placeholder="現在の課題や気になっていることを自由にお書きください。" required></textarea>
+      </div>
+      <button type="submit" class="form-btn">
+        送信する <span>→</span>
+      </button>
+      <p class="form-note">通常2営業日以内にご返信いたします</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="ft-logo">THE TO YOU</span>
+  <p class="ft-text">© 2025 THE TO YOU / 村中 光希<br>福岡県｜完全オンライン対応</p>
 </footer>
 
 <script>
-// ハンバーガー
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('open');
-  mobileMenu.classList.toggle('open');
-});
-mobileMenu.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
+// ─── Particles
+(function(){
+  const wrap = document.getElementById('particles');
+  for(let i=0;i<18;i++){
+    const p = document.createElement('div');
+    p.className='h-p';
+    const s = Math.random()*3+2;
+    p.style.cssText=`
+      width:${s}px;height:${s}px;
+      left:${Math.random()*100}%;
+      bottom:-10px;
+      background:${Math.random()>0.5?'rgba(91,196,229,0.4)':'rgba(201,168,76,0.3)'};
+      animation-duration:${Math.random()*14+8}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    wrap.appendChild(p);
+  }
+})();
+
+// ─── Scroll reveal
+const revealEls = document.querySelectorAll('.reveal,.reveal-left,.vmv-item');
+const ro = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      // vmv gold bar
+      if(e.target.classList.contains('vmv-item')){
+        const ttl = e.target.querySelector('.vmv-ttl');
+        if(ttl) ttl.style.setProperty('--active','1');
+      }
+      ro.unobserve(e.target);
+    }
   });
+},{threshold:0.09});
+revealEls.forEach(el=>ro.observe(el));
+
+// ─── Section title underline
+const titleEls = document.querySelectorAll('.s-title');
+const to = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const line = e.target.querySelector('.s-title-line');
+      if(line) line.classList.add('active');
+      to.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+titleEls.forEach(el=>to.observe(el));
+
+// ─── Nav scroll style
+window.addEventListener('scroll',()=>{
+  const nav = document.querySelector('nav');
+  nav.style.borderBottomColor = window.scrollY>40
+    ? 'rgba(201,168,76,0.15)'
+    : 'rgba(91,196,229,0.1)';
 });
 
-// 料金プラン アコーディオン
-document.querySelectorAll('.plan-card-header').forEach(header => {
-  header.addEventListener('click', () => {
-    header.closest('.plan-card').classList.toggle('open');
-  });
-});
-
-// 業界別サービス アコーディオン
-document.querySelectorAll('.industry-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const item = header.closest('.industry-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.industry-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
+// ─── Hamburger (simple toggle)
+document.getElementById('hbg').addEventListener('click',()=>{
+  const nl = document.querySelector('.nav-links');
+  if(nl.style.display==='flex'){
+    nl.style.display='none';
+  } else {
+    nl.style.cssText='display:flex;flex-direction:column;position:fixed;top:62px;left:0;right:0;background:rgba(6,15,42,0.97);padding:20px 24px;gap:20px;border-top:0.5px solid rgba(91,196,229,0.1);';
+  }
 });
 </script>
 </body>
