@@ -11,7 +11,7 @@
  * ▼ スクリプトプロパティ（プロジェクトの設定 > スクリプト プロパティ）
  *   CLAUDE_API_KEY   … Anthropic APIキー（必須）
  *   OPENAI_API_KEY   … OpenAI APIキー（画像フォールバック用・任意）
- *   （写真は GitHub 公開リポジトリに置き、下記 PHOTO_URLS に raw URL を列挙）
+ *   （写真は GitHub 公開リポジトリに置き、下記 PHOTOS に ファイル名＋写っている料理 を列挙）
  *   ACCOUNT_ID       … GBPアカウントID（setup_listIds で取得）
  *   LOCATION_ID      … GBPロケーションID（setup_listIds で取得）
  *   LOG_SHEET_ID     … 投稿ログ用スプレッドシートID（任意）
@@ -31,11 +31,67 @@ const STORE_DESC    = '熊本市下通り（安政町）にある「遊家 未�
 // 投稿文・返信はこの範囲の料理名だけを使い、存在しない料理は創作しない。
 const STORE_MENU    = '極上馬刺し（タテガミ）、いくらがこぼれた刺身盛り合わせ、阿蘇溶岩焼き、肥後赤牛カルビ、馬ユッケ、馬にぎり五貫、名物 赤牛カルビ丼、もつ鍋、きのこの天婦羅盛り合わせ、海藤花、銀杏の素揚げ、辛子蓮根、肥後阿蘇美豚、牛タン、セセリ、地鶏のコロ焼き、秋刀魚の塩焼き（季節の一例）。地酒・焼酎・日本酒・ワイン・カクテルが豊富。コースは飲み放題付き4000円〜。';
 
-// 投稿に使う写真（GitHub公開リポジトリの raw URL）。ここに追加・削除して更新する。
-// 写真は miraikuru-gbp/photos/ に置いて push → その raw URL を下に列挙する。
-// 空のときは「写真なし（文字だけ）」で投稿される。
-const PHOTO_URLS = [
-  // 例: 'https://raw.githubusercontent.com/coniniofficialkanri-hash/THE-TO-YOU-/main/miraikuru-gbp/photos/01.jpg',
+// 投稿に使う写真。f=ファイル名、s=その写真に写っている料理／テーマ（＝文章の主役）。
+// 文章は s を主役にして書くので、写真と本文が必ず一致する。
+// 写真を足すときは photos/ に置いてpush → ここに1行 { f, s } を追加。
+// s が空文字 '' の写真は特定料理を断定せず、空間・お酒・宴会を主役にする。
+// （ロゴ画像 S__66641922_0.jpg は投稿対象から除外）
+const PHOTO_BASE = 'https://raw.githubusercontent.com/coniniofficialkanri-hash/THE-TO-YOU-/main/miraikuru-gbp/photos/';
+const PHOTOS = [
+  // 馬刺し・馬肉
+  { f: 'S__66641930.jpg', s: '極上馬刺し（タテガミ）を含む、色鮮やかな馬刺しの盛り合わせ' },
+  { f: 'S__66641937.jpg', s: '各部位を楽しめる馬刺しの盛り合わせ' },
+  { f: 'S__66641939.jpg', s: '霜降りと赤身が美しい馬刺しの盛り合わせ' },
+  { f: 'S__66641938.jpg', s: 'とろりとした卵黄をのせた馬肉のユッケ' },
+  { f: 'S__66641949.jpg', s: 'ネタが肉厚な馬肉の握り（馬にぎり）' },
+  { f: 'S__66641950.jpg', s: '熊本ならではの馬肉の一品（炙り・燻製系）' },
+  // 肥後赤牛・牛
+  { f: 'S__66641925.jpg', s: '阿蘇溶岩焼きで香ばしく焼き上げた肥後赤牛' },
+  { f: 'S__66641940.jpg', s: 'じっくり炊いた牛すじ・肉の煮込み' },
+  // 刺身・海鮮
+  { f: 'S__66641924.jpg', s: 'いくらがこぼれるほど贅沢な枡盛りの逸品' },
+  { f: 'S__66641936.jpg', s: '新鮮なネタが並ぶ海鮮の刺身盛り合わせ' },
+  { f: 'S__66641942.jpg', s: '彩り豊かな海鮮の刺身盛り合わせ' },
+  { f: 'S__66641959.jpg', s: 'マグロやサーモンなど豪華な刺身の盛り合わせ' },
+  { f: 'S__66641943.jpg', s: 'つるりと涼やかな白魚' },
+  { f: 'S__66641944.jpg', s: '旬の青魚を使った刺身の一皿' },
+  { f: 'S__66641965.jpg', s: '金目鯛の姿造り（豪華な一尾の刺身）' },
+  { f: 'S__66641931.jpg', s: 'ぷりっと濃厚な牡蠣' },
+  { f: 'S__66641941.jpg', s: 'みずみずしい殻付きの牡蠣' },
+  { f: 'S__66641946.jpg', s: '旬の甲殻類（海老・蟹）の贅沢な一皿' },
+  // 焼き魚
+  { f: 'S__66641926.jpg', s: '旬の川魚の塩焼き（鮎）' },
+  { f: 'S__66641935.jpg', s: '脂ののった秋刀魚の塩焼き' },
+  // 揚げ物
+  { f: 'S__66641927.jpg', s: '海老や旬野菜の天ぷら盛り合わせ' },
+  { f: 'S__66641932.jpg', s: 'ほっくりとした銀杏の素揚げ' },
+  // 一品・季節野菜
+  { f: 'S__66641928.jpg', s: '熊本名物の辛子蓮根' },
+  { f: 'S__66641929.jpg', s: '旬の青唐辛子を使った箸休めの一品' },
+  { f: 'S__66641933.jpg', s: '香り高い松茸（秋の味覚）' },
+  { f: 'S__66641951.jpg', s: 'さっぱりとした蒸し鶏のサラダ仕立て' },
+  { f: 'S__66641960.jpg', s: '春の山菜・旬野菜の盛り合わせ' },
+  // 鍋
+  { f: 'S__66641947.jpg', s: 'ぷりぷりのもつがたっぷりのもつ鍋' },
+  { f: 'S__66641948.jpg', s: '旬の魚を使った魚しゃぶ・鍋' },
+  // コース・宴会（特定の一品に絞らず、コース・宴会・個室利用を主役に）
+  { f: 'S__66641952.jpg', s: '伊勢海老や刺身が並ぶ豪華なコース・宴会料理。特定の一品に絞らず、宴会・コース利用を主役に' },
+  { f: 'S__66641953.jpg', s: '数々の料理が並ぶ宴会・コースの膳。宴会・コース利用を主役に' },
+  { f: 'S__66641954.jpg', s: '刺身から揚げ物まで揃った宴会・コース。宴会・コース利用を主役に' },
+  { f: 'S__66641955.jpg', s: '生ビールとともに楽しむ宴会・コース料理。宴会利用を主役に' },
+  { f: 'S__66641957.jpg', s: '刺身・海老天・赤牛が並ぶ贅沢なコース。コース利用を主役に' },
+  { f: 'S__66641958.jpg', s: '茶碗蒸しや刺身が並ぶ落ち着いたコース。コース利用を主役に' },
+  // ドリンク（料理は断定せず、お酒の品揃え・乾杯を主役に）
+  { f: 'S__66641961.jpg', s: '豊富に取り揃えた本格焼酎の数々。特定の料理は出さず、お酒の品揃えを主役に' },
+  { f: 'S__66641962.jpg', s: '厳選した日本酒・地酒の数々。特定の料理は出さず、お酒の品揃えを主役に' },
+  { f: 'S__66641963.jpg', s: '乾杯にぴったりのシャンパン・スパークリング。特定の料理は出さず、お祝い・乾杯を主役に' },
+  { f: 'S__66641964.jpg', s: '料理に寄り添うワインの品揃え。特定の料理は出さず、お酒の品揃えを主役に' },
+  // 店内・個室（料理は断定せず、空間・個室・大人の隠れ家を主役に）
+  { f: 'S__66781189.jpg', s: '落ち着いたテーブル個室の空間。特定の料理は出さず、個室・空間の心地よさを主役に' },
+  { f: 'S__66781191.jpg', s: 'テレビ付きのテーブル個室。特定の料理は出さず、個室・少人数利用を主役に' },
+  { f: 'S__66781192.jpg', s: '掘りごたつの座敷個室。特定の料理は出さず、個室・宴会利用を主役に' },
+  { f: 'S__66781193.jpg', s: '開放感のある店内（ロフト席のある空間）。特定の料理は出さず、店内の雰囲気を主役に' },
+  { f: 'S__66781194.jpg', s: '木の温もりある店内のテーブル席。特定の料理は出さず、店内の雰囲気を主役に' },
 ];
 
 // =====================================================================
@@ -75,9 +131,10 @@ function autoPost() {
     throw new Error('ACCOUNT_ID / LOCATION_ID が未設定です。setup_listIds を実行してください。');
   }
 
-  const theme    = buildTheme_();               // 季節・曜日からテーマ決定
-  const text     = generatePostText_(theme);    // Claudeで本文生成
-  const mediaUrl = resolveImageUrl_(theme);     // Drive優先 → GPT画像フォールバック
+  const theme    = buildTheme_();                              // 季節・曜日からテーマ決定
+  const photo    = pickPhoto_();                               // 写真を先に選ぶ（文章と一致させる）
+  const text     = generatePostText_(theme, photo ? photo.s : ''); // 写真の料理を主役に本文生成
+  const mediaUrl = photo ? (PHOTO_BASE + photo.f) : resolveGptImage_(theme);
 
   const post = { languageCode: 'ja', summary: text, topicType: 'STANDARD' };
   if (mediaUrl) post.media = [{ mediaFormat: 'PHOTO', sourceUrl: mediaUrl }];
@@ -104,10 +161,12 @@ function autoPost() {
 // =====================================================================
 function test_generateOnly() {
   const theme = buildTheme_();
-  const text  = generatePostText_(theme);
+  const photo = pickPhoto_();
+  const text  = generatePostText_(theme, photo ? photo.s : '');
   Logger.log('■ テーマ: ' + JSON.stringify(theme));
+  Logger.log('■ 写真の主役: ' + (photo ? photo.s : '(なし)'));
   Logger.log('■ 本文(' + text.length + '字):\n' + text);
-  Logger.log('■ 画像URL: ' + resolveImageUrl_(theme));
+  Logger.log('■ 画像URL: ' + (photo ? PHOTO_BASE + photo.f : '(なし)'));
 }
 
 // ===== 季節・曜日テーマ =====
@@ -122,8 +181,8 @@ function buildTheme_() {
   return { month: month, season: season, dow: dowName, weekend: (dow >= 5) };
 }
 
-// ===== Claude で投稿文生成 =====
-function generatePostText_(theme) {
+// ===== Claude で投稿文生成（subject = 添付写真に写っている料理／テーマ）=====
+function generatePostText_(theme, subject) {
   const apiKey = PropertiesService.getScriptProperties().getProperty('CLAUDE_API_KEY');
   if (!apiKey) throw new Error('CLAUDE_API_KEY が未設定です。');
 
@@ -135,8 +194,10 @@ function generatePostText_(theme) {
     '・' + theme.season + 'の季節感を必ず盛り込む。',
     '・今日は' + theme.dow + '曜日。' +
       (theme.weekend ? '週末なのでご宴会・コース（飲み放題付き）・個室のご予約を促す。' : '仕事帰りの一杯や少人数での利用に寄せる。'),
-    '・料理は必ず「当店の実在メニュー」から1〜2品だけ選んで具体的に描写する。存在しない料理は創作しない。',
-    '　実在メニュー: ' + STORE_MENU,
+    (subject
+      ? '・この投稿には写真が付き、写真の内容は「' + subject + '」。必ずこの内容を主役にして具体的に描写する。写真と違う料理を主役にしてはいけない。'
+      : '・料理は当店の実在メニューから1〜2品だけ選んで具体的に描写する（存在しない料理は創作しない）。'),
+    '・使ってよいのは当店の実在メニューの範囲のみ: ' + STORE_MENU,
     '・熊本らしい馬刺し・肥後赤牛・海鮮や、豊富な地酒に触れてよい。',
     '・営業は夜（17時〜翌1時）。朝・昼・ランチの描写はしない。',
     '・「落ち着ける大人の隠れ家」らしい、上品で落ち着いたトーン。',
@@ -162,13 +223,14 @@ function generatePostText_(theme) {
   return body.content[0].text.trim();
 }
 
-// ===== 画像URL解決：GitHub写真URL優先 → GPT画像フォールバック =====
-function resolveImageUrl_(theme) {
-  // PHOTO_URLS（GitHub公開リポジトリの写真）からランダムに1枚選ぶ。
-  // GAS側はURLを返すだけ（写真の取得はGBPが行う）。API・権限・Drive不要。
-  if (typeof PHOTO_URLS !== 'undefined' && PHOTO_URLS.length) {
-    return PHOTO_URLS[Math.floor(Math.random() * PHOTO_URLS.length)];
-  }
+// ===== 写真選択：PHOTOS からランダムに1枚（本文はその写真の s を主役にする）=====
+function pickPhoto_() {
+  if (typeof PHOTOS === 'undefined' || !PHOTOS.length) return null;
+  return PHOTOS[Math.floor(Math.random() * PHOTOS.length)];
+}
+
+// 写真が無いときのGPT画像フォールバック（OPENAI_API_KEY がある場合のみ）
+function resolveGptImage_(theme) {
   const openaiKey = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
   if (openaiKey) {
     try { return generateGptImage_(theme, openaiKey, null); }
