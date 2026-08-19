@@ -10,7 +10,6 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/cp/icon-192.png">
 <meta name="apple-mobile-web-app-title" content="COCKPIT">
 <meta name="theme-color" content="#0D1F4E">
-<meta http-equiv="refresh" content="1;url=https://claude.ai/code/artifact/2f1fd175-eb99-4401-b159-f965ab84a22a">
 <style>
 html,body{height:100%;margin:0;background:#0D1F4E;color:#C9A84C;font-family:"Baskerville","Hiragino Mincho ProN",serif;}
 .c{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px;}
@@ -24,8 +23,17 @@ p{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:12px;opacity:.6
 <div class="c">
   <div class="m">THE TO<br>YOU<small>COCKPIT</small></div>
   <a href="https://claude.ai/code/artifact/2f1fd175-eb99-4401-b159-f965ab84a22a">COCKPITを開く</a>
-  <p>自動で開かない時は上のボタン。iPhoneは共有 → 「ホーム画面に追加」でこのページを置くと、ネイビー金のアイコンから一発で開けます。</p>
+  <p id="msg">初回はここで止まります。共有 → 「ホーム画面に追加」でこのページを置いてください。次回からはアイコンを押すと自動でCOCKPITが開きます。</p>
 </div>
-<script>setTimeout(function(){location.replace('https://claude.ai/code/artifact/2f1fd175-eb99-4401-b159-f965ab84a22a');},900);</script>
+<script>
+(function(){
+  var URL='https://claude.ai/code/artifact/2f1fd175-eb99-4401-b159-f965ab84a22a';
+  var seen=false; try{seen=localStorage.getItem('cp_seen')==='1';}catch(e){}
+  var q=location.search.indexOf('stay')>=0;
+  if(seen&&!q){ location.replace(URL); return; }
+  try{localStorage.setItem('cp_seen','1');}catch(e){}
+  document.querySelector('a').addEventListener('click',function(){try{localStorage.setItem('cp_seen','1');}catch(e){}});
+})();
+</script>
 </body>
 </html>
