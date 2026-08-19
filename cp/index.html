@@ -31,6 +31,7 @@ p{font-family:-apple-system,"Hiragino Sans",sans-serif;font-size:12px;opacity:.6
   var seen=false; try{seen=localStorage.getItem('cp_seen')==='1';}catch(e){}
   var q=location.search.indexOf('stay')>=0;
   if(seen&&!q){ location.replace(URL); return; }
+  if(q){ try{history.replaceState(null,'','/cp/');}catch(e){} }
   try{localStorage.setItem('cp_seen','1');}catch(e){}
   document.querySelector('a').addEventListener('click',function(){try{localStorage.setItem('cp_seen','1');}catch(e){}});
 })();
